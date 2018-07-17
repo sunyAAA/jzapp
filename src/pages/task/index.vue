@@ -1,22 +1,12 @@
 <template>
-  <div class="container">
-      任务
-  </div>
+	<div class="task">
+		<chart></chart>
+	</div>
 </template>
 
 <script>
-
+import chart from '../../components/columnChart/columnChart'
 export default {
-  data () {
-    return {
-      motto: 'Hello World',
-      userInfo: {}
-    }
-  }
-
+	components:{chart}
 }
 </script>
-
-<style scoped>
-
-</style>
