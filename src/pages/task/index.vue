@@ -35,6 +35,7 @@
 <script>
 import taskCard from "../../components/taskCard";
 import LoginBox from "../../components/loginBox.vue";
+import {initDict} from '../../model'
 export default {
     components: {
         taskCard,
@@ -47,7 +48,8 @@ export default {
                 "http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg",
                 "http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg"
             ],
-            loginStatus:false,
+            loginStatus:true,
+            taskType:[],
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
@@ -106,8 +108,9 @@ export default {
             ]
         };
     },
-    created(){
-        wx.hideTabBar()
+    async created(){
+        wx.hideTabBar();
+        this.taskType = await initDict()
     },
     methods: {
         getTaskData() {

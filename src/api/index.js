@@ -31,3 +31,13 @@ export function bindPhone(params) {
 export function getPhoneCode(params){
   return fly.get('/api/user/sendVerificationCode',qs.stringify(params))
 }
+
+// 获取任务分类字典
+export function getTaskDict(){
+  return fly.get('/api/dict/list')
+}
+
+// 获取任务列表   @params   pagesize,pageno
+export function getTaskList(params){
+  return fly.get('/api/task/list',qs.stringify(params))
+}
