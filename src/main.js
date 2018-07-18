@@ -19,20 +19,26 @@ export default {
       navigationBarTextStyle: 'black'
     },
     tabBar: {
-      "selectedColor": "#A3CEFB",
+      "selectedColor": "#ff4b2b",
       "borderStyle": 'black',
       "list": [
         {
           "text": "任务",
           "pagePath": "pages/task/main",
+          "iconPath": "static/images/task.png",
+          "selectedIconPath": "static/images/task-active.png"
         },
         {
           "text": "任务进度",
           "pagePath": "pages/taskProgress/main",
+          "iconPath": "static/images/task-progress.png",
+          "selectedIconPath": "static/images/task-progress-active.png"
         },
         {
           "text": "我的",
           "pagePath": "pages/my/main",
+          "iconPath": "static/images/admin.png",
+          "selectedIconPath": "static/images/admin-active.png"
         },
       ]
     }

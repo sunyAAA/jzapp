@@ -6,6 +6,6 @@ app.$mount()
 
 export default{
   config:{
-    "navigationBarTitleText": "任务进度",
+    "navigationBarTitleText": "我的信息",
   }
 }
