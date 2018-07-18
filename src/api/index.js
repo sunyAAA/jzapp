@@ -16,3 +16,7 @@ fly.interceptors.request.use((request)=>{
       //return Promise.reject(new Error(""))
     return request;
 })
+
+export function loginByCode(userInfo) {     
+  return fly.post('/api/userTarget/getWeChatToken',qs.stringify(userInfo))
+}
