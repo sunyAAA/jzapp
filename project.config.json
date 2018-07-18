@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 11,
 			"list": [
 				{
 					"id": -1,
@@ -90,6 +90,17 @@
 					"name": "任务凭证",
 					"pathName": "pages/taskCertificate/main",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "完善信息",
+					"pathName": "pages/perfectInformation/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "手机注册",
+					"pathName": "pages/telRegister/main"
 				}
 			]
 		}
