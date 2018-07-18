@@ -24,7 +24,7 @@
         <!-- 领取按钮 -->
         <div class="btn-receive" v-if="!receiveFlag" @click="receive">领取</div>
         <!-- 提交凭证和放弃按钮 -->
-        <div class="btn-group" v-else="receiveFlag">
+        <div class="btn-group" v-else>
           <div class="btn-submit" @click="submit">提交凭证</div>
           <div class="give-up" @click="giveUp">放弃</div>
         </div>
