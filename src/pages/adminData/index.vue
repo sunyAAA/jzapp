@@ -17,9 +17,9 @@
       <div class="list-item sex">
         <span>性别</span>
         <picker :value="index" :range="sex"   @change='changeSex'>
-          <view class="picker">
+          <div class="picker">
             当前选择：{{sex[index]}}
-          </view>
+          </div>
         </picker>
       </div>
       <div class="list-item telephone-number">

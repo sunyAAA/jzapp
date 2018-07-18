@@ -16,7 +16,12 @@ fly.interceptors.request.use((request)=>{
       //return Promise.reject(new Error(""))
     return request;
 })
-
+//   普通登录
 export function loginByCode(userInfo) {     
   return fly.post('/api/user/getWeChatToken',qs.stringify(userInfo))
+}
+
+// 绑定手机   @params  phone , code
+export function bindPhone(params) {     
+  return fly.post('/api/user/bindPhone',qs.stringify(params))
 }

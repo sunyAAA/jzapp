@@ -4,12 +4,12 @@
       <!-- 输入手机号 -->
       <div class="tel-number">
         <div class="icon"></div>
-        <input type="text" placeholder="请输入手机号">
+        <input type="Number" placeholder="请输入手机号" v-model="phone">
       </div>
       <!-- 获取验证码 -->
       <div class="code">
         <div class="icon"></div>
-        <input type="text" placeholder="请输入验证码">
+        <input type="text" placeholder="请输入验证码" v-model="code">
         <div class="get" @click="getCode" v-text="labelText"></div>
       </div>
     </div>
@@ -18,10 +18,14 @@
 </template>
 
 <script>
+import {bindPhone} from '../../api'
+import {msg} from '../../utils'
 export default {
     data() {
         return {
-            labelText: "获取验证码"
+            labelText: "获取验证码",
+            phone:'',
+            code:''
         };
     },
     methods: {
@@ -41,7 +45,19 @@ export default {
             }, 1000);
         },
         nextStep() {
-            console.log("下一步");
+            if(this.phone.match(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)){
+                if(!this.code ){
+                  msg('请输入验证码');
+                  return;
+                }
+                bindPhone({phone:this.phone,code:this.code}).then(res=>{
+                  if(res.code == 1){
+                    
+                  }
+                })
+            }else{
+              msg('请输入正确的手机号')
+            }
         }
     }
 };
