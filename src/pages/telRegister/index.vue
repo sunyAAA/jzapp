@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {bindPhone} from '../../api'
+import {bindPhone,getPhoneCode} from '../../api'
 import {msg} from '../../utils'
 export default {
     data() {
@@ -30,19 +30,30 @@ export default {
     },
     methods: {
         getCode() {
-            //        msg('验证码已发送，请注意查收');
             if (this.timer) {
                 return;
+			}
+			if(this.phone.match(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)){
+				getPhoneCode({phone:this.phone,type:1}).then(res=>{
+					if(res.code == 1){
+						msg('验证码已发送，请注意查收');
+						this.countDown = 60;
+						this.timer = setInterval(() => {
+							this.labelText = `${this.countDown} s`;
+							this.countDown--;
+							if (this.countDown < 0) {
+								clearInterval(this.timer);
+								this.labelText = "重新获取";
+							}
+						}, 1000);
+					}else{
+						msg('发送失败，请稍后再试');
+					}
+				})
+            }else{
+              msg('请输入正确的手机号')
             }
-            this.countDown = 60;
-            this.timer = setInterval(() => {
-                this.labelText = `${this.countDown} s`;
-                this.countDown--;
-                if (this.countDown < 0) {
-                    clearInterval(this.timer);
-                    this.labelText = "重新获取";
-                }
-            }, 1000);
+
         },
         nextStep() {
             if(this.phone.match(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)){
@@ -52,7 +63,7 @@ export default {
                 }
                 bindPhone({phone:this.phone,code:this.code}).then(res=>{
                   if(res.code == 1){
-                    
+					  wx.redirectTo('../../pages/adminData/main')
                   }
                 })
             }else{

@@ -27,15 +27,16 @@ export default {
             var res = e.mp.detail.userInfo;
             loginByUser(res, res => {
                 if (res) {
-                    this.isLogin = true;
                     this.userInfo = res;
                     wx.setStorageSync("userInfo", res);
-                    wx.showTabBar();
                 }
             });
         },
         goBindPhone() {
             wx.redirectTo({ url: "../../pages/telRegister/main" });
+        },
+        checkNewHands(){
+            
         }
     }
 };

@@ -25,3 +25,9 @@ export function loginByCode(userInfo) {
 export function bindPhone(params) {     
   return fly.post('/api/user/bindPhone',qs.stringify(params))
 }
+// 获取手机验证码 @params 
+///         phone, 
+///         type  1、注册;2、找回密码;3、修改手机;4、修改密码;
+export function getPhoneCode(params){
+  return fly.get('/api/user/sendVerificationCode',qs.stringify(params))
+}
