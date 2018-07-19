@@ -6,11 +6,14 @@
       <div class="type-flag">
         <div class="flag" v-text="item.flag"></div>
       </div>
+
+
       <!-- 任务内容 -->
       <div class="task-content">
         <div class="title" v-text="item.title"></div>
         <div class="publisher">发布商家：<span v-text="item.publisher"></span></div>
         <div class="time-limit">任务时间：<span v-text="item.beginTime"></span> 至 <span v-text="item.endTime"></span></div>
+        <div class="time-limit">预计耗时：{{item.preTime}}</div>
       </div>
       <!-- 任务赏金 -->
       <div class="task-bounty">¥<span v-text="item.taskBounty"></span></div>
@@ -27,8 +30,9 @@
     props: ['item'],
     methods: {
       goToDetail(){
+        
         wx.navigateTo({
-          url: '../taskDetail/main'
+          url: '../taskDetail/main?taskId='+this.item.taskId
         })
       }
     }
@@ -43,7 +47,7 @@
       background-color: #fff;
       padding: 0 30rpx;
       width: 610rpx;
-      height: 180rpx;
+      height: 220rpx;
       margin: 0 auto;
       border-radius: 12rpx;
       margin-bottom: 16rpx;
@@ -89,6 +93,8 @@
         }
         .time-limit {
           font-size: 20rpx;
+          margin-bottom: 10rpx;
+
         }
       }
       // 任务赏金

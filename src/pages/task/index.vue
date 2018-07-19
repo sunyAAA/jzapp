@@ -1,47 +1,49 @@
 <template>
-  <div>
-    <div class="task-wrap" v-if="loginStatus">
-      <!-- 广告位轮播 -->
-      <swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-        <block v-for="(item,index) in bannerList" :key="index">
-          <swiper-item>
-            <img :src="oss+item.face" class="slide-image">
-          </swiper-item>
-        </block>
-      </swiper>
-      <!-- 排序方式tab -->
-      <div class="nav">
-        <ul class="sort">
-          <li class="sort-item" v-for="(item,index) in sortArr" v-text="item.title" :class="[ sortStatus == index ? 'current' : '' ]" @click="toggleTab(index)" :key="index"></li>
-        </ul>
-        <div class="type-kind">
-          <span @click="toggleType()">
-            {{ type }}
-            <i></i>
-          </span>
-          <ul v-show="typeShow">
-            <li v-for="(item, index) in taskType" v-text="item.dictName" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
-          </ul>
-        </div>
-      </div>
-      <!-- 新手任务 -->
-      <task-card
-        v-if="newHands"
-      ></task-card>
-      <!-- 任务列表 -->
-      <task-card v-for="(item,index) in tasksArr" :key="index" :item="item"></task-card>
-    </div>
-    <login-box v-else></login-box>
-  </div>
+	<div>
+		<div class="task-wrap" v-if="loginStatus">
+			<!-- 广告位轮播 -->
+			<swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+				<block v-for="(item,index) in bannerList" :key="index">
+					<swiper-item>
+						<img :src="oss+item.face" class="slide-image">
+					</swiper-item>
+				</block>
+			</swiper>
+			<!-- 排序方式tab -->
+			<div class="nav">
+				<ul class="sort">
+					<li class="sort-item" v-for="(item,index) in sortArr" v-text="item.title" :class="[ sortStatus == index ? 'current' : '' ]" @click="toggleTab(index)" :key="index"></li>
+				</ul>
+				<div class="type-kind">
+					<span @click="toggleType()">
+						{{ type }}
+						<i></i>
+					</span>
+					<ul v-show="typeShow">
+						<li v-for="(item, index) in taskType" v-text="item.dictName" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
+					</ul>
+				</div>
+			</div>
+			<scroll-view scroll-y  :style='scrollHeight'>
+				<!-- 新手任务 -->
+				<task-card v-if="newHands" :item="newHands[0]"></task-card>
+				<!-- 任务列表 -->
+				<task-card v-for="(item,index) in tasksArr" :key="index" :item="item"></task-card>
+			</scroll-view>
+
+		</div>
+		<login-box v-else></login-box>
+	</div>
 
 </template>
 
 <script>
 import taskCard from "../../components/taskCard";
 import LoginBox from "../../components/loginBox.vue";
-import {initDict} from '../../model'
-import {getBannerList} from '../../api'
-import config from '../../config.js'
+import { initDict } from "../../model";
+import { getBannerList, getNewHandsTask } from "../../api";
+import { formTask } from "../../model";
+import config from "../../config.js";
 export default {
     components: {
         taskCard,
@@ -49,15 +51,16 @@ export default {
     },
     data() {
         return {
-            bannerList:[],
-            oss:'',
-            loginStatus:true,
-            taskType:[],
+            bannerList: [],
+            oss: "",
+            loginStatus: true,
+            taskType: [],
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
             duration: 1000,
-            newHands:null,
+			newHands: null,
+			scrollHeight:'height:355px',
             sortArr: [
                 {
                     title: "智能推荐"
@@ -108,16 +111,36 @@ export default {
                     beginTime: "2018-7-5",
                     endTime: "2018-7-10",
                     taskBounty: 10
-                }
+                },
+                {
+                    flag: "福利任务",
+                    title: "注册任务",
+                    publisher: "花椒直播",
+                    beginTime: "2018-7-5",
+                    endTime: "2018-7-10",
+                    taskBounty: 10
+                },
+                {
+                    flag: "福利任务",
+                    title: "注册任务",
+                    publisher: "花椒直播",
+                    beginTime: "2018-7-5",
+                    endTime: "2018-7-10",
+                    taskBounty: 10
+                },
             ]
         };
     },
-    async created(){
-        wx.hideTabBar();
-        this.taskType = await initDict()
+    async created() {
+        this.taskType = await initDict();
         this.bannerList = (await getBannerList()).data.data;
-        this.oss = config.ossroot
-    },
+        this.oss = config.ossroot;
+        this.newHands = formTask((await getNewHandsTask()).data.data);
+        console.log(this.newHands);
+	},
+	mounted(){
+		this.setScrollViewHeight();
+	},
     methods: {
         getTaskData() {
             console.log("获取了任务列表");
@@ -133,80 +156,87 @@ export default {
             this.typeStatus = index;
             this.type = item.dictName;
             this.typeShow = false;
-        }
+		},
+		setScrollViewHeight(){
+			wx.getSystemInfo({
+				success:res=>{
+					this.scrollHeight = `height:${res.windowHeight - 200}px`
+				}
+			})
+		}
     }
 };
 </script>
 
 <style lang="stylus" scoped>
 .task-wrap {
-  background-color: #efeff4;
-  min-height: 100vh;
+	background-color: #efeff4;
+	min-height: 100vh;
 
-  // 广告位轮播
-  swiper {
-    width: 750rpx;
+	// 广告位轮播
+	swiper {
+		width: 750rpx;
 
-    image {
-      width: 100%;
-      height: 375rpx;
-    }
-  }
+		image {
+			width: 100%;
+			height: 375rpx;
+		}
+	}
 
-  // 排序方式tab
-  .nav {
-    display: flex;
-    width: 100%;
-    height: 100rpx;
-    line-height: 100rpx;
+	// 排序方式tab
+	.nav {
+		display: flex;
+		width: 100%;
+		height: 100rpx;
+		line-height: 100rpx;
 
-    ul.sort {
-      display: flex;
-      width: 75%;
-      justify-content: space-around;
+		ul.sort {
+			display: flex;
+			width: 75%;
+			justify-content: space-around;
 
-      li {
-        font-size: 30rpx;
-        color: #000;
-      }
+			li {
+				font-size: 30rpx;
+				color: #000;
+			}
 
-      li.current {
-        color: #ff4b2b;
-      }
-    }
+			li.current {
+				color: #ff4b2b;
+			}
+		}
 
-    .type-kind {
-      width: 25%;
-      font-size: 30rpx;
-      text-align: center;
+		.type-kind {
+			width: 25%;
+			font-size: 30rpx;
+			text-align: center;
 
-      span {
-        i {
-          width: 0;
-          height: 0;
-          display: inline-block;
-          border-left: 10rpx solid transparent;
-          border-right: 10rpx solid transparent;
-          border-top: 18rpx solid #333;
-        }
-      }
+			span {
+				i {
+					width: 0;
+					height: 0;
+					display: inline-block;
+					border-left: 10rpx solid transparent;
+					border-right: 10rpx solid transparent;
+					border-top: 18rpx solid #333;
+				}
+			}
 
-      ul {
-        background-color: #999;
-        z-index: 999;
+			ul {
+				background-color: #999;
+				z-index: 999;
 
-        li {
-          width: 100%;
-          height: 50rpx;
-          line-height: 50rpx;
-          text-align: center;
-        }
+				li {
+					width: 100%;
+					height: 50rpx;
+					line-height: 50rpx;
+					text-align: center;
+				}
 
-        li.selected {
-          color: #ff4b2b;
-        }
-      }
-    }
-  }
+				li.selected {
+					color: #ff4b2b;
+				}
+			}
+		}
+	}
 }
 </style>

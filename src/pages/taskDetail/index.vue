@@ -47,7 +47,7 @@
           <p v-for="(item, index) in taskDetail" :key="index" v-text="item"></p>
         </div>
         <div class="content-item task-list" v-show="currentTab == 2">
-          <task-card></task-card>
+          <task-card v-if='taskList.length'></task-card>
         </div>
       </div>
     </div>
@@ -56,6 +56,8 @@
 
 <script>
   import taskCard from '../../components/taskCard'
+  import {getTaskDetail} from '../../api'
+  import {formartTaskDetail,formTask} from '../../model'
   export default {
     components:{
       taskCard
@@ -71,6 +73,7 @@
         countdown: '4天7小时26分34秒',
         receiveFlag: false,
         currentTab: 0,
+        taskList:[],
         taskDesc: [
           '1.新用户绑定手机号码可获得5000金币奖励，救济金每天可以领取3次，每次3000金币。',
           '2.新手7天签到可领取35000金币及13个元宝、10钻石奖励。',
@@ -82,7 +85,15 @@
           '3.这里是任务说明页面。',
           '4.这里是任务说明页面。',
           '5.这里是任务说明页面这里是任务说明页面这里是任务说明页面这里是任务说明页面。',
-        ]
+        ],
+        taskData:{}
+      }
+    },
+    async onLoad(options){
+      this.taskId = options.taskId;
+      if(this.taskId){
+        this.taskData = formartTaskDetail((await getTaskDetail({taskId : this.taskId})).data.data.missionTask);
+        console.log(this.taskData)
       }
     },
     methods: {
@@ -97,6 +108,9 @@
       },
       toggleNav(n){
         this.currentTab = n;
+      },
+      async getDetail(){
+        this.data = await getTaskDetail({taskId:this.taskId})
       }
     }
   }

@@ -2,20 +2,6 @@ import { loginByCode } from '../api'
 import config from '../config'
 const appId = config.appId;
 const ossroot = config.ossroot
-export function formatTime(date) {
-	const year = date.getFullYear()
-	const month = date.getMonth() + 1
-	const day = date.getDate()
-
-	// const hour = date.getHours()
-	// const minute = date.getMinutes()
-	// const second = date.getSeconds()
-
-	const t1 = `${year}年${month}月${day}日`
-	// const t2 = [hour, minute, second].map(formatNumber).join(':')
-
-	return `${t1}`
-}
 
 export function showSucc(text, cb) {
 	wx.showToast({
@@ -85,6 +71,7 @@ export function _login(cb) {
 					}
 				});
 			}
+
 		},
 		fail: () => {
 			_loading()
@@ -204,10 +191,10 @@ export function getRightDays(end) {
 }
 
 export function fromartTargetDate(begin, end) {
-	return dateForm(begin, 'Y-m-d') + " 至 " + dateForm(end, 'Y-m-d')
+	return timestampToDate(begin, 'Y-m-d') + " 至 " + timestampToDate(end, 'Y-m-d')
 }
 
-export function dateForm(timestamp, formats) {
+export function timestampToDate(timestamp, formats) {
 	// formats格式包括
 	// 1. Y-m-d
 	// 2. Y-m-d H:i:s

@@ -66,45 +66,45 @@ export default {
     z-index 9999
     .content
         width 90%
-        margin 100rpx auto 300rpx auto
-        height 250rpx
+        margin 100px auto 300px auto
+        height 250px
         background #fff
-        border 1rpx solid transparent
-        border-raduis 10rpx
+        border 1px solid transparent
+        border-raduis 10px
         .close-box
             text-align right
-            font-size 34rpx
-            padding 0 18rpx
-            padding-top 10rpx
+            font-size 34px
+            padding 0 18px
+            padding-top 10px
         .contorol
-            height 50rpx
-            margin 0rpx 25rpx
-            border-bottom 1rpx solid #eee
-            padding 0 25rpx
+            height 50px
+            margin 0px 25px
+            border-bottom 1px solid #eee
+            padding 0 25px
             position relative
             input
-                height 50rpx
-                line-height 50rpx
-                font-size 14rpx
+                height 50px
+                line-height 50px
+                font-size 14px
                 width 70%
             .label
                 position absolute
-                height 50rpx
-                line-height 50rpx
-                padding-right 25rpx
+                height 50px
+                line-height 50px
+                padding-right 25px
                 right 0
                 top 0
-                font-size 14rpx
+                font-size 14px
                 color  #479EF8
     .btn-box
-        margin-top 30rpx
+        margin-top 30px
         text-align center
         button
             display inline-block
-            width 100rpx
-            height 40rpx
-            border-radius 5rpx
-            font-size 16rpx
+            width 100px
+            height 40px
+            border-radius 5px
+            font-size 16px
             background  #479EF8
             color #fff
 </style>

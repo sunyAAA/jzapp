@@ -11,7 +11,7 @@ export default {
     data() {
         return {};
     },
-    created() {
+    mounted() {
         _login(res => {
             checkNewHands(res)
         });
