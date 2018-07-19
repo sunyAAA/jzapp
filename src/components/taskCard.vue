@@ -40,7 +40,7 @@
   .task-card {
     padding-bottom: 20rpx;
     .card-item {
-      background-color: #fff;
+      background-color: #efeff4;
       padding: 0 30rpx;
       width: 610rpx;
       height: 180rpx;
@@ -69,7 +69,7 @@
           height: 0;
           border-left: 25rpx solid transparent;
           border-right: 25rpx solid transparent;
-          border-bottom: 20rpx solid #fff;
+          border-bottom: 20rpx solid #efeff4;
           position: absolute;
           bottom: 0;
           left: 0;

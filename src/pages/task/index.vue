@@ -109,12 +109,12 @@ export default {
     }
   },
   methods: {
-    getTaskData(){
-      console.log("获取了任务列表")
+    getTaskData(index){
+      console.log("获取了任务列表"+index)
     },
     toggleTab(index){
       this.sortStatus = index;
-      this.getTaskData()
+      this.getTaskData(index)
     },
     toggleType(){
       this.typeShow = !this.typeShow;
@@ -131,7 +131,6 @@ export default {
 
 <style lang="stylus" scoped>
   .task-wrap {
-    background-color: #efeff4;
     min-height: 100vh;
     // 广告位轮播
     swiper {

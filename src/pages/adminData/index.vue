@@ -16,12 +16,11 @@
       </div>
       <div class="list-item sex">
         <span>性别</span>
-        <picker mode="selector"
+        <picker
                 @change="changeSex"
-                v-for="(item,index) in user.sex"
-                :key="index"
-                :value="index" :range="user.sex">
-          {{ item }}
+                :value="index"
+                :range="user.sex">
+          {{ user.sex[index] }}
         </picker>
       </div>
       <div class="list-item telephone-number">
@@ -53,11 +52,12 @@ export default {
         birthday: '2000-01-01',
         verified: '未认证'
       },
+      index: 0
     }
   },
   methods: {
     changeSex(e){
-      console.log(e.mp.detail.value)
+      this.index = e.mp.detail.value
     }
   }
 }

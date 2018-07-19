@@ -3,7 +3,7 @@
     <!-- 上传身份证（正面） -->
     <div class="upload-IDCard">
       <div class="ID-area" @click.stop='upLoadImg'>
-        <img src='../../../static/images/icon-camera.png' alt="">
+        <img src='../../../static/images/uploadImg.png' alt="">
       </div>
       <span>请上传身份证（正面）</span>
     </div>
@@ -40,9 +40,8 @@
         margin: 160rpx auto 10rpx;
         text-align: center;
         img {
-          width: 69rpx;
-          height: 57rpx;
-          margin-top: 122rpx;
+          width: 100%;
+          height: 100%;
         }
       }
       span {

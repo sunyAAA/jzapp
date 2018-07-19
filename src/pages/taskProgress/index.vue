@@ -3,11 +3,16 @@
     <!-- 导航 -->
     <div class="nav">
       <ul>
-        <li v-for="(item, index) in navArr" :key="index" v-text="item.title"></li>
+        <li
+          v-for="(item, index) in navArr"
+          :key="index"
+          :class="[ status == index ? 'current' : '' ]"
+          @click="toggleTab(index)"
+          v-text="item.title"></li>
       </ul>
     </div>
     <!-- 内容 -->
-    <task-card></task-card>
+    <task-card v-for="(item,index) in taskArr" :key="index" :item="item"></task-card>
   </div>
 </template>
 
@@ -29,7 +34,39 @@ export default {
         {
           title: '已完成'
         }
+      ],
+      status: 0,
+      taskArr: [
+        {
+          flag: '试玩任务',
+          title: '棋牌手游试玩',
+          publisher: '米多游戏',
+          beginTime: '2018-7-5',
+          endTime: '2018-7-10',
+          taskBounty: 380
+        },
+        {
+          flag: '练级任务',
+          title: '魔域之都手游',
+          publisher: '新傲天',
+          beginTime: '2018-7-5',
+          endTime: '2018-7-10',
+          taskBounty: 150
+        },
+        {
+          flag: '福利任务',
+          title: '注册任务',
+          publisher: '花椒直播',
+          beginTime: '2018-7-5',
+          endTime: '2018-7-10',
+          taskBounty: 10
+        }
       ]
+    }
+  },
+  methods: {
+    toggleTab(index){
+      this.status = index;
     }
   }
 }
@@ -56,16 +93,6 @@ export default {
         li.current {
           color: #ff4b2b;
         }
-      }
-    }
-  }
-</style>
-<style lang="stylus">
-  // 内容
-  .task-card {
-    ul {
-      li {
-        background-color: #efeff4 !important;
       }
     }
   }

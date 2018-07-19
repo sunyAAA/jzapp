@@ -47,7 +47,7 @@
           <p v-for="(item, index) in taskDetail" :key="index" v-text="item"></p>
         </div>
         <div class="content-item task-list" v-show="currentTab == 2">
-          <task-card></task-card>
+          <task-card v-for="(item,index) in taskList" :key="index" :item="item"></task-card>
         </div>
       </div>
     </div>
@@ -82,6 +82,32 @@
           '3.这里是任务说明页面。',
           '4.这里是任务说明页面。',
           '5.这里是任务说明页面这里是任务说明页面这里是任务说明页面这里是任务说明页面。',
+        ],
+        taskList: [
+          {
+            flag: '试玩任务',
+            title: '棋牌手游试玩',
+            publisher: '米多游戏',
+            beginTime: '2018-7-5',
+            endTime: '2018-7-10',
+            taskBounty: 380
+          },
+          {
+            flag: '练级任务',
+            title: '魔域之都手游',
+            publisher: '新傲天',
+            beginTime: '2018-7-5',
+            endTime: '2018-7-10',
+            taskBounty: 150
+          },
+          {
+            flag: '福利任务',
+            title: '注册任务',
+            publisher: '花椒直播',
+            beginTime: '2018-7-5',
+            endTime: '2018-7-10',
+            taskBounty: 10
+          },
         ]
       }
     },
@@ -207,15 +233,6 @@
     }
     .received {
       padding-top: 30rpx;
-    }
-  }
-</style>
-<style lang="stylus">
-  .task-card {
-    ul {
-      li {
-        background-color: #efeff4 !important;
-      }
     }
   }
 </style>

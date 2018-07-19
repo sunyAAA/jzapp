@@ -40,7 +40,6 @@
       },
       endDateChange(e){
         this.endDate = e.mp.detail.value
-        console.log(typeof this.endDate)
       }
     }
   }
