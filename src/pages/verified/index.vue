@@ -33,35 +33,35 @@
     // 上传身份证（正面）
     .upload-IDCard {
       .ID-area {
-        width: 500px;
-        height: 300px;
-        border-radius: 10px;
+        width: 500rpx;
+        height: 300rpx;
+        border-radius: 10rpx;
         background-color: #efeff4;
-        margin: 160px auto 10px;
+        margin: 160rpx auto 10rpx;
         text-align: center;
         img {
-          width: 69px;
-          height: 57px;
-          margin-top: 122px;
+          width: 69rpx;
+          height: 57rpx;
+          margin-top: 122rpx;
         }
       }
       span {
-        font-size: 30px;
+        font-size: 30rpx;
         color: #999;
-        padding-left: 125px;
+        padding-left: 125rpx;
       }
     }
     // 确认按钮
     .btn-sure {
-      width: 630px;
-      height: 80px;
-      line-height: 80px;
-      border-radius: 10px;
-      font-size: 30px;
+      width: 630rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      border-radius: 10rpx;
+      font-size: 30rpx;
       color: #fff;
       background-color: #ff4b2b;
       text-align: center;
-      margin: 150px auto 0;
+      margin: 150rpx auto 0;
     }
   }
 </style>

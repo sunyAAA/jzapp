@@ -103,7 +103,7 @@ export default {
 <style scoped>
 .canvas {
     width: 100%;
-    height: 350px;
-    margin-top: 40px;
+    height: 350rpx;
+    margin-top: 40rpx;
 }
 </style>

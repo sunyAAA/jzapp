@@ -145,11 +145,11 @@ export default {
 
   // 广告位轮播
   swiper {
-    width: 750px;
+    width: 750rpx;
 
     image {
       width: 100%;
-      height: 375px;
+      height: 375rpx;
     }
   }
 
@@ -157,8 +157,8 @@ export default {
   .nav {
     display: flex;
     width: 100%;
-    height: 100px;
-    line-height: 100px;
+    height: 100rpx;
+    line-height: 100rpx;
 
     ul.sort {
       display: flex;
@@ -166,7 +166,7 @@ export default {
       justify-content: space-around;
 
       li {
-        font-size: 30px;
+        font-size: 30rpx;
         color: #000;
       }
 
@@ -177,7 +177,7 @@ export default {
 
     .type-kind {
       width: 25%;
-      font-size: 30px;
+      font-size: 30rpx;
       text-align: center;
 
       span {
@@ -185,9 +185,9 @@ export default {
           width: 0;
           height: 0;
           display: inline-block;
-          border-left: 10px solid transparent;
-          border-right: 10px solid transparent;
-          border-top: 18px solid #333;
+          border-left: 10rpx solid transparent;
+          border-right: 10rpx solid transparent;
+          border-top: 18rpx solid #333;
         }
       }
 
@@ -197,8 +197,8 @@ export default {
 
         li {
           width: 100%;
-          height: 50px;
-          line-height: 50px;
+          height: 50rpx;
+          line-height: 50rpx;
           text-align: center;
         }
 

@@ -22,20 +22,20 @@
 <style lang="stylus" scoped>
   .myCredibility-wrap {
     .credibility-display {
-      width: 750px;
-      height: 500px;
+      width: 750rpx;
+      height: 500rpx;
       background-color: #efeff4;
     }
     .btn-share {
-      width: 500px;
-      height: 80px;
+      width: 500rpx;
+      height: 80rpx;
       background-color: #fc5833;
       text-align: center;
-      line-height: 80px;
+      line-height: 80rpx;
       color: #fff;
-      font-size: 40px;
-      border-radius: 40px;
-      margin: 200px auto 0;
+      font-size: 40rpx;
+      border-radius: 40rpx;
+      margin: 200rpx auto 0;
     }
   }
 </style>

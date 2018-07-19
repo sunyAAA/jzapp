@@ -50,27 +50,27 @@
   .myIncome-wrap {
     // 收益金额展示
     .account {
-      height: 198px;
-      border-top: 2px solid #efeff4;
-      border-bottom: 10px solid #efeff4;
+      height: 198rpx;
+      border-top: 2rpx solid #efeff4;
+      border-bottom: 10rpx solid #efeff4;
       text-align: center;
-      padding-top: 70px;
+      padding-top: 70rpx;
       .bounty {
-        font-size: 60px;
+        font-size: 60rpx;
         font-weight: 500;
         color: #000;
       }
       span {
-        font-size: 20px;
+        font-size: 20rpx;
       }
     }
     // 近期收益情况展示
     .recently-bounty {
       .header {
-        font-size: 30px;
-        height: 80px;
-        line-height: 80px;
-        border-bottom: 2px solid #efeff4;
+        font-size: 30rpx;
+        height: 80rpx;
+        line-height: 80rpx;
+        border-bottom: 2rpx solid #efeff4;
         display: flex;
         justify-content: space-between;
         .range-date {
@@ -81,13 +81,13 @@
               width: 0;
               height: 0;
               display: inline-block;
-              border-left: 10px solid transparent;
-              border-right: 10px solid transparent;
-              border-top: 18px solid #333;
+              border-left: 10rpx solid transparent;
+              border-right: 10rpx solid transparent;
+              border-top: 18rpx solid #333;
             }
           }
           span {
-            margin: 0 20px;
+            margin: 0 20rpx;
           }
         }
       }

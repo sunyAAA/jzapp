@@ -91,40 +91,40 @@
 <style lang="stylus" scoped>
   // 任务列表卡片
   .info-card {
-    padding-bottom: 20px;
-    margin-top: 20px;
+    padding-bottom: 20rpx;
+    margin-top: 20rpx;
     ul {
       li {
         background-color: #efeff4;
-        padding: 0 30px;
-        width: 610px;
-        height: 180px;
+        padding: 0 30rpx;
+        width: 610rpx;
+        height: 180rpx;
         margin: 0 auto;
-        border-radius: 12px;
-        margin-bottom: 16px;
+        border-radius: 12rpx;
+        margin-bottom: 16rpx;
         // 类型标记
         .type-flag {
-          width: 90px;
+          width: 90rpx;
           float: left;
           .flag {
-            width: 38px;
-            height: 70px;
+            width: 38rpx;
+            height: 70rpx;
             background-color: #ff4b2b;
-            font-size: 18px;
+            font-size: 18rpx;
             color: #fff;
-            padding: 10px 6px 0 6px;
+            padding: 10rpx 6rpx 0 6rpx;
             text-align: center;
             position: relative;
-            line-height: 20px;
+            line-height: 20rpx;
           }
           .flag:after {
             content: '';
             display: block;
             width: 0;
             height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-bottom: 20px solid #fff;
+            border-left: 25rpx solid transparent;
+            border-right: 25rpx solid transparent;
+            border-bottom: 20rpx solid #fff;
             position: absolute;
             bottom: 0;
             left: 0;
@@ -134,31 +134,31 @@
         .task-content {
           float: left;
           .title {
-            font-size: 30px;
+            font-size: 30rpx;
             font-weight: 500;
-            margin: 25px 0 30px;
+            margin: 25rpx 0 30rpx;
           }
           .publisher {
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 20rpx;
+            margin-bottom: 10rpx;
           }
           .time-limit {
-            font-size: 20px;
+            font-size: 20rpx;
           }
         }
         // 倒计时
         .countdown {
-          width: 110px;
-          height: 110px;
+          width: 110rpx;
+          height: 110rpx;
           border-radius: 50%;
-          border: 2px solid #333;
+          border: 2rpx solid #333;
           background-color: #fff;
-          font-size: 20px;
+          font-size: 20rpx;
           float: right;
-          margin-top: 35px;
+          margin-top: 35rpx;
           text-align: center;
           .title {
-            margin: 30px 0 10px;
+            margin: 30rpx 0 10rpx;
           }
         }
       }

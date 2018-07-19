@@ -13,7 +13,7 @@
     <div class="box">
       <p class="unit">￥</p>
       <div class="ctrol"><input type="number" v-model="money" placeholder="请输入提现金额（整数）"
-                                placeholder-style="color:#999;font-size:12px"
+                                placeholder-style="color:#999;font-size:12rpx"
       ></div>
       <p class="desc">全部提现</p>
     </div>
@@ -49,68 +49,68 @@
 
 <style lang="stylus" scoped>
   .icon-box-rect
-    width 88px
-    height 105px
+    width 88rpx
+    height 105rpx
     overflow hidden
-    margin 20px auto
+    margin 20rpx auto
     &>img
       width 100%
       height 100%
       object-fit cover
   .title
     text-align center
-    padding 10px
+    padding 10rpx
   .money
     text-align center
-    font-size 40px
+    font-size 40rpx
     font-weight bold
     transform translate(0,0)
     .unit
-      font-size 20px
+      font-size 20rpx
       vertical-align top
   .blank
-    margin-top 44px
-    height 1px
+    margin-top 44rpx
+    height 1rpx
     background #eee
   .left
-    padding 10px 15px
-    font-size 14px
+    padding 10rpx 15rpx
+    font-size 14rpx
   .box
     display flex
     align-items flex-end
-    padding-bottom 20px
-    border-bottom 1px solid #eee
+    padding-bottom 20rpx
+    border-bottom 1rpx solid #eee
     .unit
-      flex 0 0 44px
-      padding-left 30px
-      font-size 26px
+      flex 0 0 44rpx
+      padding-left 30rpx
+      font-size 26rpx
       font-weight bold
     .ctrol
       flex 1
       input
         text-align center
-        font-size 26px
+        font-size 26rpx
     .desc
-      flex 0 0 60px
-      padding-right 20px
-      font-size 12px
+      flex 0 0 60rpx
+      padding-right 20rpx
+      font-size 12rpx
       transform translate(0,-35%)
       color #3743B2
   .ye-box
-    height 60px
-    padding 0 30px
-    line-height 60px
-    font-size 14px
-    border-bottom 1px solid #eee
+    height 60rpx
+    padding 0 30rpx
+    line-height 60rpx
+    font-size 14rpx
+    border-bottom 1rpx solid #eee
     .arrow
       font-weight bold
       float right
   .btn
     width 70%
     margin 0 auto
-    height 40px
-    line-height 40px
+    height 40rpx
+    line-height 40rpx
     color #fff
     background #479EF8
-    margin-top 30px
+    margin-top 30rpx
 </style>

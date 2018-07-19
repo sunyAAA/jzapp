@@ -56,54 +56,54 @@
     // 任务信息卡片
     .card-item {
       background-color: #efeff4;
-      padding: 0 30px;
-      width: 610px;
-      height: 180px;
+      padding: 0 30rpx;
+      width: 610rpx;
+      height: 180rpx;
       margin: 0 auto;
-      border-radius: 12px;
-      margin-bottom: 60px;
+      border-radius: 12rpx;
+      margin-bottom: 60rpx;
       // 任务内容
       .task-content {
         float: left;
         .title {
-          font-size: 30px;
+          font-size: 30rpx;
           font-weight: 500;
-          margin: 25px 0 30px;
+          margin: 25rpx 0 30rpx;
         }
         .publisher {
-          font-size: 20px;
-          margin-bottom: 10px;
+          font-size: 20rpx;
+          margin-bottom: 10rpx;
         }
         .time-limit {
-          font-size: 20px;
+          font-size: 20rpx;
         }
       }
       // 任务赏金
       .task-bounty {
-        font-size: 30px;
+        font-size: 30rpx;
         color: #ff4b2b;
         float: right;
-        line-height: 180px;
+        line-height: 180rpx;
         span {
-          font-size: 60px;
+          font-size: 60rpx;
         }
       }
     }
     // 上传凭证
     .upload-box {
       .upload-area {
-        width: 590px;
-        height: 380px;
-        border: 2px solid #e6e6e6;
+        width: 590rpx;
+        height: 380rpx;
+        border: 2rpx solid #e6e6e6;
         margin: 0 auto;
-        padding: 40px;
+        padding: 40rpx;
         textarea {
           width: 100%;
-          height: 181px;
+          height: 181rpx;
         }
         .btn-upload {
-          width: 200px;
-          height: 200px;
+          width: 200rpx;
+          height: 200rpx;
           img {
             width: 100%;
             height: 100%;
@@ -111,22 +111,22 @@
         }
       }
       span {
-        font-size: 30px;
+        font-size: 30rpx;
         color: #999;
-        padding-left: 40px;
+        padding-left: 40rpx;
       }
     }
     // 审核按钮
     .btn-review {
-      width: 630px;
-      height: 80px;
-      line-height: 80px;
-      border-radius: 10px;
-      font-size: 30px;
+      width: 630rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      border-radius: 10rpx;
+      font-size: 30rpx;
       color: #fff;
       background-color: #ff4b2b;
       text-align: center;
-      margin: 150px auto 0;
+      margin: 150rpx auto 0;
     }
   }
 </style>

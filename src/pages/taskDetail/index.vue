@@ -106,9 +106,9 @@
   .taskDetail-wrap {
     // 任务简介和操作
     .information-operate {
-      border-top: 2px solid #efeff4;
-      border-bottom: 2px solid #efeff4;
-      padding: 40px 40px 30px;
+      border-top: 2rpx solid #efeff4;
+      border-bottom: 2rpx solid #efeff4;
+      padding: 40rpx 40rpx 30rpx;
       position: relative;
       .info {
         display: flex;
@@ -116,12 +116,12 @@
         // 任务内容
         .info-content {
           .type {
-            font-size: 30px;
+            font-size: 30rpx;
           }
           .title, .time, .duration-time {
-            font-size: 22px;
-            /*line-height: 40px;*/
-            margin-top: 10px;
+            font-size: 22rpx;
+            /*line-height: 40rpx;*/
+            margin-top: 10rpx;
           }
         }
         // 赏金和时间
@@ -129,65 +129,65 @@
           color: #ff4b2b;
           text-align: right;
           .bounty {
-            font-size: 22px;
+            font-size: 22rpx;
             span {
-              font-size: 40px;
+              font-size: 40rpx;
             }
           }
           .countdown {
-            font-size: 22px;
+            font-size: 22rpx;
           }
         }
       }
       .operate {
         // 领取按钮
         .btn-receive {
-          width: 100px;
-          height: 100px;
+          width: 100rpx;
+          height: 100rpx;
           border-radius: 50%;
           background-color: #ff4b2b;
           color: #fff;
-          font-size: 22px;
+          font-size: 22rpx;
           text-align: center;
-          line-height: 100px;
+          line-height: 100rpx;
           position: absolute;
-          bottom: -50px;
-          right: 40px;
+          bottom: -50rpx;
+          right: 40rpx;
         }
         // 提交凭证和放弃按钮
         .btn-group {
           display: flex;
           justify-content: flex-end;
-          margin-top: 30px;
+          margin-top: 30rpx;
           .btn-submit, .give-up {
-            width: 160px;
-            height: 50px;
-            border-radius: 8px;
-            font-size: 30px;
+            width: 160rpx;
+            height: 50rpx;
+            border-radius: 8rpx;
+            font-size: 30rpx;
             text-align: center;
-            line-height: 50px;
+            line-height: 50rpx;
             background-color: #ff4b2b;
             color: #fff;
           }
           .give-up {
             background-color: #fff;
-            border: 2px solid #ff4b2b;
+            border: 2rpx solid #ff4b2b;
             color: #333;
-            margin-left: 30px;
+            margin-left: 30rpx;
           }
         }
       }
     }
     // 任务描述、任务说明、任务列表
     .task {
-      padding: 60px 40px 0;
+      padding: 60rpx 40rpx 0;
       // 导航栏
       .task-nav {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
+        margin-bottom: 20rpx;
         .nav-item {
-          font-size: 30px;
+          font-size: 30rpx;
         }
         .current {
           color: #ff4b2b;
@@ -196,17 +196,17 @@
       // 任务内容
       .task-content {
          .content-item {
-           font-size: 22px;
+           font-size: 22rpx;
          }
         .task-desc, .task-detail {
           p {
-            line-height: 48px;
+            line-height: 48rpx;
           }
         }
       }
     }
     .received {
-      padding-top: 30px;
+      padding-top: 30rpx;
     }
   }
 </style>

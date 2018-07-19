@@ -43,14 +43,14 @@ export default {
     .nav {
       display: flex;
       width: 100%;
-      height: 100px;
-      line-height: 100px;
+      height: 100rpx;
+      line-height: 100rpx;
       ul {
         display: flex;
         width: 100%;
         justify-content: space-around;
         li {
-          font-size: 30px;
+          font-size: 30rpx;
           color: #000;
         }
         li.current {

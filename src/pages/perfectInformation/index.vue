@@ -67,52 +67,52 @@
 <style lang="stylus" scoped>
   .perfectInfo-wrap {
     h3 {
-      font-size: 40px;
+      font-size: 40rpx;
       color: #000;
       text-align: center;
     }
     h5 {
-      font-size: 20px;
+      font-size: 20rpx;
       color: #000;
       text-align: center;
     }
     // 头像
     .head-pic {
-      width: 180px;
-      height: 180px;
-      border: 10px solid #efeff4;
+      width: 180rpx;
+      height: 180rpx;
+      border: 10rpx solid #efeff4;
       border-radius: 50%;
-      margin: 70px auto 145px;
+      margin: 70rpx auto 145rpx;
       .tip {
         width: 100%;
         height: 100%;
         text-align: center;
         img {
-          width: 30px;
-          height: 25px;
-          margin: 60px 0 10px;
+          width: 30rpx;
+          height: 25rpx;
+          margin: 60rpx 0 10rpx;
         }
         div {
-          font-size: 20px;
+          font-size: 20rpx;
           color: #000;
         }
       }
     }
     // 表单
     .form {
-      width: 500px;
+      width: 500rpx;
       margin: 0 auto;
       .name, .birthday {
-        border: 2px solid #efeff4;
-        padding: 0 40px;
-        height: 100px;
-        line-height: 100px;
-        border-radius: 50px;
-        font-size: 30px;
+        border: 2rpx solid #efeff4;
+        padding: 0 40rpx;
+        height: 100rpx;
+        line-height: 100rpx;
+        border-radius: 50rpx;
+        font-size: 30rpx;
         color: #000;
         display: flex;
         justify-content space-between;
-        margin-bottom: 60px;
+        margin-bottom: 60rpx;
         input {
           height: 100%;
           text-align: right;
@@ -122,13 +122,13 @@
         display: flex;
         justify-content space-between
         .sex-item {
-          width: 200px;
-          height: 100px;
-          border-radius: 50px;
-          border: 2px solid #efeff4;
+          width: 200rpx;
+          height: 100rpx;
+          border-radius: 50rpx;
+          border: 2rpx solid #efeff4;
           text-align: center;
-          line-height: 100px;
-          font-size: 30px;
+          line-height: 100rpx;
+          font-size: 30rpx;
           color: #000;
         }
         .current {
@@ -139,16 +139,16 @@
       }
       // 确认按钮
       .btn-sure {
-        width: 100px;
-        height: 100px;
+        width: 100rpx;
+        height: 100rpx;
         border-radius: 50%;
         background-color: #ff4b2b;
         color: #fff;
-        font-size: 30px;
+        font-size: 30rpx;
         text-align: center;
-        line-height: 100px;
-        box-shadow: 0 0 20px rgba(255, 75, 43, 0.47);
-        margin: 100px auto 0;
+        line-height: 100rpx;
+        box-shadow: 0 0 20rpx rgba(255, 75, 43, 0.47);
+        margin: 100rpx auto 0;
       }
     }
   }

@@ -62,16 +62,16 @@ export default {
   .my-wrap {
     // 个人信息（头像和昵称）
     .admin-info {
-      width: 750px;
-      height: 340px;
+      width: 750rpx;
+      height: 340rpx;
       text-align: center;
-      padding-top: 60px;
+      padding-top: 60rpx;
       .head-pic {
-        width: 160px;
-        height: 160px;
+        width: 160rpx;
+        height: 160rpx;
         border-radius: 50%;
         margin: 0 auto;
-        margin-bottom: 10px;
+        margin-bottom: 10rpx;
         img {
           width: 100%;
           height: 100%;
@@ -79,7 +79,7 @@ export default {
         }
       }
       .username {
-        font-size: 30px;
+        font-size: 30rpx;
         font-weight: 400;
       }
     }
@@ -87,16 +87,16 @@ export default {
     .admin-list {
       .list-item {
         /*display: flex;*/
-        width: 662px;
-        height: 120px;
-        line-height: 120px;
-        border-bottom: 2px solid #efeff4;
-        padding: 0 44px;
+        width: 662rpx;
+        height: 120rpx;
+        line-height: 120rpx;
+        border-bottom: 2rpx solid #efeff4;
+        padding: 0 44rpx;
         .icon {
-          width: 35px;
-          height: 40px;
+          width: 35rpx;
+          height: 40rpx;
           float: left;
-          margin-top: 5px
+          margin-top: 5rpx
           img {
             width: 100%;
             height: 100%;
@@ -104,11 +104,11 @@ export default {
         }
         .title {
           float: left;
-          margin-left: 30px;
+          margin-left: 30rpx;
         }
         .icon-arrow {
-          width: 16px;
-          height: 30px;
+          width: 16rpx;
+          height: 30rpx;
           float: right;
           img {
             width: 100%;

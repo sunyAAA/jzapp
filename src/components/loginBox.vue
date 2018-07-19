@@ -50,12 +50,12 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 100px 0;
+    padding: 100rpx 0;
 
     h2 {
-        font-size: 14px;
+        font-size: 14rpx;
         text-align: center;
-        margin-bottom: 35px;
+        margin-bottom: 35rpx;
     }
 
     button {
