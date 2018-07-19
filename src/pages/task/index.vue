@@ -3,9 +3,9 @@
     <div class="task-wrap" v-if="loginStatus">
       <!-- 广告位轮播 -->
       <swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-        <block v-for="(item,index) in imgUrls" :key="index">
+        <block v-for="(item,index) in bannerList" :key="index">
           <swiper-item>
-            <img :src="item" class="slide-image">
+            <img :src="oss+item.face" class="slide-image">
           </swiper-item>
         </block>
       </swiper>
@@ -20,10 +20,14 @@
             <i></i>
           </span>
           <ul v-show="typeShow">
-            <li v-for="(item, index) in taskKind" v-text="item.type" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
+            <li v-for="(item, index) in taskType" v-text="item.dictName" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
           </ul>
         </div>
       </div>
+      <!-- 新手任务 -->
+      <task-card
+        v-if="newHands"
+      ></task-card>
       <!-- 任务列表 -->
       <task-card v-for="(item,index) in tasksArr" :key="index" :item="item"></task-card>
     </div>
@@ -36,6 +40,8 @@
 import taskCard from "../../components/taskCard";
 import LoginBox from "../../components/loginBox.vue";
 import {initDict} from '../../model'
+import {getBannerList} from '../../api'
+import config from '../../config.js'
 export default {
     components: {
         taskCard,
@@ -43,17 +49,15 @@ export default {
     },
     data() {
         return {
-            imgUrls: [
-                "http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg",
-                "http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg",
-                "http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg"
-            ],
+            bannerList:[],
+            oss:'',
             loginStatus:true,
             taskType:[],
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
             duration: 1000,
+            newHands:null,
             sortArr: [
                 {
                     title: "智能推荐"
@@ -111,6 +115,8 @@ export default {
     async created(){
         wx.hideTabBar();
         this.taskType = await initDict()
+        this.bannerList = (await getBannerList()).data.data;
+        this.oss = config.ossroot
     },
     methods: {
         getTaskData() {

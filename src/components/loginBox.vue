@@ -13,12 +13,7 @@ export default {
     },
     created() {
         _login(res => {
-            if (res) {
-                if (!res.phone) {
-                    // 如果没有绑定手机号  走手机绑定流程
-                    this.goBindPhone();
-                }
-            }
+            checkNewHands(res)
         });
     },
     methods: {
@@ -36,7 +31,12 @@ export default {
             wx.redirectTo({ url: "../../pages/telRegister/main" });
         },
         checkNewHands(){
-            
+            if (res) {
+                if (!res.phone) {
+                    // 如果没有绑定手机号  走手机绑定流程
+                    this.goBindPhone();
+                }
+            }
         }
     }
 };
