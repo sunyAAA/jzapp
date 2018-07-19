@@ -49,8 +49,8 @@
 
 <style lang="stylus" scoped>
   .icon-box-rect
-    width 88rpx
-    height 105rpx
+    width 88px
+    height 105px
     overflow hidden
     margin 20px auto
     &>img

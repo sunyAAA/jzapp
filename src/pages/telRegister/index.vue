@@ -79,23 +79,23 @@ export default {
   .form {
     // 输入手机号
     .tel-number {
-      height: 100rpx;
-      border-top: 2rpx solid #efeff4;
-      border-bottom: 2rpx solid #efeff4;
-      padding: 0 40rpx;
+      height: 100px;
+      border-top: 2px solid #efeff4;
+      border-bottom: 2px solid #efeff4;
+      padding: 0 40px;
 
       .icon {
-        width: 33rpx;
-        height: 48rpx;
+        width: 33px;
+        height: 48px;
         background-color: red;
-        margin-right: 40rpx;
+        margin-right: 40px;
         float: left;
-        margin-top: 28rpx;
+        margin-top: 28px;
       }
 
       input {
         height: 100%;
-        font-size: 30rpx;
+        font-size: 30px;
         color: #999;
         float: left;
       }
@@ -103,51 +103,51 @@ export default {
 
     // 获取验证码
     .code {
-      height: 100rpx;
-      border-bottom: 2rpx solid #efeff4;
-      padding: 0 40rpx;
+      height: 100px;
+      border-bottom: 2px solid #efeff4;
+      padding: 0 40px;
 
       .icon {
-        width: 39rpx;
-        height: 41rpx;
+        width: 39px;
+        height: 41px;
         background-color: green;
         float: left;
-        margin-top: 28rpx;
-        margin-right: 34rpx;
+        margin-top: 28px;
+        margin-right: 34px;
       }
 
       input {
         height: 100%;
-        font-size: 30rpx;
+        font-size: 30px;
         color: #999;
         float: left;
       }
 
       .get {
         float: right;
-        width: 205rpx;
-        height: 63rpx;
-        line-height: 63rpx;
+        width: 205px;
+        height: 63px;
+        line-height: 63px;
         background-color: #ff4b2b;
         color: #fff;
-        font-size: 30rpx;
+        font-size: 30px;
         text-align: center;
-        border-radius: 10rpx;
-        margin-top: 20rpx;
+        border-radius: 10px;
+        margin-top: 20px;
       }
     }
   }
 
   .btn-next {
-    width: 630rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    margin: 200rpx auto 0;
+    width: 630px;
+    height: 80px;
+    line-height: 80px;
+    margin: 200px auto 0;
     background-color: #ff4b2b;
     text-align: center;
     color: #fff;
-    font-size: 30rpx;
-    border-radius: 10rpx;
+    font-size: 30px;
+    border-radius: 10px;
   }
 }
 </style>

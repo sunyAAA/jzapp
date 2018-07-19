@@ -69,36 +69,36 @@ export default {
 .admin-wrap {
   // 头像
   .head-pic {
-    height: 354rpx;
-    border-top: 2rpx solid #efeff4;
+    height: 354px;
+    border-top: 2px solid #efeff4;
     text-align: center;
 
     img {
-      width: 220rpx;
-      height: 220rpx;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
-      border: 6rpx solid #efeff4;
-      margin: 60rpx auto 0;
+      border: 6px solid #efeff4;
+      margin: 60px auto 0;
     }
   }
 
   // 相关信息
   .info-list {
     .list-item {
-      height: 110rpx;
-      line-height: 110rpx;
-      border-bottom: 2rpx solid #efeff4;
-      padding: 0 40rpx;
+      height: 110px;
+      line-height: 110px;
+      border-bottom: 2px solid #efeff4;
+      padding: 0 40px;
       display: flex;
       justify-content: space-between;
-      font-size: 30rpx;
+      font-size: 30px;
 
       span {
         color: #999;
       }
 
       input {
-        height: 110rpx;
+        height: 110px;
         color: #000;
         text-align: right;
       }
