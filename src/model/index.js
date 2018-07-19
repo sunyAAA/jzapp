@@ -17,7 +17,7 @@ export function formTask(arr) {
         obj.beginTime = timestampToDate(item.beginTime);
         obj.endTime = timestampToDate(item.endTime);
         obj.preTime = formartTaskTime(item.preTime);
-        obj.flag = getTaskType(item.type);
+        obj.flag = getTaskType(item.type) || '';
         obj.taskId = item.taskId;
         obj.publisher = item.shopName || '无';
         obj.taskBounty = item.amount;
@@ -34,8 +34,8 @@ export function formartTaskDetail(task) {
         endTime: timestampToDate(task.endTime),
         durationTime: task.taskTime,
         bounty: task.amount,
-        countdown : getCalcDate(task.beginTime,task.endTime)
-
+        countdown : getCalcDate(task.beginTime,task.endTime),
+        durationTime:formartTaskTime(task.preTime)
     }
 }
 
@@ -48,7 +48,6 @@ function getCalcDate(begin, end) {
     let day = Math.floor(timespan / 86400);
     let hour = Math.floor(timespan % 86400 / 3600);
     let minute = Math.floor(timespan % 86400 % 3600 / 60);
-    console.log(timespan)
     return (day>0? `${day}天`:'') + (hour>0? `${hour}时`:'') + `${minute}分`
 }
 
@@ -58,6 +57,7 @@ function getTaskType(type) {
             return item.dictName;
         }
     }
+    return null;
 }
 // {
 //     flag: "试玩任务",

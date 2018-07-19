@@ -136,7 +136,6 @@ export default {
         this.bannerList = (await getBannerList()).data.data;
         this.oss = config.ossroot;
         this.newHands = formTask((await getNewHandsTask()).data.data);
-        console.log(this.newHands);
 	},
 	mounted(){
 		this.setScrollViewHeight();
