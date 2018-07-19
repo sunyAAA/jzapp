@@ -17,7 +17,7 @@
 </template>
 
 <script>
-//import {msg} from '../utils'
+import {msg} from '../utils'
 export default {
     data(){
         return{
@@ -27,6 +27,9 @@ export default {
     },
     methods:{
         getCode(){
+            if(this.timer){
+                return
+            }
             msg('验证码已发送，请注意查收');
             this.countDown = 60
             this.timer = setInterval(()=>{

@@ -6,6 +6,6 @@ app.$mount()
 
 export default{
   config:{
-    "navigationBarTitleText": "绑定手机号",
+    "navigationBarTitleText": "填写手机号",
   }
 }
