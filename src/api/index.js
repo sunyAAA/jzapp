@@ -55,3 +55,9 @@ export function getRecommendTask(pageNo,userId=''){
   userId = wx.getStorageSync('userId') || ''; 
   return fly.get('/api/task/getRecommend',qs.stringify({pageNo,userId}))
 }
+
+// 获取所有任务
+export function getAllTask(pageNo,userId=''){
+  userId = wx.getStorageSync('userId') || ''; 
+  return fly.get('/api/task/list',qs.stringify({pageNo,userId}))
+}

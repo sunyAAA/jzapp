@@ -24,6 +24,7 @@ export function formTask(arr) {
         obj.taskId = item.taskId;
         obj.publisher = item.shopName || '无';
         obj.taskBounty = item.amount;
+        obj.type = item.type;
         result.push(obj)
     }
     return result;

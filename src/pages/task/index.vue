@@ -2,7 +2,7 @@
     <div>
         <div class="task-wrap" v-if="loginStatus">
             <!-- 广告位轮播 -->
-            <swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+            <swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="true">
                 <block v-for="(item,index) in bannerList" :key="index">
                     <swiper-item>
                         <img :src="oss+item.face" class="slide-image">
@@ -26,12 +26,18 @@
                     </ul>
                 </div>
             </div>
-            <scroll-view scroll-y :style='scrollHeight'>
+            <scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
                 <!-- 新手任务 -->
                 <task-card v-if="newHands" :item="newHands[0]" @click='goDetail(newHands[0].taskId)'></task-card>
                 <!-- 任务列表 -->
-                <!-- 推荐任务下· -->
-                <task-card v-for="(item,index) in recommendList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
+                <!-- 推荐任务· -->
+                <div v-if='isOrder'>
+                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
+                </div>
+                <!-- 分类任务 -->
+                <div v-else>
+                    <task-card v-for="(item,index) in curTaskList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
+                </div>
             </scroll-view>
 
         </div>
@@ -44,7 +50,12 @@
 import taskCard from "../../components/taskCard";
 import LoginBox from "../../components/loginBox.vue";
 import { initDict, formTask } from "../../model";
-import { getBannerList, getNewHandsTask, getRecommendTask } from "../../api";
+import {
+    getBannerList,
+    getNewHandsTask,
+    getRecommendTask,
+    getAllTask
+} from "../../api";
 import config from "../../config.js";
 import { _loading } from "../../utils";
 export default {
@@ -59,12 +70,13 @@ export default {
             loginStatus: true,
             taskType: [],
             recommendList: [],
-            pageNo: 1,
-            indicatorDots: true,
-            isOrder:true,
-            autoplay: true,
-            interval: 5000,
-            duration: 1000,
+            recommendNo: 4,
+            taskList: [],
+            taskListNo: 4,
+            taskListFilter: 0,
+            recommendPageNo: 1,
+            taskListPageNo: 1,
+            isOrder: true,
             newHands: null,
             scrollHeight: "height:355px",
             sortArr: [
@@ -78,7 +90,7 @@ export default {
             type: "任务类型",
             typeShow: false,
             sortStatus: 0,
-            typeStatus: -1,
+            typeStatus: -1
         };
     },
     async created() {
@@ -88,37 +100,53 @@ export default {
             this.taskType,
             this.bannerList,
             this.newHands,
-            this.recommendList
+            this.recommendList,
+            this.taskList
         ] = await Promise.all([
             initDict(),
             (await getBannerList()).data.data,
             formTask((await getNewHandsTask()).data.data),
-            formTask((await getRecommendTask(this.pageNo)).data.data)
+            formTask((await getRecommendTask(this.recommendPageNo)).data.data),
+            formTask((await getAllTask(this.recommendPageNo)).data.data)
         ]);
         _loading();
     },
     mounted() {
         this.setScrollViewHeight();
     },
+    computed: {
+        curRecommendList() {
+            return this.recommendList.slice(0, this.recommendNo);
+        },
+        curTaskList() {
+            return this.taskList
+                .filter(item => {
+                    return item.type == this.taskListFilter;
+                })
+                .slice(0, this.taskListNo);
+        }
+    },
     methods: {
-        toggleTab(index) {    //  排序  
+        toggleTab(index) {
+            //  排序
             this.sortStatus = index;
-            
         },
         toggleType() {
             this.typeShow = !this.typeShow;
         },
-        chooseType(item, index) {           //  类型
+        chooseType(item, index) {
+            //  类型
             this.isOrder = false;
             this.typeStatus = index;
             this.type = item.dictName;
             this.typeShow = false;
-
+            this.taskListFilter = item.dictId;
         },
         setScrollViewHeight() {
             wx.getSystemInfo({
                 success: res => {
-                    this.scrollHeight = `height:${res.windowHeight -200}px;z-index:-1`;
+                    this.scrollHeight = `height:${res.windowHeight -
+                        200}px;z-index:-1`;
                 }
             });
         },
@@ -127,11 +155,19 @@ export default {
                 url: "../taskDetail/main?taskId=" + taskId
             });
         },
-        changeType(){
+        changeType() {
             this.isOrder = true;
             this.typeStatus = -1;
-            this.type = '任务类型';
+            this.type = "任务类型";
             this.typeShow = false;
+        },
+        getNextData() {
+            this.pageNo++;
+        },
+        loadMore() {
+            if (this.isOrder) {
+                this.recommendNo += 2;
+            }
         }
     }
 };
