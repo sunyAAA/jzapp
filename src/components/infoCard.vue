@@ -124,7 +124,7 @@
             height: 0;
             border-left: 25rpx solid transparent;
             border-right: 25rpx solid transparent;
-            border-bottom: 20rpx solid #fff;
+            border-bottom: 20rpx solid #efeff4;
             position: absolute;
             bottom: 0;
             left: 0;

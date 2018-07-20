@@ -16,7 +16,7 @@
       <div class="upload-area">
         <textarea placeholder="内容描述..."></textarea>
         <div class="btn-upload" @click.stop='upLoadImg'>
-          <img src="../../../static/images/icon-camera.png" alt="">
+          <img src="../../../static/images/addImg.png" alt="">
         </div>
       </div>
       <span>上传凭证（最多可上传9张）</span>

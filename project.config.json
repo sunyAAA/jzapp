@@ -1,16 +1,16 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": false,
-		"es6": true,
+		"urlCheck": true,
+		"es6": false,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true
 	},
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
-	"appid": "wxb12e87be28f1821c",
-	"projectname": "%E5%AF%B8%E9%87%91Beta",
+	"appid": "wxe7aeccb5180304eb",
+	"projectname": "%E8%93%9D%E9%A2%86%E8%AE%A1%E5%88%92%E5%B0%8F%E7%A8%8B%E5%BA%8F",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -99,8 +99,8 @@
 				},
 				{
 					"id": -1,
-					"name": "手机注册",
-					"pathName": "pages/telRegister/main",
+					"name": "绑定手机号",
+					"pathName": "pages/bindTelNumber/main",
 					"query": ""
 				}
 			]

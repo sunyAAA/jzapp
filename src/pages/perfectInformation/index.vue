@@ -4,9 +4,9 @@
     <h5>完善信息，领取红包哟！</h5>
     <!-- 头像 -->
     <div class="head-pic">
-      <img :src="headPic" alt="" v-show="headPic">
-      <div class="tip" v-show="!headPic">
-        <img src="../../../static/images/icon-camera.png" alt="">
+      <img :src="headPic" alt="" v-show="imgUrl.length > 0">
+      <div class="tip" v-show="imgUrl.length == 0" @click="upLoadImg">
+        <img src="../../../static/images/icon-img.png" alt="">
         <div>添加头像</div>
       </div>
     </div>
@@ -32,7 +32,7 @@
       </div>
       <!-- 确认按钮 -->
       <div class="btn-sure">
-        #_#
+        <img src="../../../static/images/icon-sure.png" alt="">
       </div>
     </div>
   </div>
@@ -146,9 +146,13 @@
         color: #fff;
         font-size: 30rpx;
         text-align: center;
-        line-height: 100rpx;
         box-shadow: 0 0 20rpx rgba(255, 75, 43, 0.47);
         margin: 100rpx auto 0;
+        img {
+          width: 50rpx;
+          height: 38rpx;
+          margin-top: 30rpx;
+        }
       }
     }
   }
