@@ -118,7 +118,7 @@ export function loginByUser(userInfo, cb) {
 
 export function _loading(text) {
 	if (text) {
-		wx.showLoading({ title: text })
+		wx.showLoading({ title: text,mask:true })
 	} else {
 		wx.hideLoading();
 	}

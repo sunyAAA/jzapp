@@ -49,3 +49,9 @@ export function getTaskDetail(params) {
 export function getNewHandsTask(userid, dictId = 2) {
   return fly.get('/api/task/newTask', qs.stringify({ userid, dictId }))
 }
+
+// 获取推荐任务
+export function getRecommendTask(pageNo,userId=''){
+  userId = wx.getStorageSync('userId') || ''; 
+  return fly.get('/api/task/getRecommend',qs.stringify({pageNo,userId}))
+}

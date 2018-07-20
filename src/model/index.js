@@ -11,6 +11,9 @@ export async function initDict() {
 
 export function formTask(arr) {
     let result = [];
+    if(!arr){
+        return result;
+    }
     for (let item of arr) {
         let obj = {}
         obj.title = item.name;

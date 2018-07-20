@@ -40,10 +40,10 @@
 <script>
 import taskCard from "../../components/taskCard";
 import LoginBox from "../../components/loginBox.vue";
-import { initDict } from "../../model";
-import { getBannerList, getNewHandsTask } from "../../api";
-import { formTask } from "../../model";
+import { initDict ,formTask} from "../../model";
+import { getBannerList, getNewHandsTask,getRecommendTask } from "../../api";
 import config from "../../config.js";
+import {_loading} from '../../utils'
 export default {
     components: {
         taskCard,
@@ -55,6 +55,8 @@ export default {
             oss: "",
             loginStatus: true,
             taskType: [],
+            recommendList:[],
+            pageNo:1,
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
@@ -132,11 +134,15 @@ export default {
         };
     },
     async created() {
-        this.taskType = 
         this.oss = config.ossroot;
-        [this.taskType,this.bannerList,this.newHands] = await Promise.all([
-            initDict(),(await getBannerList()).data.data,formTask((await getNewHandsTask()).data.data)
-        ])
+        _loading('载入中...');
+        [this.taskType,this.bannerList,this.newHands,this.recommendList] = await Promise.all([
+            initDict(),
+            (await getBannerList()).data.data,
+            formTask((await getNewHandsTask()).data.data),
+            formTask((await getRecommendTask(this.pageNo)).data.data)
+        ]);
+        _loading()
 	},
 	mounted(){
 		this.setScrollViewHeight();
@@ -170,7 +176,6 @@ export default {
 
 <style lang="stylus" scoped>
 .task-wrap {
-	background-color: #efeff4;
 	min-height: 100vh;
 
 	// 广告位轮播

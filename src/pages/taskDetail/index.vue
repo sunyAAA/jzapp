@@ -229,9 +229,7 @@ export default {
 			.content-item {
 				font-size: 22rpx;
 			}
-			.content-item.task-list {
-				background #efefef
-			}
+
 
 			.task-desc, .task-detail {
 				p {
