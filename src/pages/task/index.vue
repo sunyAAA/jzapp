@@ -31,11 +31,11 @@
                 <task-card v-if="newHands" :item="newHands[0]" @click='goDetail(newHands[0].taskId)'></task-card>
                 <!-- 任务列表 -->
                 <!-- 推荐任务· -->
-                <div v-if='isOrder'>
+                <div v-show='isOrder'>
                     <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
                 </div>
                 <!-- 分类任务 -->
-                <div v-else>
+                <div v-show="!isOrder">
                     <task-card v-for="(item,index) in curTaskList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
                 </div>
             </scroll-view>
@@ -93,22 +93,21 @@ export default {
             typeStatus: -1
         };
     },
-    async created() {
+    async onReady() {
         this.oss = config.ossroot;
         _loading("载入中...");
         [
             this.taskType,
             this.bannerList,
             this.newHands,
-            this.recommendList,
-            this.taskList
+            this.recommendList           
         ] = await Promise.all([
             initDict(),
             (await getBannerList()).data.data,
             formTask((await getNewHandsTask()).data.data),
-            formTask((await getRecommendTask(this.recommendPageNo)).data.data),
-            formTask((await getAllTask(this.recommendPageNo)).data.data)
+            formTask((await getRecommendTask(this.recommendPageNo)).data.data)
         ]);
+         this.taskList =  formTask((await getAllTask(this.taskListPageNo)).data.data)
         _loading();
     },
     mounted() {
@@ -124,12 +123,23 @@ export default {
                     return item.type == this.taskListFilter;
                 })
                 .slice(0, this.taskListNo);
+        },
+        curSortFun() {
+            return this.sortStatus == 0
+                ? (a, b) => {
+                      return a.sortTime - b.sortTime;
+                  }
+                : (a, b) => {
+                      return b.taskBounty - a.taskBounty;
+                  };
         }
     },
     methods: {
         toggleTab(index) {
             //  排序
             this.sortStatus = index;
+            this.taskList.sort(this.curSortFun);
+            this.recommendList.sort(this.curSortFun);
         },
         toggleType() {
             this.typeShow = !this.typeShow;
@@ -137,6 +147,7 @@ export default {
         chooseType(item, index) {
             //  类型
             this.isOrder = false;
+            this.taskListNo = 4;
             this.typeStatus = index;
             this.type = item.dictName;
             this.typeShow = false;
@@ -166,7 +177,9 @@ export default {
         },
         loadMore() {
             if (this.isOrder) {
-                this.recommendNo += 2;
+                this.recommendNo += 4;
+            } else {
+                this.taskListNo += 4;
             }
         }
     }
