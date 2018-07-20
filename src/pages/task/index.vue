@@ -28,15 +28,15 @@
             </div>
             <scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
                 <!-- 新手任务 -->
-                <task-card v-if="newHands" :item="newHands[0]" @click='goDetail(newHands[0].taskId)'></task-card>
+                <task-card v-if="newHands" :item="newHands[0]" ></task-card>
                 <!-- 任务列表 -->
                 <!-- 推荐任务· -->
                 <div v-show='isOrder'>
-                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
+                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" ></task-card>
                 </div>
                 <!-- 分类任务 -->
                 <div v-show="!isOrder">
-                    <task-card v-for="(item,index) in curTaskList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
+                    <task-card v-for="(item,index) in curTaskList" :key="index" :item="item"></task-card>
                 </div>
             </scroll-view>
 
@@ -94,6 +94,7 @@ export default {
         };
     },
     async onReady() {
+        wx.hideTabBar();                //  隐藏导航
         this.oss = config.ossroot;
         _loading("载入中...");
         [
@@ -108,6 +109,7 @@ export default {
             formTask((await getRecommendTask(this.recommendPageNo)).data.data)
         ]);
          this.taskList =  formTask((await getAllTask(this.taskListPageNo)).data.data)
+         
         _loading();
     },
     mounted() {
@@ -161,11 +163,7 @@ export default {
                 }
             });
         },
-        goDetail(taskId) {
-            wx.navigateTo({
-                url: "../taskDetail/main?taskId=" + taskId
-            });
-        },
+
         changeType() {
             this.isOrder = true;
             this.typeStatus = -1;
