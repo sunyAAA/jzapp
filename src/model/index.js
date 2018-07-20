@@ -43,7 +43,11 @@ export function formartTaskDetail(task) {
 }
 
 function formartTaskTime(time) {
-    return 60 % time > 0 ? `${time % 60}小时${time / 60}分钟` : `${time}分钟`
+    let timespan = time * 60;
+    let day = Math.floor(timespan / 86400);
+    let hour = Math.floor(timespan % 86400 / 3600);
+    let minute = Math.floor(timespan % 86400 % 3600 / 60);
+    return (day>0? `${day>10?day:'0'+day}天`:'') + (hour>0? `${hour>10?hour:'0'+hour}时`:'') + `${minute>10?minute:'0'+minute}分`
 }
 
 function getCalcDate(begin, end) {

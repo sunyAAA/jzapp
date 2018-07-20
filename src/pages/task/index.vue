@@ -1,49 +1,52 @@
 <template>
-	<div>
-		<div class="task-wrap" v-if="loginStatus">
-			<!-- 广告位轮播 -->
-			<swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-				<block v-for="(item,index) in bannerList" :key="index">
-					<swiper-item>
-						<img :src="oss+item.face" class="slide-image">
-					</swiper-item>
-				</block>
-			</swiper>
-			<!-- 排序方式tab -->
-			<div class="nav">
-				<ul class="sort">
-					<li class="sort-item" v-for="(item,index) in sortArr" v-text="item.title" :class="[ sortStatus == index ? 'current' : '' ]" @click="toggleTab(index)" :key="index"></li>
-				</ul>
-				<div class="type-kind">
-					<span @click="toggleType()">
-						{{ type }}
-						<i></i>
-					</span>
-					<ul v-show="typeShow">
-						<li v-for="(item, index) in taskType" v-text="item.dictName" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
-					</ul>
-				</div>
-			</div>
-			<scroll-view scroll-y  :style='scrollHeight'>
-				<!-- 新手任务 -->
-				<task-card v-if="newHands" :item="newHands[0]"></task-card>
-				<!-- 任务列表 -->
-				<task-card v-for="(item,index) in tasksArr" :key="index" :item="item"></task-card>
-			</scroll-view>
+    <div>
+        <div class="task-wrap" v-if="loginStatus">
+            <!-- 广告位轮播 -->
+            <swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+                <block v-for="(item,index) in bannerList" :key="index">
+                    <swiper-item>
+                        <img :src="oss+item.face" class="slide-image">
+                    </swiper-item>
+                </block>
+            </swiper>
+            <!-- 排序方式tab -->
+            <div class="nav">
+                <ul class="sort">
+                    <li class="sort-item" :class="{'current':isOrder}" @click='changeType'>智能排序</li>
 
-		</div>
-		<login-box v-else></login-box>
-	</div>
+                    <li class="sort-item" v-for="(item,index) in sortArr" v-text="item.title" :class="[ sortStatus == index ? 'current' : '' ]" @click="toggleTab(index)" :key="index"></li>
+                </ul>
+                <div class="type-kind">
+                    <span @click="toggleType()">
+                        {{ type }}
+                        <i></i>
+                    </span>
+                    <ul v-show="typeShow">
+                        <li v-for="(item, index) in taskType" v-text="item.dictName" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
+                    </ul>
+                </div>
+            </div>
+            <scroll-view scroll-y :style='scrollHeight'>
+                <!-- 新手任务 -->
+                <task-card v-if="newHands" :item="newHands[0]" @click='goDetail(newHands[0].taskId)'></task-card>
+                <!-- 任务列表 -->
+                <!-- 推荐任务下· -->
+                <task-card v-for="(item,index) in recommendList" :key="index" :item="item" @click='goDetail(item.taskId)'></task-card>
+            </scroll-view>
+
+        </div>
+        <login-box v-else></login-box>
+    </div>
 
 </template>
 
 <script>
 import taskCard from "../../components/taskCard";
 import LoginBox from "../../components/loginBox.vue";
-import { initDict ,formTask} from "../../model";
-import { getBannerList, getNewHandsTask,getRecommendTask } from "../../api";
+import { initDict, formTask } from "../../model";
+import { getBannerList, getNewHandsTask, getRecommendTask } from "../../api";
 import config from "../../config.js";
-import {_loading} from '../../utils'
+import { _loading } from "../../utils";
 export default {
     components: {
         taskCard,
@@ -55,18 +58,16 @@ export default {
             oss: "",
             loginStatus: true,
             taskType: [],
-            recommendList:[],
-            pageNo:1,
+            recommendList: [],
+            pageNo: 1,
             indicatorDots: true,
+            isOrder:true,
             autoplay: true,
             interval: 5000,
             duration: 1000,
-			newHands: null,
-			scrollHeight:'height:355px',
+            newHands: null,
+            scrollHeight: "height:355px",
             sortArr: [
-                {
-                    title: "智能推荐"
-                },
                 {
                     title: "时间最优"
                 },
@@ -74,175 +75,137 @@ export default {
                     title: "赏金最高"
                 }
             ],
-            taskKind: [
-                {
-                    type: "福利任务"
-                },
-                {
-                    type: "练级任务"
-                },
-                {
-                    type: "注册任务"
-                }
-            ],
             type: "任务类型",
             typeShow: false,
             sortStatus: 0,
             typeStatus: -1,
-            tasksArr: [
-                {
-                    flag: "试玩任务",
-                    title: "棋牌手游试玩",
-                    publisher: "米多游戏",
-                    beginTime: "2018-7-5",
-                    endTime: "2018-7-10",
-                    taskBounty: 380
-                },
-                {
-                    flag: "练级任务",
-                    title: "魔域之都手游",
-                    publisher: "新傲天",
-                    beginTime: "2018-7-5",
-                    endTime: "2018-7-10",
-                    taskBounty: 150
-                },
-                {
-                    flag: "福利任务",
-                    title: "注册任务",
-                    publisher: "花椒直播",
-                    beginTime: "2018-7-5",
-                    endTime: "2018-7-10",
-                    taskBounty: 10
-                },
-                {
-                    flag: "福利任务",
-                    title: "注册任务",
-                    publisher: "花椒直播",
-                    beginTime: "2018-7-5",
-                    endTime: "2018-7-10",
-                    taskBounty: 10
-                },
-                {
-                    flag: "福利任务",
-                    title: "注册任务",
-                    publisher: "花椒直播",
-                    beginTime: "2018-7-5",
-                    endTime: "2018-7-10",
-                    taskBounty: 10
-                },
-            ]
         };
     },
     async created() {
         this.oss = config.ossroot;
-        _loading('载入中...');
-        [this.taskType,this.bannerList,this.newHands,this.recommendList] = await Promise.all([
+        _loading("载入中...");
+        [
+            this.taskType,
+            this.bannerList,
+            this.newHands,
+            this.recommendList
+        ] = await Promise.all([
             initDict(),
             (await getBannerList()).data.data,
             formTask((await getNewHandsTask()).data.data),
             formTask((await getRecommendTask(this.pageNo)).data.data)
         ]);
-        _loading()
-	},
-	mounted(){
-		this.setScrollViewHeight();
-	},
+        _loading();
+    },
+    mounted() {
+        this.setScrollViewHeight();
+    },
     methods: {
-        getTaskData() {
-            console.log("获取了任务列表");
-        },
-        toggleTab(index) {
+        toggleTab(index) {    //  排序  
             this.sortStatus = index;
-            this.getTaskData();
+            
         },
         toggleType() {
             this.typeShow = !this.typeShow;
         },
-        chooseType(item, index) {
+        chooseType(item, index) {           //  类型
+            this.isOrder = false;
             this.typeStatus = index;
             this.type = item.dictName;
             this.typeShow = false;
-		},
-		setScrollViewHeight(){
-			wx.getSystemInfo({
-				success:res=>{
-					this.scrollHeight = `height:${res.windowHeight - 200}px;z-index:-1`
-				}
-			})
-		}
+
+        },
+        setScrollViewHeight() {
+            wx.getSystemInfo({
+                success: res => {
+                    this.scrollHeight = `height:${res.windowHeight -200}px;z-index:-1`;
+                }
+            });
+        },
+        goDetail(taskId) {
+            wx.navigateTo({
+                url: "../taskDetail/main?taskId=" + taskId
+            });
+        },
+        changeType(){
+            this.isOrder = true;
+            this.typeStatus = -1;
+            this.type = '任务类型';
+            this.typeShow = false;
+        }
     }
 };
 </script>
 
 <style lang="stylus" scoped>
 .task-wrap {
-	min-height: 100vh;
+    min-height: 100vh;
 
-	// 广告位轮播
-	swiper {
-		width: 750rpx;
+    // 广告位轮播
+    swiper {
+        width: 750rpx;
 
-		image {
-			width: 100%;
-			height: 375rpx;
-		}
-	}
+        image {
+            width: 100%;
+            height: 375rpx;
+        }
+    }
 
-	// 排序方式tab
-	.nav {
-		display: flex;
-		width: 100%;
-		height: 100rpx;
-		line-height: 100rpx;
+    // 排序方式tab
+    .nav {
+        display: flex;
+        width: 100%;
+        height: 100rpx;
+        line-height: 100rpx;
 
-		ul.sort {
-			display: flex;
-			width: 75%;
-			justify-content: space-around;
+        ul.sort {
+            display: flex;
+            width: 75%;
+            justify-content: space-around;
 
-			li {
-				font-size: 30rpx;
-				color: #000;
-			}
+            li {
+                font-size: 30rpx;
+                color: #000;
+            }
 
-			li.current {
-				color: #ff4b2b;
-			}
-		}
+            li.current {
+                color: #ff4b2b;
+            }
+        }
 
-		.type-kind {
-			width: 25%;
-			font-size: 30rpx;
-			text-align: center;
+        .type-kind {
+            width: 25%;
+            font-size: 30rpx;
+            text-align: center;
 
-			span {
-				i {
-					width: 0;
-					height: 0;
-					display: inline-block;
-					border-left: 10rpx solid transparent;
-					border-right: 10rpx solid transparent;
-					border-top: 18rpx solid #333;
-				}
-			}
+            span {
+                i {
+                    width: 0;
+                    height: 0;
+                    display: inline-block;
+                    border-left: 10rpx solid transparent;
+                    border-right: 10rpx solid transparent;
+                    border-top: 18rpx solid #333;
+                }
+            }
 
-			ul {
-				background-color: #999;
-				z-index: 999;
+            ul {
+                background-color: #999;
+                z-index: 999;
                 position: relative;
 
-				li {
-					width: 100%;
-					height: 50rpx;
-					line-height: 50rpx;
-					text-align: center;
-				}
+                li {
+                    width: 100%;
+                    height: 50rpx;
+                    line-height: 50rpx;
+                    text-align: center;
+                }
 
-				li.selected {
-					color: #ff4b2b;
-				}
-			}
-		}
-	}
+                li.selected {
+                    color: #ff4b2b;
+                }
+            }
+        }
+    }
 }
 </style>

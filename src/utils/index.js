@@ -249,3 +249,10 @@ export function showModel(title) {
 export function strToArray(str) {
 	return !str ? [] : str.indexOf(',') > 0 ? str.split(',') : [str]
 }
+
+export function errBack(){
+	msg('请求出错');
+	wx.navigateBack({
+		delta:1
+	})
+}

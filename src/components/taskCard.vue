@@ -1,7 +1,7 @@
 <template>
   <div class="task-card">
       <!--<li v-for="(item, index) in tasksArr" :key="index"  @click="goToDetail()">-->
-    <div class="card-item" @click="goToDetail()">
+    <div class="card-item">
       <!-- 类型标记 -->
       <div class="type-flag">
         <div class="flag" v-text="item.flag"></div>
@@ -27,15 +27,7 @@
       return {
       }
     },
-    props: ['item'],
-    methods: {
-      goToDetail(){
-        
-        wx.navigateTo({
-          url: '../taskDetail/main?taskId='+this.item.taskId
-        })
-      }
-    }
+    props: ['item']
   }
 </script>
 

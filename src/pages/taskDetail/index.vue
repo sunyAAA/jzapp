@@ -65,6 +65,7 @@
 import taskCard from "../../components/taskCard";
 import { getTaskDetail } from "../../api";
 import { formartTaskDetail, formTask } from "../../model";
+import {errBack} from '../../utils'
 export default {
     components: {
         taskCard
@@ -95,7 +96,9 @@ export default {
             let data = (await getTaskDetail({ taskId: this.taskId })).data.data;
             this.taskData = formartTaskDetail(data.missionTask);
             this.taskList = formTask(data.detail);
-        }
+        }else{
+			errBack()
+		}
     },
     methods: {
         receive() {
