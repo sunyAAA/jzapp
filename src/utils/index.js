@@ -65,7 +65,7 @@ export function _login(cb) {
 					},
 					fail: () => {
 						_loading()
-						msg('初次见面~！,请登录开始达成目标之旅吧', function () {
+						msg('请登录以完成后续操作', function () {
 							cb && cb(null)
 						})
 					}

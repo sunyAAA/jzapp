@@ -28,15 +28,15 @@
             </div>
             <scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
                 <!-- 新手任务 -->
-                <task-card v-if="newHands" :item="newHands[0]" ></task-card>
+                <task-card v-if="newHands" :item="newHands[0]"  @noLogin="goLogin"></task-card>
                 <!-- 任务列表 -->
                 <!-- 推荐任务· -->
                 <div v-show='isOrder'>
-                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" ></task-card>
+                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item"  @noLogin="goLogin"></task-card>
                 </div>
                 <!-- 分类任务 -->
                 <div v-show="!isOrder">
-                    <task-card v-for="(item,index) in curTaskList" :key="index" :item="item"></task-card>
+                    <task-card v-for="(item,index) in curTaskList" :key="index" :item="item" @noLogin="goLogin"></task-card>
                 </div>
             </scroll-view>
 
@@ -179,6 +179,9 @@ export default {
             } else {
                 this.taskListNo += 4;
             }
+        },
+        goLogin(){
+            this.loginStatus = false;
         }
     }
 };

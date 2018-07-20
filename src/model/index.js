@@ -4,7 +4,6 @@ var taskDict = []
 
 export async function initDict() {
     taskDict = (await getTaskDict()).data.data
-    wx.setStorageSync('taskType', taskDict);
     return taskDict;
 }
 

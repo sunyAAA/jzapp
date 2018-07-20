@@ -73,7 +73,7 @@
         })
       },
       // 倒计时
-      async getTime(){
+      getTime(){
         setInterval(()=>{
           let h = Math.floor(this.countdown / 1000 / 60 / 60 % 60);
           let m = Math.floor(this.countdown / 1000 / 60 % 60);

@@ -13,7 +13,7 @@ export default {
     },
     mounted() {
         _login(res => {
-            checkNewHands(res)
+            console.log(res.code)
         });
     },
     methods: {
@@ -50,12 +50,12 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 100rpx 0;
+    padding: 100px 0;
 
     h2 {
-        font-size: 14rpx;
+        font-size: 14px;
         text-align: center;
-        margin-bottom: 35rpx;
+        margin-bottom: 35px;
     }
 
     button {
