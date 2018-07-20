@@ -54,7 +54,7 @@
 					<p v-for="(item, index) in taskDetail" :key="index" v-text="item"></p>
 				</div>
 				<div class="content-item task-list" v-show="currentTab == 2">
-					<task-card v-if='taskList.length'></task-card>
+					<task-card v-if='taskList.length' v-for="(item,index) in taskList" :item='item' :key="index"></task-card>
 				</div>
 			</div>
 		</div>
@@ -71,13 +71,6 @@ export default {
     },
     data() {
         return {
-            type: "注册任务",
-            publisher: "花椒直播",
-            startTime: "2018-07-05",
-            endTime: "2018-07-10",
-            durationTime: "5小时",
-            bounty: "20",
-            countdown: "4天7小时26分34秒",
             receiveFlag: false,
             currentTab: 0,
             taskList: [],
@@ -101,6 +94,7 @@ export default {
         if (this.taskId) {
             let data = (await getTaskDetail({ taskId: this.taskId })).data.data;
             this.taskData = formartTaskDetail(data.missionTask);
+            this.taskList = formTask(data.detail);
         }
     },
     methods: {
@@ -234,6 +228,9 @@ export default {
 		.task-content {
 			.content-item {
 				font-size: 22rpx;
+			}
+			.content-item.task-list {
+				background #efefef
 			}
 
 			.task-desc, .task-detail {

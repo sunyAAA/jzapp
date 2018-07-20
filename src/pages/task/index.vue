@@ -132,10 +132,11 @@ export default {
         };
     },
     async created() {
-        this.taskType = await initDict();
-        this.bannerList = (await getBannerList()).data.data;
+        this.taskType = 
         this.oss = config.ossroot;
-        this.newHands = formTask((await getNewHandsTask()).data.data);
+        [this.taskType,this.bannerList,this.newHands] = await Promise.all([
+            initDict(),(await getBannerList()).data.data,formTask((await getNewHandsTask()).data.data)
+        ])
 	},
 	mounted(){
 		this.setScrollViewHeight();
@@ -159,7 +160,7 @@ export default {
 		setScrollViewHeight(){
 			wx.getSystemInfo({
 				success:res=>{
-					this.scrollHeight = `height:${res.windowHeight - 200}px`
+					this.scrollHeight = `height:${res.windowHeight - 200}px;z-index:-1`
 				}
 			})
 		}
@@ -223,6 +224,7 @@ export default {
 			ul {
 				background-color: #999;
 				z-index: 999;
+                position: relative;
 
 				li {
 					width: 100%;
