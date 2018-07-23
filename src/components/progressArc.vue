@@ -1,11 +1,15 @@
 <template>
     <view class='content'>
         <canvas canvas-id='bgCanvas' class='canvasI'></canvas>
+ <canvas canvas-id="runCanvas" class='canvasII'></canvas>  
+
     </view>
 </template>
 
 <script>
 const ctx = wx.createCanvasContext("bgCanvas"); //创建一个全局的canvas绘图上下文
+const ctx2 = wx.createCanvasContext("runCanvas");  
+
 const color = "#fc5833";
 export default {
     props: {
@@ -15,39 +19,14 @@ export default {
         }
     },
     methods: {
-        // run(e) {
-        //     let src = this.src; //每个间隔所需绘制的弧度
-        //     let allSrc = this.allSrc; //总共需要绘制的弧度
-        //     n += 5;
-        //     if (src * n > allSrc) {
-        //         clearInterval(this.mytime); //如果绘制完成，停掉计时器，绘制结束
-        //         n = 0;
-        //         return;
-        //     }
-        //     let grade = Math.round(src * n / 1.5 * 100); //百分数
-        //     ctx2.arc(this.ctxW, this.ctxH, 75, 0, (0.75 + src * n) * Math.PI); //每个间隔绘制的弧度
-        //     ctx2.setStrokeStyle("#97F7D0");
-        //     ctx2.setLineWidth("8");
-        //     ctx2.setLineCap("round");
-        //     ctx2.stroke();
-        //     ctx2.beginPath();
-        //     ctx2.setFontSize(16); //注意不要加引号
-        //     ctx2.setFillStyle(color);
-        //     ctx2.setTextAlign("center");
-        //     ctx2.setTextBaseline("middle");
-        //     ctx2.fillText(grade + "%", this.ctxW, 170);
-        //     ctx2.draw();
-        // },
-        // do() {
-        //     clearInterval(this.mytime);
-        //     this.mytime = setInterval(this.run, 50);
-        // }
-        
+        show(score){
+            ctx2.setFillStyle('#000')
+            ctx2.setFontSize('18')
+            ctx2.fillText(score,this.ctxW-24,this.ctxH+24);
+            ctx2.fill()
+            ctx2.draw()
+        }
     },
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-
     onReady: function() {
         wx.getSystemInfo({
             //获取系统信息成功，将系统窗口的宽高赋给页面的宽高
@@ -76,15 +55,15 @@ export default {
                 ctx.setFillStyle(color);
                 ctx.fill();
                 ctx.beginPath();
-                ctx.arc(40, 40, 10, 0, 0.5 * Math.PI, true);
+                ctx.arc(this.ctxW*.2, 40, 10, 0, 0.5 * Math.PI, true);
                 ctx.setFillStyle(color);
                 ctx.fill();
                 ctx.setFillStyle('#fff')
                 ctx.setFontSize('12')
-                ctx.fillText('1',37,42)
+                ctx.fillText('1',this.ctxW*.2-3,42)
                 ctx.setFillStyle('#333')
                 ctx.setFontSize('16')
-                ctx.fillText('信誉说明',48,57)
+                ctx.fillText('信誉说明',this.ctxW*.2+8,57)
                 ctx.beginPath()
                 ctx.arc(120, 220, 10, 0, 0.5 * Math.PI, true);
                 ctx.setFillStyle(color);
@@ -96,19 +75,22 @@ export default {
                 ctx.setFontSize('16')
                 ctx.fillText('信誉特权',128,237)
                 ctx.beginPath()
-                ctx.arc(320, 60, 10, 0, 0.5 * Math.PI, true);
+                ctx.arc(this.ctxW*1.5, 60, 10, 0, 0.5 * Math.PI, true);
                 ctx.setFillStyle(color);
                 ctx.fill();
                 ctx.setFillStyle('#fff')
                 ctx.setFontSize('12')
-                ctx.fillText('3',317,62)
+                ctx.fillText('3',this.ctxW*1.5-3,62)
                 ctx.setFillStyle('#333')
                 ctx.setFontSize('16')
-                ctx.fillText('提升信誉',328,77)
+                ctx.fillText('提升信誉',this.ctxW*1.5+8,77)
                 ctx.beginPath();
                 ctx.setFillStyle('#000')
                 ctx.fillText('优秀信誉',this.ctxW-32,this.ctxH-20);
                 ctx.draw(); //开始绘制
+
+
+                this.show(1992)
             }
         });
     },
@@ -143,8 +125,8 @@ export default {
 }
 
 .canvasII {
-    width: 400rpx;
-    height: 400rpx;
+    width: 100%;
+    height: 100%;
     position: absolute;
     padding: 0 8rpx;
     left: 0;
