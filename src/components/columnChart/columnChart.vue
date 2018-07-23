@@ -34,9 +34,6 @@ export default {
             isMainChartDisplay: true,
         };
     },
-    mounted: function(e) {
-        this.render(e);
-    },
     methods: {
         change(newData) {
             //  模拟赋值

@@ -2,7 +2,7 @@
 	<div class="myIncome-wrap">
 		<!-- 收益金额展示 -->
 		<div class="account">
-			<div class="bounty" v-text="sumBounty"></div>
+			<div class="bounty">{{fixedSumBounty}}</div>
 			<span>累计收益额（元）</span>
 		</div>
 		<!-- 近期收益情况展示 -->
@@ -30,7 +30,7 @@ export default {
     components: { ColChart },
     data() {
         return {
-            sumBounty: 2345,
+            sumBounty: 2345.00,
             startDate: "2018-01-01",
             endDate: "2018-02-01"
         };
@@ -40,7 +40,11 @@ export default {
             this.$refs["chart"].render();
         }, 100);
     },
-    computed: {},
+    computed: {
+		fixedSumBounty(){
+			return this.sumBounty.toFixed(2).toString()
+		}
+	},
     methods: {
         startDateChange(e) {
             this.startDate = e.mp.detail.value;
