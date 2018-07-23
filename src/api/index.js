@@ -1,3 +1,5 @@
+import {msg} from '../utils'
+
 var Fly = require("flyio/dist/npm/wx")
 var qs = require('qs');           // 针对java后台进行序列化
 var fly = new Fly();
@@ -24,7 +26,9 @@ fly.interceptors.response.use(
     },
     (err) => {
         //发生网络错误后会走到这里
-        //return Promise.resolve("ssss")
+		//return Promise.resolve("ssss")
+		msg('网络连接失败，请稍后再试')
+		console.log(err);
     }
 )
 //   普通登录

@@ -1,8 +1,7 @@
 <template>
 	<div class="container">
-		Canvas
+		<p class="text">单位：元</p>
 		<canvas canvas-id="columnCanvas" class="canvas"></canvas>
-		<button @click='change'>动态改变数据</button>
 	</div>
 </template>
 
@@ -67,7 +66,7 @@ export default {
                         format: function(val, name) {
                             return val.toFixed(2) + "元";
                         },
-                        color: "red" //每个柱子的颜色
+                        color: "#ff4b2b" //每个柱子的颜色
                     }
                 ],
                 yAxis: {
@@ -76,21 +75,21 @@ export default {
                         return val + "元";
                     },
                     min: 0,
-                    gridColor: "red", //Y轴网格颜色
-                    fontColor: "green", // Y轴字体颜色
+                    gridColor: "#eee", //Y轴网格颜色
+                    fontColor: "#000", // Y轴字体颜色
                     titleFontColor: "yellow"
                 },
                 xAxis: {
                     disableGrid: false,
                     type: "calibration",
-                    gridColor: "red", //X轴网格颜色
-                    fontColor: "green" // X轴字体颜色
+                    gridColor: "#fff", //X轴网格颜色
+                    fontColor: "#333" // X轴字体颜色
                 },
                 extra: {
                     column: {
                         width:25
                     },
-                    legendTextColor: "red" //  文案颜色
+                    legendTextColor: "#ff4b2b" //  文案颜色
                 },
                 width: windowWidth,
                 height: 300
@@ -101,9 +100,17 @@ export default {
 </script>
 
 <style scoped>
+.container {
+    margin-top: 40rpx;
+    padding: 30rpx;
+}
 .canvas {
     width: 100%;
-    height: 350rpx;
-    margin-top: 40rpx;
+    height: 650rpx;
+}
+.text {
+    font-size: 24rpx;
+    padding-left: 10rpx;
+    margin-bottom: 20rpx;
 }
 </style>
