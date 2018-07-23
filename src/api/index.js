@@ -58,6 +58,8 @@ export function getBannerList() {
 
 //  获取任务详情   @params    taskId
 export function getTaskDetail(params) {
+	let userId = wx.getStorageSync('userId') || '';
+	params.userId = userId;
 	return fly.get('/api/task/getDetailById', qs.stringify(params))
 }
 // 获取新手任务  @params    userid,dictId  2 

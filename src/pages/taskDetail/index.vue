@@ -80,9 +80,9 @@ export default {
         };
     },
     async onLoad(options) {
-        this.taskId = options.taskId;
+		this.taskId = options.taskId;
         if (this.taskId) {
-            let data = (await getTaskDetail({ taskId: this.taskId })).data;
+            let data = (await getTaskDetail({ taskId: this.taskId ,userId})).data;
             this.taskData = formartTaskDetail(data.missionTask);
 			this.taskList = formTask(data.detail);
 			if(this.taskData.userStatus == 2){

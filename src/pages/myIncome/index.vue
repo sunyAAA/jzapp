@@ -30,21 +30,21 @@ export default {
     components: { ColChart },
     data() {
         return {
-            sumBounty: 2345.00,
+            sumBounty: 2345.0,
             startDate: "2018-01-01",
             endDate: "2018-02-01"
         };
     },
-    onShow() {
+    mounted() {
         setTimeout(() => {
             this.$refs["chart"].render();
         }, 100);
     },
     computed: {
-		fixedSumBounty(){
-			return this.sumBounty.toFixed(2).toString()
-		}
-	},
+        fixedSumBounty() {
+            return this.sumBounty.toFixed(2).toString();
+        }
+    },
     methods: {
         startDateChange(e) {
             this.startDate = e.mp.detail.value;

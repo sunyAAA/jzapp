@@ -1,8 +1,11 @@
 <template>
     <view class='content'>
-        <canvas canvas-id='bgCanvas' class='canvasI'></canvas>
- <canvas canvas-id="runCanvas" class='canvasII'></canvas>  
-
+        <canvas canvas-id='bgCanvas' class='canvasI'
+           
+        ></canvas>
+        <canvas canvas-id="runCanvas" class='canvasII'
+         @touchstart='end'
+        ></canvas>  
     </view>
 </template>
 
@@ -15,16 +18,31 @@ export default {
     props: {
         score: {
             type: Number,
-            default: 0
+            default: 88.88
         }
     },
     methods: {
         show(score){
             ctx2.setFillStyle('#000')
-            ctx2.setFontSize('18')
+            ctx2.setFontSize('20')
             ctx2.fillText(score,this.ctxW-24,this.ctxH+24);
             ctx2.fill()
             ctx2.draw()
+        },
+        render(){
+            var num = this.score - 15;
+            this.timer = setInterval(()=>{
+                this.show(num.toFixed(2));
+                num+=0.23;
+                if(num > this.score){
+                    this.show(this.score.toFixed(2));
+                    clearInterval(this.timer)
+                    this.timer = null ;
+                }
+            },17)
+        },
+        end(e){
+            console.log(e.touches[0].x,e.touches[0].y)
         }
     },
     onReady: function() {
@@ -37,8 +55,10 @@ export default {
                 this.ctxH = 125;
                 ctx.arc(this.ctxW, this.ctxH, 64, 0, 2 * Math.PI); //绘制圆形弧线         小圆
                 ctx.setStrokeStyle(color); //设置填充线条颜色
+                ctx.setFillStyle('#fff')
                 ctx.setLineWidth("12"); //设置线条宽度
                 ctx.setLineCap("round"); //设置线条端点样式
+                ctx.fill()
                 ctx.stroke(); //对路径进行描边，也就是绘制线条。
                 ctx.beginPath();
                 ctx.arc(this.ctxW, this.ctxH, 84, 0, 2 * Math.PI); //绘制圆形弧线         大圆
@@ -88,9 +108,8 @@ export default {
                 ctx.setFillStyle('#000')
                 ctx.fillText('优秀信誉',this.ctxW-32,this.ctxH-20);
                 ctx.draw(); //开始绘制
-
-
-                this.show(1992)
+                this.render()
+            
             }
         });
     },
