@@ -27,27 +27,27 @@
 export default {
     data() {
         return {
-            username: "傻兔不会跳",
+            username: "昵称",
             headPicUrl:
                 "http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg",
             adminList: [
                 {
-                    icon: "../../../static/images/my-income.png",
+                    icon: require("../../../static/images/my-income.png"),
                     title: "我的收益",
                     pathTo: "myIncome"
                 },
                 {
-                    icon: "../../../static/images/my-credibility.png",
+                    icon: require("../../../static/images/my-credibility.png"),
                     title: "我的信誉",
                     pathTo: "myCredibility"
                 },
                 {
-                    icon: "../../../static/images/withdraw.png",
+                    icon: require("../../../static/images/withdraw.png"),
                     title: "我要提现",
                     pathTo: "myWallet"
                 },
                 {
-                    icon: "../../../static/images/my-information.png",
+                    icon: require("../../../static/images/my-information.png"),
                     title: "我的消息",
                     pathTo: "myInformation"
                 }
