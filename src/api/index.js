@@ -17,6 +17,16 @@ fly.interceptors.request.use((request) => {
 	//return Promise.reject(new Error(""))
 	return request;
 })
+fly.interceptors.response.use(
+    (response) => {
+        //只将请求结果的data字段返回
+        return response.data
+    },
+    (err) => {
+        //发生网络错误后会走到这里
+        //return Promise.resolve("ssss")
+    }
+)
 //   普通登录
 export function loginByCode(userInfo) {
 	return fly.post('/api/user/getWeChatToken', qs.stringify(userInfo))
@@ -61,4 +71,15 @@ export function getRecommendTask(pageNo, userId = '') {
 export function getAllTask(pageNo, userId = '') {
 	userId = wx.getStorageSync('userId') || '';
 	return fly.get('/api/task/list', qs.stringify({ pageNo, userId, pageSize }))
+}
+
+//领取任务 
+export function takeTask(taskId,taskDetailId){
+	let params = {}
+	if(!taskDetailId){
+		params = {taskId}
+	}else{
+		params = {taskId,taskDetailId}
+	}
+	return fly.get('/api/taskUser/getReceive',qs.stringify(params))
 }

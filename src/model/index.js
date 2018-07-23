@@ -3,7 +3,7 @@ import { timestampToDate } from '../utils'
 var taskDict = []
 
 export async function initDict() {
-    taskDict = (await getTaskDict()).data.data
+    taskDict = (await getTaskDict()).data
     return taskDict;
 }
 

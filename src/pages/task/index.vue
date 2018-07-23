@@ -104,12 +104,11 @@ export default {
             this.recommendList           
         ] = await Promise.all([
             initDict(),
-            (await getBannerList()).data.data,
-            formTask((await getNewHandsTask()).data.data),
-            formTask((await getRecommendTask(this.recommendPageNo)).data.data)
+            (await getBannerList()).data,
+            formTask((await getNewHandsTask()).data),
+            formTask((await getRecommendTask(this.recommendPageNo)).data)
         ]);
-         this.taskList =  formTask((await getAllTask(this.taskListPageNo)).data.data)
-         
+         this.taskList =  formTask((await getAllTask(this.taskListPageNo)).data)
         _loading();
     },
     mounted() {
@@ -159,7 +158,7 @@ export default {
             wx.getSystemInfo({
                 success: res => {
                     this.scrollHeight = `height:${res.windowHeight -
-                        200}px;z-index:-1`;
+                        200}px;`;
                 }
             });
         },

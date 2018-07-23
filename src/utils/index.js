@@ -31,8 +31,8 @@ export function _login(cb) {
 				u.appId = appId;
 				loginByCode(u).then(res => {
 					if (res.data.code == 1) {
-						wx.setStorageSync('_token', res.data.data.token)
-						wx.setStorageSync('userId', res.data.data.userId)
+						wx.setStorageSync('_token', res.data.token)
+						wx.setStorageSync('userId', res.data.userId)
 						_loading()
 						return cb && cb(u, null);
 					}
@@ -49,8 +49,8 @@ export function _login(cb) {
 						res.userInfo.appId = appId;
 						loginByCode(res.userInfo).then(res => {
 							if (res.data.code == 1) {
-								wx.setStorageSync('_token', res.data.data.token)
-								wx.setStorageSync('userId', res.data.data.userId)
+								wx.setStorageSync('_token', res.data.token)
+								wx.setStorageSync('userId', res.data.userId)
 								_loading()
 								wx.showTabBar()
 								return cb && cb(res.userInfo, null);
@@ -92,8 +92,8 @@ export function loginByUser(userInfo, cb) {
 			userInfo.appId = appId;
 			loginByCode(userInfo).then(res => {
 				if (res.data.code == 1) {
-					wx.setStorageSync('_token', res.data.data.token)
-					wx.setStorageSync('userId', res.data.data.userId)
+					wx.setStorageSync('_token', res.data.token)
+					wx.setStorageSync('userId', res.data.userId)
 					_loading()
 					wx.showTabBar()
 					return cb && cb(userInfo, null);

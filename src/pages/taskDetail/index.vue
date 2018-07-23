@@ -48,13 +48,13 @@
 			<!-- 任务内容 -->
 			<div class="task-content">
 				<div class="content-item task-desc" v-show="currentTab == 0">
-					<p v-for="(item, index) in taskDesc" :key="index" v-text="item"></p>
+					<p>{{taskData.descriptionm}}</p>
 				</div>
 				<div class="content-item task-detail" v-show="currentTab == 1">
-					<p v-for="(item, index) in taskDetail" :key="index" v-text="item"></p>
+					<p>{{taskData.illustrate}}</p>
 				</div>
 				<div class="content-item task-list" v-show="currentTab == 2">
-					<task-card v-if='taskList.length' v-for="(item,index) in taskList" :item='item' :key="index"></task-card>
+					<task-card v-if='taskList.length' v-for="(item,index) in taskList" :item='item' :key="index" :no-jump="true"></task-card>
 				</div>
 			</div>
 		</div>
@@ -63,7 +63,7 @@
 
 <script>
 import taskCard from "../../components/taskCard";
-import { getTaskDetail } from "../../api";
+import { getTaskDetail,takeTask } from "../../api";
 import { formartTaskDetail, formTask } from "../../model";
 import {errBack} from '../../utils'
 export default {
@@ -75,25 +75,13 @@ export default {
             receiveFlag: false,
             currentTab: 0,
             taskList: [],
-            taskDesc: [
-                "1.新用户绑定手机号码可获得5000金币奖励，救济金每天可以领取3次，每次3000金币。",
-                "2.新手7天签到可领取35000金币及13个元宝、10钻石奖励。",
-                "3.游戏中完成任务可获得1100W金币。"
-            ],
-            taskDetail: [
-                "1.这里是任务说明页面。",
-                "2.这里是任务说明页面。",
-                "3.这里是任务说明页面。",
-                "4.这里是任务说明页面。",
-                "5.这里是任务说明页面这里是任务说明页面这里是任务说明页面这里是任务说明页面。"
-            ],
             taskData: {}
         };
     },
     async onLoad(options) {
         this.taskId = options.taskId;
         if (this.taskId) {
-            let data = (await getTaskDetail({ taskId: this.taskId })).data.data;
+            let data = (await getTaskDetail({ taskId: this.taskId })).data;
             this.taskData = formartTaskDetail(data.missionTask);
             this.taskList = formTask(data.detail);
         }else{
