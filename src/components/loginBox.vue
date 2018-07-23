@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <h2>寸金想要获得您的部分信息，请点击授权按钮</h2>
+        <h2>赏金多想要获得您的部分信息，请点击授权按钮</h2>
         <button open-type="getUserInfo" @getuserinfo="getUserInfo">授权</button>
     </div>
 </template>

@@ -10,9 +10,8 @@
 </template>
 
 <script>
-const ctx = wx.createCanvasContext("bgCanvas"); //创建一个全局的canvas绘图上下文
+const ctx = wx.createCanvasContext("bgCanvas"); 
 const ctx2 = wx.createCanvasContext("runCanvas");  
-
 const color = "#fc5833";
 export default {
     props: {
@@ -109,7 +108,6 @@ export default {
                 ctx.fillText('优秀信誉',this.ctxW-32,this.ctxH-20);
                 ctx.draw(); //开始绘制
                 this.render()
-            
             }
         });
     },

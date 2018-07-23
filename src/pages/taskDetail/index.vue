@@ -82,20 +82,27 @@ export default {
     async onLoad(options) {
 		this.taskId = options.taskId;
         if (this.taskId) {
+			let userId = wx.getStorageSync('userId') || '';
             let data = (await getTaskDetail({ taskId: this.taskId ,userId})).data;
             this.taskData = formartTaskDetail(data.missionTask);
 			this.taskList = formTask(data.detail);
 			if(this.taskData.userStatus == 2){
 				this.receiveFlag = true;
-			}else if (this.taskData.userStatus == 4){
+			}else if (this.taskData.userStatus == 6){
 				this.complete = true;
 			}
         }else{
 			errBack()
 		}
 	},
+	computed:{
+		curTask(){
+
+		}
+	},
     methods: {
         receive() {
+
             this.receiveFlag = true;
         },
         submit() {
