@@ -27,7 +27,7 @@
 					<div class="countdown" v-text="taskData.countdown"></div>
 				</div>
 			</div>
-			<div class="operate">
+			<div class="operate" v-show='!complete'>
 				<!-- 领取按钮 -->
 				<div class="btn-receive" v-if="!receiveFlag" @click="receive">领取</div>
 				<!-- 提交凭证和放弃按钮 -->
@@ -75,7 +75,8 @@ export default {
             receiveFlag: false,
             currentTab: 0,
             taskList: [],
-            taskData: {}
+			taskData: {},
+			complete:false
         };
     },
     async onLoad(options) {
@@ -83,11 +84,16 @@ export default {
         if (this.taskId) {
             let data = (await getTaskDetail({ taskId: this.taskId })).data;
             this.taskData = formartTaskDetail(data.missionTask);
-            this.taskList = formTask(data.detail);
+			this.taskList = formTask(data.detail);
+			if(this.taskData.userStatus == 2){
+				this.receiveFlag = true;
+			}else if (this.taskData.userStatus == 4){
+				this.complete = true;
+			}
         }else{
 			errBack()
 		}
-    },
+	},
     methods: {
         receive() {
             this.receiveFlag = true;
@@ -100,9 +106,6 @@ export default {
         },
         toggleNav(n) {
             this.currentTab = n;
-        },
-        async getDetail() {
-            this.data = await getTaskDetail({ taskId: this.taskId });
         }
     }
 };

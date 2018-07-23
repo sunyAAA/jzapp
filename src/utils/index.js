@@ -19,7 +19,6 @@ export function showSucc(text, cb) {
 
 //  如果有过授权则自动获取用户信息  cb返回 userinfo 对象
 export function _login(cb) {
-	_loading('加载中...')
 	wx.hideTabBar()
 	wx.login({
 		success: res => {
@@ -30,10 +29,9 @@ export function _login(cb) {
 				u.code = code;
 				u.appId = appId;
 				loginByCode(u).then(res => {
-					if (res.data.code == 1) {
+					if (res.code == 1) {
 						wx.setStorageSync('_token', res.data.token)
 						wx.setStorageSync('userId', res.data.userId)
-						_loading()
 						return cb && cb(u, null);
 					}
 				}).catch(err => {
@@ -55,7 +53,6 @@ export function _login(cb) {
 								wx.showTabBar()
 								return cb && cb(res.userInfo, null);
 							} else {
-								_loading()
 							}
 						}).catch(err => {
 							console.log(err)
@@ -64,7 +61,6 @@ export function _login(cb) {
 						})
 					},
 					fail: () => {
-						_loading()
 						msg('请登录以完成后续操作', function () {
 							cb && cb(null)
 						})
@@ -91,11 +87,10 @@ export function loginByUser(userInfo, cb) {
 			userInfo.code = code;
 			userInfo.appId = appId;
 			loginByCode(userInfo).then(res => {
-				if (res.data.code == 1) {
+				if (res.code == 1) {
 					wx.setStorageSync('_token', res.data.token)
 					wx.setStorageSync('userId', res.data.userId)
 					_loading()
-					wx.showTabBar()
 					return cb && cb(userInfo, null);
 				} else {
 					_loading()

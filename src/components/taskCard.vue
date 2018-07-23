@@ -37,17 +37,20 @@ export default {
             type: Object
         },
         noJump: {
-			type: Boolean,
-			default:false
+            type: Boolean,
+            default: false
         }
     },
     methods: {
         goDetail() {
             if (this.noJump) {
                 return;
-			}
-			let _t = wx.getStorageSync('_token');
-			if(!_t){ this.$emit('noLogin',this.item.taskId);return}
+            }
+            let _t = wx.getStorageSync("_token");
+            if (!_t) {
+                this.$emit("noLogin", this.item.taskId);
+                return;
+            }
             wx.navigateTo({
                 url: "../taskDetail/main?taskId=" + this.item.taskId
             });

@@ -28,11 +28,11 @@
             </div>
             <scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
                 <!-- 新手任务 -->
-                <task-card v-if="newHands" :item="newHands[0]"  @noLogin="goLogin"></task-card>
+                <task-card v-if="newHands" :item="newHands[0]" @noLogin="goLogin"></task-card>
                 <!-- 任务列表 -->
                 <!-- 推荐任务· -->
                 <div v-show='isOrder'>
-                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item"  @noLogin="goLogin"></task-card>
+                    <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" @noLogin="goLogin"></task-card>
                 </div>
                 <!-- 分类任务 -->
                 <div v-show="!isOrder">
@@ -41,7 +41,7 @@
             </scroll-view>
 
         </div>
-        <login-box v-else></login-box>
+        <login-box v-else @succ='loginSucc'></login-box>
     </div>
 
 </template>
@@ -57,7 +57,7 @@ import {
     getAllTask
 } from "../../api";
 import config from "../../config.js";
-import { _loading } from "../../utils";
+import { _loading, _login } from "../../utils";
 export default {
     components: {
         taskCard,
@@ -94,22 +94,27 @@ export default {
         };
     },
     async onReady() {
-        wx.hideTabBar();                //  隐藏导航
+        wx.hideTabBar(); //  隐藏导航
         this.oss = config.ossroot;
         _loading("载入中...");
         [
             this.taskType,
             this.bannerList,
             this.newHands,
-            this.recommendList           
+            this.recommendList
         ] = await Promise.all([
             initDict(),
             (await getBannerList()).data,
             formTask((await getNewHandsTask()).data),
             formTask((await getRecommendTask(this.recommendPageNo)).data)
         ]);
-         this.taskList =  formTask((await getAllTask(this.taskListPageNo)).data)
+        this.taskList = formTask((await getAllTask(this.taskListPageNo)).data);
         _loading();
+        _login(res => {
+            if (res) {
+                wx.showTabBar();
+            }
+        });
     },
     mounted() {
         this.setScrollViewHeight();
@@ -157,8 +162,7 @@ export default {
         setScrollViewHeight() {
             wx.getSystemInfo({
                 success: res => {
-                    this.scrollHeight = `height:${res.windowHeight -
-                        200}px;`;
+                    this.scrollHeight = `height:${res.windowHeight - 200}px;`;
                 }
             });
         },
@@ -179,8 +183,18 @@ export default {
                 this.taskListNo += 4;
             }
         },
-        goLogin(){
+        goLogin(taskId) {
+            this.curTaskId = taskId;
             this.loginStatus = false;
+        },
+        loginSucc() {
+            this.loginStatus = true;
+            wx.showTabBar()
+            if (this.curTaskId) {
+                wx.navigateTo({
+                    url: "../taskDetail/main?taskId=" + this.curTaskId
+                });
+            }
         }
     }
 };

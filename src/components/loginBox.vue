@@ -11,19 +11,17 @@ export default {
     data() {
         return {};
     },
-    mounted() {
-        _login(res => {
-            console.log(res.code)
-        });
-    },
     methods: {
         getUserInfo(e) {
             _loading("加载中...");
-            var res = e.mp.detail.userInfo;
-            loginByUser(res, res => {
+            var u = e.mp.detail.userInfo;
+            loginByUser(u, res => {
                 if (res) {
                     this.userInfo = res;
                     wx.setStorageSync("userInfo", res);
+                    this.$emit('succ')
+                }else{
+                    msg('登录失败，请稍后再试')
                 }
             });
         },
