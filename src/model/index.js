@@ -25,6 +25,9 @@ export function formTask(arr) {
         obj.taskBounty = item.amount;
         obj.type = item.type;
         obj.sortTime = item.preTime;
+        obj.userStatus = item.userStatus;
+        obj.taskDetailId = item.taskDetailId;
+        obj.url = item.url || '';
         result.push(obj)
     }
     return result;
@@ -39,7 +42,9 @@ export function formartTaskDetail(task) {
         durationTime: task.taskTime,
         bounty: task.amount,
         countdown : getCalcDate(task.beginTime,task.endTime),
-        durationTime:formartTaskTime(task.preTime)
+        durationTime:formartTaskTime(task.preTime),
+        description: task.description || '',
+        illustrate :task.illustrate || ''
     }
 }
 

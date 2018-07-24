@@ -271,4 +271,6 @@ export default {
         }
     }
 }
+.slide-image
+    object-fit cover
 </style>

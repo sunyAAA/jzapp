@@ -196,7 +196,9 @@ export function timestampToDate(timestamp, formats) {
 	// 3. Y年m月d日
 	// 4. Y年m月d日 H时i分
 	formats = formats || 'Y-m-d';
-
+	if(!timestamp){
+		return null
+	}
 	var zero = function (value) {
 		if (value < 10) {
 			return '0' + value;

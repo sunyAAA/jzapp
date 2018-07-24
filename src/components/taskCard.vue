@@ -13,7 +13,7 @@
 				<div class="publisher">发布商家：
 					<span v-text="item.publisher"></span>
 				</div>
-				<div class="time-limit">任务时间：
+				<div class="time-limit" v-if="item.beginTime && item.endTime">任务时间：
 					<span v-text="item.beginTime"></span> 至
 					<span v-text="item.endTime"></span>
 				</div>
@@ -44,6 +44,11 @@ export default {
     methods: {
         goDetail() {
             if (this.noJump) {
+				if(this.item.url && this.item.userStatus == 2){
+						wx.navigateTo({
+							url: `../${this.item.url}/main`
+						});
+				}
                 return;
             }
             let _t = wx.getStorageSync("_token");

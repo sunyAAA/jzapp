@@ -15,7 +15,7 @@
 				<div class="get" @click="getCode" v-text="labelText"></div>
 			</div>
 		</div>
-		<div class="btn-next" @click="nextStep">下一步</div>
+		<div class="btn-next" @click="nextStep">完成</div>
 	</div>
 </template>
 
@@ -73,7 +73,9 @@ export default {
                 bindPhone({ phone: this.phone, code: this.code }).then(res => {
                     if (res.code == 1) {
                         wx.redirectTo("../../pages/adminData/main");
-                    }
+                    }else{
+						msg(res.msg)
+					}
                 });
             } else {
                 msg("请输入正确的手机号");

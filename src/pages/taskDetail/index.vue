@@ -5,26 +5,26 @@
 			<div class="info">
 				<!-- 任务内容 -->
 				<div class="info-content">
-					<div class="type" v-text="taskData.type"></div>
+					<div class="type" v-text="curTaskDetail.type"></div>
 					<div class="title">发布商家：
-						<span v-text="taskData.publisher"></span>
+						<span v-text="curTaskDetail.publisher"></span>
 					</div>
 					<div class="time">
 						任务时间：
-						<span v-text="taskData.startTime"></span> 至
-						<span v-text="taskData.endTime"></span>
+						<span v-text="curTaskDetail.startTime"></span> 至
+						<span v-text="curTaskDetail.endTime"></span>
 					</div>
 					<div class="duration-time">
 						任务时长：
-						<span v-text="taskData.durationTime"></span>
+						<span v-text="curTaskDetail.durationTime"></span>
 					</div>
 				</div>
 				<!-- 赏金和时间 -->
 				<div class="bounty-countdown">
 					<div class="bounty">¥
-						<span v-text="taskData.bounty"></span>
+						<span v-text="curTaskDetail.bounty"></span>
 					</div>
-					<div class="countdown" v-text="taskData.countdown"></div>
+					<div class="countdown" v-text="curTaskDetail.countdown"></div>
 				</div>
 			</div>
 			<div class="operate" v-show='!complete'>
@@ -48,13 +48,13 @@
 			<!-- 任务内容 -->
 			<div class="task-content">
 				<div class="content-item task-desc" v-show="currentTab == 0">
-					<p>{{taskData.descriptionm}}</p>
+					<p>{{curTaskDetail.description}}</p>
 				</div>
 				<div class="content-item task-detail" v-show="currentTab == 1">
-					<p>{{taskData.illustrate}}</p>
+					<p>{{curTaskDetail.illustrate}}</p>
 				</div>
 				<div class="content-item task-list" v-show="currentTab == 2">
-					<task-card v-if='taskList.length' v-for="(item,index) in taskList" :item='item' :key="index" :no-jump="true"></task-card>
+					<task-card v-if="curTask" :item='curTask' :no-jump="true"></task-card>
 				</div>
 			</div>
 		</div>
@@ -63,9 +63,9 @@
 
 <script>
 import taskCard from "../../components/taskCard";
-import { getTaskDetail,takeTask } from "../../api";
+import { getTaskDetail, takeTask } from "../../api";
 import { formartTaskDetail, formTask } from "../../model";
-import {errBack} from '../../utils'
+import { errBack,showSucc,msg } from "../../utils";
 export default {
     components: {
         taskCard
@@ -75,35 +75,54 @@ export default {
             receiveFlag: false,
             currentTab: 0,
             taskList: [],
-			taskData: {},
-			complete:false
+            taskData: {},
+            complete: false
         };
     },
-    async onLoad(options) {
+    onLoad(options) {
 		this.taskId = options.taskId;
-        if (this.taskId) {
-			let userId = wx.getStorageSync('userId') || '';
-            let data = (await getTaskDetail({ taskId: this.taskId ,userId})).data;
-            this.taskData = formartTaskDetail(data.missionTask);
-			this.taskList = formTask(data.detail);
-			if(this.taskData.userStatus == 2){
-				this.receiveFlag = true;
-			}else if (this.taskData.userStatus == 6){
-				this.complete = true;
+    },
+    onShow() {
+		this.getTaskData()
+	},
+    computed: {
+        curTask() {
+            let result = {};
+            for (let item of this.taskList) {
+                if (item.userStatus == 0 || item.userStatus == 1 || item.userStatus == 2) {
+					result = item;
+					break;
+                }
 			}
-        }else{
-			errBack()
+			if(result.userStatus == 2){
+				this.receiveFlag = true;
+			}
+            return formTask([result])[0];
+		},
+		curTaskDetail(){
+			return formartTaskDetail(this.taskData)
 		}
-	},
-	computed:{
-		curTask(){
-
-		}
-	},
+    },
     methods: {
         receive() {
-
-            this.receiveFlag = true;
+            takeTask(
+                this.taskData.taskId,
+                this.curTask.taskDetailId || ""
+            ).then(res => {
+				if(res.code == 1){
+            		this.receiveFlag = true;
+					showSucc('领取成功');
+					if(this.taskData.isLocal == 1){
+						wx.navigateTo({
+							url: `../${this.curTask.url}/main`
+						});
+					}else{
+						this.getTaskData()
+					}
+				}else{
+					msg(res.msg)
+				}
+			});
         },
         submit() {
             //        this.receiveFlag = true;
@@ -113,6 +132,22 @@ export default {
         },
         toggleNav(n) {
             this.currentTab = n;
+        },
+        async getTaskData() {
+            if (this.taskId) {
+                let userId = wx.getStorageSync("userId") || "";
+                let data = (await getTaskDetail({
+                    taskId: this.taskId,
+                    userId
+                })).data;
+                this.taskData = data.missionTask;
+                this.taskList = data.detail;
+			 if (this.taskData.userStatus == 6) {
+                    this.complete = true;
+                }
+            } else {
+                errBack();
+            }
         }
     }
 };
@@ -230,7 +265,6 @@ export default {
 			.content-item {
 				font-size: 22rpx;
 			}
-
 
 			.task-desc, .task-detail {
 				p {
