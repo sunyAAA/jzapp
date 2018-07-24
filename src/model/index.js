@@ -32,9 +32,33 @@ export function formTask(arr) {
     }
     return result;
 }
+export function formMyTask(arr) {
+    let result = [];
+    if(!arr){
+        return result;
+    }
+    for (let item of arr) {
+        let obj = {}
+        obj.title = item.task.name;
+        obj.beginTime = timestampToDate(item.beginTime);
+        obj.endTime = timestampToDate(item.endTime);
+        obj.preTime = formartTaskTime(item.task.preTime);
+        obj.flag = getTaskType(item.type) || '';
+        obj.taskId = item.taskId;
+        obj.publisher = item.shopName || '无';
+        obj.taskBounty = item.task.amount;
+        obj.type = item.type;
+        obj.userStatus = item.task.userStatus;
+        obj.taskDetailId = item.taskDetailId;
+        obj.url = item.url || '';
+        result.push(obj)
+    }
+    return result;
+}
 
 export function formartTaskDetail(task) {
     return {
+        name:task.name,
         type: getTaskType(task.type),
         publisher: task.shopName || "无",
         startTime: timestampToDate(task.beginTime),
@@ -53,7 +77,7 @@ function formartTaskTime(time) {
     let day = Math.floor(timespan / 86400);
     let hour = Math.floor(timespan % 86400 / 3600);
     let minute = Math.floor(timespan % 86400 % 3600 / 60);
-    return (day>0? `${day>10?day:'0'+day}天`:'') + (hour>0? `${hour>10?hour:'0'+hour}时`:'') + `${minute>10?minute:'0'+minute}分`
+    return (day>0? `${day}天`:'') + (hour>0? `${hour}小时`:'') + `${minute}分钟`
 }
 
 function getCalcDate(begin, end) {
@@ -61,7 +85,7 @@ function getCalcDate(begin, end) {
     let day = Math.floor(timespan / 86400);
     let hour = Math.floor(timespan % 86400 / 3600);
     let minute = Math.floor(timespan % 86400 % 3600 / 60);
-    return (day>0? `${day}天`:'') + (hour>0? `${hour}时`:'') + `${minute}分`
+    return (day>0? `${day}天`:'') + (hour>0? `${hour}小时`:'') + `${minute}分钟`
 }
 
 function getTaskType(type) {

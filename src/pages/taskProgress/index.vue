@@ -1,99 +1,113 @@
 <template>
-  <div class="taskProgress-wrap">
-    <!-- 导航 -->
-    <div class="nav">
-      <ul>
-        <li
-          v-for="(item, index) in navArr"
-          :key="index"
-          :class="[ status == index ? 'current' : '' ]"
-          @click="toggleTab(index)"
-          v-text="item.title"></li>
-      </ul>
-    </div>
-    <!-- 内容 -->
-    <task-card v-for="(item,index) in taskArr" :key="index" :item="item"></task-card>
-  </div>
+	<div class="taskProgress-wrap">
+		<!-- 导航 -->
+		<div class="nav">
+			<ul>
+				<li v-for="(item, index) in navArr" :key="index" :class="[ status == index ? 'current' : '' ]" @click="toggleTab(index)" v-text="item.title"></li>
+			</ul>
+		</div>
+		<!-- 内容 -->
+		<scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
+			<task-card v-for="(item,index) in curData" :key="index" :item="item"></task-card>
+		</scroll-view>
+	</div>
 </template>
 
 <script>
-  import taskCard from '../../components/taskCard'
+import taskCard from "../../components/taskCard";
+import {getMyTask} from '../../api'
+import {formMyTask} from '../../model'
+import {_loading} from '../../utils'
+const pageSize = 8;
 export default {
-  components:{
-    taskCard
-  },
-  data(){
-    return {
-      navArr: [
-        {
-          title: '进行中'
+    components: {
+        taskCard
+    },
+    data() {
+        return {
+            taskStatus: 2,
+			pageNum: 1,
+			curData:[],
+            navArr: [
+                {
+                    title: "进行中"
+                },
+                {
+                    title: "审核中"
+                },
+                {
+                    title: "已完成"
+                }
+            ],
+			status: 0,
+			scrollHeight: "height:560px",
+        };
+	},
+	onShow(){
+		this.getMyData();
+		this.setScrollViewHeight()
+	},
+    methods: {
+        toggleTab(index) {
+            this.status = index;
+            this.taskStatus = index == 0 ? 2 : index == 1 ? 3 : 6;
+            this.pageNum = 1;
         },
-        {
-          title: '审核中'
+        getMyData() {
+			_loading('加载中...')
+            getMyTask(this.taskStatus, pageSize, this.pageNum).then(res => {
+				if(res.code == 1){
+					this.curData = this.pageNum > 1 ? this.curData.concat(formMyTask(res.data)):formMyTask(res.data)
+				}
+				_loading();
+			});
+		},
+		loadMore(){
+			// this.pageNum ++ ;
+			
+		},
+		setScrollViewHeight() {
+            wx.getSystemInfo({
+                success: res => {
+                    this.scrollHeight = `height:${res.windowHeight - 55}px;`;
+                }
+            });
         },
-        {
-          title: '已完成'
-        }
-      ],
-      status: 0,
-      taskArr: [
-        {
-          flag: '试玩任务',
-          title: '棋牌手游试玩',
-          publisher: '米多游戏',
-          beginTime: '2018-7-5',
-          endTime: '2018-7-10',
-          taskBounty: 380
-        },
-        {
-          flag: '练级任务',
-          title: '魔域之都手游',
-          publisher: '新傲天',
-          beginTime: '2018-7-5',
-          endTime: '2018-7-10',
-          taskBounty: 150
-        },
-        {
-          flag: '福利任务',
-          title: '注册任务',
-          publisher: '花椒直播',
-          beginTime: '2018-7-5',
-          endTime: '2018-7-10',
-          taskBounty: 10
-        }
-      ]
+    },
+    watch: {
+        taskStatus(val) {
+			this.getMyData()
+		}
     }
-  },
-  methods: {
-    toggleTab(index){
-      this.status = index;
-    }
-  }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
-  .taskProgress-wrap {
-    background-color: #fff;
-    min-height: 100vh;
-    // 导航nav
-    .nav {
-      display: flex;
-      width: 100%;
-      height: 100rpx;
-      line-height: 100rpx;
-      ul {
-        display: flex;
-        width: 100%;
-        justify-content: space-around;
-        li {
-          font-size: 30rpx;
-          color: #000;
-        }
-        li.current {
-          color: #ff4b2b;
-        }
-      }
-    }
-  }
+.taskProgress-wrap {
+	background-color: #fff;
+	min-height: 100vh;
+
+	// 导航nav
+	.nav {
+		display: flex;
+		width: 100%;
+		height: 100rpx;
+		line-height: 100rpx;
+
+		ul {
+			display: flex;
+			width: 100%;
+			justify-content: space-around;
+
+			li {
+				font-size: 30rpx;
+				color: #000;
+			}
+
+			li.current {
+				color: #ff4b2b;
+			}
+		}
+	}
+}
 </style>

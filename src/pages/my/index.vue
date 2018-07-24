@@ -27,9 +27,8 @@
 export default {
     data() {
         return {
-            username: "昵称",
-            headPicUrl:
-                "http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg",
+            username: "",
+            headPicUrl:'',
             adminList: [
                 {
                     icon: require("../../../static/images/my-income.png"),
@@ -53,6 +52,12 @@ export default {
                 }
             ]
         };
+    },
+    mounted(){
+      let info =  wx.getStorageSync('userInfo');
+      console.log(info)
+      this.username = info.nickName;
+      this.headPicUrl = info.avatarUrl;
     },
     methods: {
         jumpTo(path) {

@@ -45,7 +45,7 @@
     },
     methods: {
       upLoadImg(){
-        upImgs(2,this.imgUrl)
+        upImgs(9,this.imgUrl)
       },
     }
   }

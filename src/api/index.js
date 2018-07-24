@@ -92,3 +92,16 @@ export function takeTask(taskId,taskDetailId){
 export function getMyMoney(){
 	return fly.get('/api/userDeposit/getMyBalance')
 }
+
+//完善资料   @params  name sex avatar
+export function completeUser(params){
+	return fly.post('/api/user/completeUser',qs.stringify(params))
+}
+
+//查询我的任务 
+/**
+ * param status  状态(2进行中3已完成)			
+ */
+export function getMyTask(status,pageSize,pageNum){
+	return fly.get('/api/task/myList',qs.stringify({status,pageSize,pageNum}))
+}

@@ -1,5 +1,5 @@
 <template>
-	<div class="task-card" @click="goDetail">
+	<div class="task-card" @click="goDetail" >
 		<!--<li v-for="(item, index) in tasksArr" :key="index"  @click="goToDetail()">-->
 		<div class="card-item">
 			<!-- 类型标记 -->
