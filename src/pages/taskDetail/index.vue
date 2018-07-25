@@ -33,7 +33,7 @@
 				<!-- 提交凭证和放弃按钮 -->
 				<div class="btn-group" v-else>
 					<div class="btn-submit" @click="submit">提交凭证</div>
-					<div class="give-up" @click="giveUp">放弃</div>
+					<div class="give-up" @click="giveUp"   v-show="!isNew">放弃</div>
 				</div>
 			</div>
 		</div>
@@ -79,7 +79,8 @@ export default {
             currentTab: 0,
             taskList: [],
             taskData: {},
-            complete: false
+			complete: false,
+			isNew:false
         };
     },
     onLoad(options) {
@@ -162,7 +163,8 @@ export default {
                     userId
 				})).data;
 				_loading()
-                this.taskData = data.missionTask;
+				this.taskData = data.missionTask;
+				this.isNew = this.taskData.type == 2 ? true:false;
                 this.taskList = data.detail;
 			 if (this.taskData.userStatus == 6) {
                     this.complete = true;

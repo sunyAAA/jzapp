@@ -19,6 +19,9 @@
 			</div>
 		</div>
 		<!-- 上传凭证 -->
+		<div v-show='!isNew' class="reason-title">
+			{{statusText}}
+		</div>
 		<div class="upload-box">
 			<div class="upload-area">
 				<textarea placeholder="内容描述..." v-model="remark"></textarea>
@@ -34,7 +37,7 @@
 			<span>上传凭证（最多可上传9张）</span>
 		</div>
 		<!-- 审核按钮 -->
-		<div class="btn-review" @click='send'>预计审核时间，将在七个工作日内</div>
+		<div class="btn-review" @click='send' v-if='isNew'>预计审核时间，将在七个工作日内</div>
 	</div>
 </template>
 
@@ -42,7 +45,7 @@
 import { upImgs,errBack,showModel,_loading, showSucc } from "../../utils";
 import taskCard from "../../components/taskCard.vue";
 import config from "../../config.js";
-import {getTaskDetail,completeApply} from '../../api'
+import {getTaskDetail,completeApply, getApply} from '../../api'
 import {formartTaskDetail} from '../../model'
 export default {
     components: { taskCard },
@@ -51,7 +54,9 @@ export default {
             imgUrl: [],
             oss: "",
 			task: {},
-			remark:''
+			remark:'',
+			isNew:null,
+			statusText:''
         };
 	},
 	onLoad(options){
@@ -72,17 +77,39 @@ export default {
     },
     methods: {
 		async getTask(){
+			this.imgUrl = [];
+			this.task = {};
+			this.remark = '';
+			this.statusText = '审核中，预计审核时间为七个工作日';
+			this.isNew = true;
 			let userId = wx.getStorageSync('userId');
 			this.task = formartTaskDetail((await getTaskDetail({taskId:this.taskId,userId:userId})).data.missionTask);
-			
+			this.getApplyData()
 		},
         upLoadImg() {
             upImgs(9, this.imgUrl);
 		},
 		remove(index){
 			showModel('确定要删除该图片吗').then(res=>{
-				let offset = this.imgUrl.length > 9 ? this.imgUrl.length - this.curImg.length:0;
-				this.imgUrl.splice(index+offset,1);
+				if(res){
+					let offset = this.imgUrl.length > 9 ? this.imgUrl.length - this.curImg.length:0;
+					this.imgUrl.splice(index+offset,1);
+				}
+			})
+		},
+		getApplyData(){
+			getApply(this.task.userTaskId,this.taskDetailId).then(res=>{
+				if(res.code == 1){
+					this.remark = res.data.remark || "";
+					this.imgUrl = res.data.voucher.split(',') || []
+					if(res.data.voucher){
+						this.isNew = false
+					}else if (res.data.status == 3){
+						this.statusText = '审核失败：'+res.data.reason
+					}
+				}else{
+					errBack()
+				}
 			})
 		},
 		send(){
@@ -91,7 +118,7 @@ export default {
 				return
 			}
 			_loading('正在发送');
-			completeApply(this.taskId,this.taskDetailId,this.curImg.join(','),this.remark).then(res=>{
+			completeApply(this.task.userTaskId,this.taskDetailId,this.curImg.join(','),this.remark).then(res=>{
 				_loading()
 				if(res.code == 1){
 					showSucc('提交成功')
@@ -202,6 +229,10 @@ export default {
 .img-box 
 	display flex
 	flex-wrap wrap
+.reason-title
+	font-size 14px
+	padding 10px 20px
+	color #ff4b2b
 </style>
 
 

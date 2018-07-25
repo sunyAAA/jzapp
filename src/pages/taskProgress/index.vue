@@ -15,7 +15,7 @@
 
 <script>
 import taskCard from "../../components/taskCard";
-import {getMyTask} from '../../api'
+import {getMyTask, getApprove} from '../../api'
 import {formMyTask} from '../../model'
 import {_loading} from '../../utils'
 const pageSize = 8;
@@ -33,7 +33,7 @@ export default {
                     title: "进行中"
                 },
                 {
-                    title: "审核中"
+                    title: "我的审核"
                 },
                 {
                     title: "已完成"
@@ -50,7 +50,7 @@ export default {
     methods: {
         toggleTab(index) {
             this.status = index;
-            this.taskStatus = index == 0 ? 2 : index == 1 ? 3 : 6;
+            this.taskStatus = index == 0 ? 2 : index == 1 ? -1 : 3;
             this.pageNum = 1;
         },
         getMyData() {
@@ -61,6 +61,12 @@ export default {
 				}
 				_loading();
 			});
+		},
+		getApproveData(){
+			_loading('加载中...')
+			getApprove(pageSize,this.pageNum).then(res=>{
+				_loading()
+			})
 		},
 		loadMore(){
 			// this.pageNum ++ ;
@@ -76,7 +82,11 @@ export default {
     },
     watch: {
         taskStatus(val) {
-			this.getMyData()
+			if(val>0){
+				this.getMyData()
+			}else{
+				this.getApproveData()
+			}
 		}
     }
 };

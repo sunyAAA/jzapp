@@ -105,8 +105,8 @@ export function getMyTask(status,pageSize,pageNum){
 }
 
 // 提交审核  taskId taskDetailId  voucher remark
-export function completeApply(taskId,taskDetailId,voucher,remark){
-	return fly.post('/api/taskUser/completeApply',qs.stringify({taskId,taskDetailId,voucher,remark}))
+export function completeApply(userTaskId,userTaskDetailId,voucher,remark){
+	return fly.post('/api/taskUser/completeApply',qs.stringify({userTaskId,userTaskDetailId,voucher,remark}))
 }
 
 export function getMyDeposit(beginTime,endTime){
@@ -131,4 +131,14 @@ export function getMoneyDetail(type,pageSize,pageNum){
 // 绑定微信账号 
 export function bindWx(name,accountNo){
 	return fly.post('/api/userDeposit/addUserAccount',qs.stringify({type:1,name,accountNo}))
+}
+
+//查询凭证信息
+export function getApply(userTaskId,userTaskDetailId=""){
+	return fly.get('/api/task/getApplyById',qs.stringify({userTaskId,userTaskDetailId}))
+}
+
+//查询正在审核的任务
+export function getApprove(pageSize,pageNum){
+	return fly.get('/api/taskUser/getApprove',{pageSize,pageNum})
 }

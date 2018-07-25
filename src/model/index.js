@@ -68,7 +68,8 @@ export function formartTaskDetail(task) {
         countdown : getCalcDate(task.beginTime,task.endTime),
         durationTime:formartTaskTime(task.preTime),
         description: task.description || '',
-        illustrate :task.illustrate || ''
+        illustrate :task.illustrate || '',
+        userTaskId:task.userTaskId
     }
 }
 
