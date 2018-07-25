@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { upImgs,msg } from "../../utils";
+import { upImgs,msg,showSucc } from "../../utils";
 import config from "../../config.js";
 import { completeUser } from "../../api";
 export default {
@@ -67,7 +67,11 @@ export default {
 				return
 			}
 			completeUser({name:this.name,sex:this.sexArr[this.sexStatus],avatar:this.headPic[0]}).then(res=>{
-
+				if(res.code == 1){
+					showSucc('提交成功')
+				}else{
+					msg('提交失败，请稍后再试')
+				}
 			})
 		}
     }

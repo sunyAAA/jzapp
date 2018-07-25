@@ -84,6 +84,8 @@ export default {
     },
     onLoad(options) {
 		this.taskId = options.taskId;
+		this.receiveFlag = false;
+		this.complete = false;
     },
     onShow() {
 		this.getTaskData()
@@ -112,7 +114,7 @@ export default {
         receive() {
             takeTask(
                 this.taskData.taskId,
-                this.curTask.taskDetailId || ""
+                this.curTask ? this.curTask.taskDetailId : ""
             ).then(res => {
 				if(res.code == 1){
             		this.receiveFlag = true;
@@ -130,7 +132,8 @@ export default {
 			});
         },
         submit() {
-            //        this.receiveFlag = true;
+			//        this.receiveFlag = true;
+			wx.navigateTo({url:`../taskCertificate/main?taskId=${this.taskData.taskId}&taskDetailId=${this.curTask ? this.curTask.taskDetailId :" "}`})
         },
         giveUp() {
             this.receiveFlag = false;

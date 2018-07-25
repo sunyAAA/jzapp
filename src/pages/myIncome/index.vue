@@ -26,19 +26,22 @@
 
 <script>
 import ColChart from "../../components/columnChart/columnChart";
+
+const TIME_OFFSET = 7*24*60*60*1000;
 export default {
     components: { ColChart },
     data() {
         return {
             sumBounty: 2345.0,
             startDate: "2018-01-01",
-            endDate: "2018-02-01"
+            endDate: "2018-01-08"
         };
     },
     mounted() {
         setTimeout(() => {
             this.$refs["chart"].render();
-        }, 100);
+		}, 100);
+		console.log(new Date(this.startDate).getTime() - new Date(this.endDate).getTime() , TIME_OFFSET)
     },
     computed: {
         fixedSumBounty() {
@@ -47,10 +50,20 @@ export default {
     },
     methods: {
         startDateChange(e) {
-            this.startDate = e.mp.detail.value;
+			let end = new Date(this.endDate).getTime();
+			let start = new Date(e.mp.detail.value).getTime();
+			let min = end - TIME_OFFSET;
+			if(min <= start <= end){
+            	this.startDate = e.mp.detail.value;
+			}
         },
         endDateChange(e) {
-            this.endDate = e.mp.detail.value;
+			let start = new Date(this.startDate).getTime();
+			let end = new Date(e.mp.detail.value).getTime();
+			let max = start + TIME_OFFSET;
+			if(start <= end <= max){
+            	this.endDate = e.mp.detail.value;
+			}
         }
     }
 };

@@ -28,7 +28,6 @@ fly.interceptors.response.use(
         //发生网络错误后会走到这里
 		//return Promise.resolve("ssss")
 		msg('网络连接失败，请稍后再试')
-		console.log(err);
     }
 )
 //   普通登录
@@ -56,7 +55,7 @@ export function getBannerList() {
 	return fly.get('/api/advert/list')
 }
 
-//  获取任务详情   @params    taskId
+//  获取任务详情   @params    taskId  userId
 export function getTaskDetail(params) {
 	return fly.get('/api/task/getDetailById', qs.stringify(params))
 }
@@ -104,4 +103,13 @@ export function completeUser(params){
  */
 export function getMyTask(status,pageSize,pageNum){
 	return fly.get('/api/task/myList',qs.stringify({status,pageSize,pageNum}))
+}
+
+// 提交审核  taskId taskDetailId  voucher remark
+export function completeApply(taskId,taskDetailId,voucher,remark){
+	return fly.post('/api/taskUser/completeApply',qs.stringify({taskId,taskDetailId,voucher,remark}))
+}
+
+export function getMyDeposit(beginTime,endTime){
+	return fly.get('/api/userDeposit/getMyDeposit',{beginTime,endTime})
 }
