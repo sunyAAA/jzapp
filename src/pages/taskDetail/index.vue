@@ -55,7 +55,7 @@
 				</div>
 				<div class="content-item task-list" v-show="currentTab == 2">
 					<task-card v-if="curTask" :item='curTask' :no-jump="true"></task-card>
-					<div v-else  class="no-result">
+					<div v-else class="no-result">
 						没有更多内容了
 					</div>
 				</div>
@@ -66,9 +66,9 @@
 
 <script>
 import taskCard from "../../components/taskCard";
-import { getTaskDetail, takeTask } from "../../api";
+import { getTaskDetail, takeTask, giveUpTask} from "../../api";
 import { formartTaskDetail, formTask } from "../../model";
-import { errBack,showSucc,msg } from "../../utils";
+import { errBack,showSucc,msg, _loading } from "../../utils";
 export default {
     components: {
         taskCard
@@ -84,8 +84,6 @@ export default {
     },
     onLoad(options) {
 		this.taskId = options.taskId;
-		this.receiveFlag = false;
-		this.complete = false;
     },
     onShow() {
 		this.getTaskData()
@@ -117,8 +115,8 @@ export default {
                 this.curTask ? this.curTask.taskDetailId : ""
             ).then(res => {
 				if(res.code == 1){
-            		this.receiveFlag = true;
 					showSucc('领取成功');
+            		this.receiveFlag = true;
 					if(this.taskData.isLocal == 1){
 						wx.navigateTo({
 							url: `../${this.curTask.url}/main`
@@ -136,18 +134,34 @@ export default {
 			wx.navigateTo({url:`../taskCertificate/main?taskId=${this.taskData.taskId}&taskDetailId=${this.curTask ? this.curTask.taskDetailId :" "}`})
         },
         giveUp() {
+			giveUpTask(
+				this.taskData.taskId,
+                this.curTask ? this.curTask.taskDetailId : ""
+			).then(res=>{
+				if(res.code == 1){
+					msg('取消成功')
+            		this.receiveFlag = true;
+					this.getTaskData()
+				}else{
+					msg(res.msg)
+				}
+			})
             this.receiveFlag = false;
         },
         toggleNav(n) {
             this.currentTab = n;
         },
         async getTaskData() {
+			_loading('加载中...')
+			this.receiveFlag = false;
+			this.complete = false;
             if (this.taskId) {
                 let userId = wx.getStorageSync("userId") || "";
                 let data = (await getTaskDetail({
                     taskId: this.taskId,
                     userId
-                })).data;
+				})).data;
+				_loading()
                 this.taskData = data.missionTask;
                 this.taskList = data.detail;
 			 if (this.taskData.userStatus == 6) {
@@ -286,10 +300,12 @@ export default {
 		padding-top: 30rpx;
 	}
 }
-.no-result 
-	width 100%
-	height 200px
-	line-height 200px
-	text-align center
-	color #999
+
+.no-result {
+	width: 100%;
+	height: 200px;
+	line-height: 200px;
+	text-align: center;
+	color: #999;
+}
 </style>

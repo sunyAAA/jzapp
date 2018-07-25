@@ -1,7 +1,6 @@
 import { loginByCode } from '../api'
 import config from '../config'
 const appId = config.appId;
-const ossroot = config.ossroot
 
 export function showSucc(text, cb) {
 	wx.showToast({
@@ -113,7 +112,7 @@ export function loginByUser(userInfo, cb) {
 
 export function _loading(text) {
 	if (text) {
-		wx.showLoading({ title: text,mask:true })
+		wx.showLoading({ title: text, mask: true })
 	} else {
 		wx.hideLoading();
 	}
@@ -196,7 +195,7 @@ export function timestampToDate(timestamp, formats) {
 	// 3. Y年m月d日
 	// 4. Y年m月d日 H时i分
 	formats = formats || 'Y-m-d';
-	if(!timestamp){
+	if (!timestamp) {
 		return null
 	}
 	var zero = function (value) {
@@ -247,9 +246,9 @@ export function strToArray(str) {
 	return !str ? [] : str.indexOf(',') > 0 ? str.split(',') : [str]
 }
 
-export function errBack(){
+export function errBack() {
 	msg('请求出错');
 	wx.navigateBack({
-		delta:1
+		delta: 1
 	})
 }

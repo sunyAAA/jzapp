@@ -1,26 +1,36 @@
 <template>
     <div class="over-page">
         <div class="top-bar">
-            <div class="case" :class="{active:active==0}"
-                @click='toggle(0)'
-            >收入明细</div>
             <div class="case" :class="{active:active==1}"
                 @click='toggle(1)'
+            >收入明细</div>
+            <div class="case" :class="{active:active==2}"
+                @click='toggle(2)'
             >提现明细</div>
         </div>
     </div>
 </template>
 
 <script>
+import { getMoneyDetail } from '../../api';
+const PAGESIZE = 8;
 export default {
     data(){
        return{
-           active:0
+           active:1,
+           pageNum:1
        }
     },
     methods:{
         toggle(i){
             this.active = i;
+            this.pageNum = 1;
+            this.getData();
+        },
+        getData(){
+            getMoneyDetail(this.active,PAGESIZE,this.pageNum).then(res=>{
+
+            })
         }
     }
 }
@@ -40,5 +50,5 @@ export default {
         &:nth-child(1)
             border-right 1px solid #eee
         &.active
-            color #479EF8
+            color #ff4b2b
 </style>

@@ -1,11 +1,10 @@
 import {msg} from '../utils'
+import config from '../config'
 
 var Fly = require("flyio/dist/npm/wx")
 var qs = require('qs');           // 针对java后台进行序列化
 var fly = new Fly();
 const pageSize = 100;
-import config from '../config'
-// import {msg} from '../utils'
 fly.config.baseURL = config.host
 fly.interceptors.request.use((request) => {
 	//给所有请求添加自定义header
@@ -112,4 +111,24 @@ export function completeApply(taskId,taskDetailId,voucher,remark){
 
 export function getMyDeposit(beginTime,endTime){
 	return fly.get('/api/userDeposit/getMyDeposit',{beginTime,endTime})
+}
+
+// 放弃任务   taskId  taskDetailId
+export function giveUpTask(taskId,taskDetailId){
+	return fly.post('/api/taskUser/giveUpTask',qs.stringify({taskId,taskDetailId}))
+}
+
+// 查询绑定账户
+export function getMyBind(){
+	return fly.get('/api/userDeposit/getMyBind')
+}
+
+// 查询收益明细
+export function getMoneyDetail(type,pageSize,pageNum){
+	return fly.get('/api/userDeposit/getDepositPage',qs.stringify({type,pageSize,pageNum}))
+}
+
+// 绑定微信账号 
+export function bindWx(name,accountNo){
+	return fly.post('/api/userDeposit/addUserAccount',qs.stringify({type:1,name,accountNo}))
 }

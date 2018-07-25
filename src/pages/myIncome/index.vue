@@ -26,6 +26,7 @@
 
 <script>
 import ColChart from "../../components/columnChart/columnChart";
+import { getMyDeposit } from '../../api';
 
 const TIME_OFFSET = 7*24*60*60*1000;
 export default {
@@ -54,7 +55,10 @@ export default {
 			let start = new Date(e.mp.detail.value).getTime();
 			let min = end - TIME_OFFSET;
 			if(min <= start <= end){
-            	this.startDate = e.mp.detail.value;
+				this.startDate = e.mp.detail.value;
+				this.getData()
+			}else{
+				msg('起始日与结束日相隔不得超过7天')
 			}
         },
         endDateChange(e) {
@@ -62,9 +66,23 @@ export default {
 			let end = new Date(e.mp.detail.value).getTime();
 			let max = start + TIME_OFFSET;
 			if(start <= end <= max){
-            	this.endDate = e.mp.detail.value;
+				this.endDate = e.mp.detail.value;
+				this.getData()
+			}else{
+				msg('起始日与结束日相隔不得超过7天')
 			}
-        }
+		},
+		getData(){
+			let [beginTime,endTime] = [new Date(this.startDate).getTime(),new Date(this.endDate).getTime()]
+			getMyDeposit(beginTime,endTime).then(res=>{
+				
+			})
+		},
+		initTime(){
+			let now = new Date().getTime();
+			let start = now - TIME_OFFSET;
+
+		}
     }
 };
 </script>
@@ -78,6 +96,7 @@ export default {
 		border-bottom: 10rpx solid #efeff4;
 		text-align: center;
 		padding-top: 70rpx;
+		
 
 		.bounty {
 			font-size: 60rpx;
