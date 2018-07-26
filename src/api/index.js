@@ -140,5 +140,5 @@ export function getApply(userTaskId,userTaskDetailId=""){
 
 //查询正在审核的任务
 export function getApprove(pageSize,pageNum){
-	return fly.get('/api/taskUser/getApprove',{pageSize,pageNum})
+	return fly.get('/api/taskUser/getApprove',qs.stringify({pageSize,pageNum}))
 }

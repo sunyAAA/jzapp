@@ -3,12 +3,12 @@
 		<h3>Hi 请完善信息</h3>
 		<h5>完善信息，领取红包哟！</h5>
 		<!-- 头像 -->
-		<div class="head-pic">
-			<img :src="headPic" alt="" v-if="imgUrl[length-1]">
-			<div class="tip" v-show="imgUrl.length == 0" @click="upLoadImg">
-				<img src="../../../static/images/icon-img.png" alt="">
-				<div>添加头像</div>
+		<div class="head-pic"  @click="upLoadImg">
+			<div class="tip" v-show="imgUrl.length == 0">
+				<img class="icon" src="../../../static/images/icon-img.png" alt="">
+				<div class="text">添加头像</div>
 			</div>
+			<img class="head" :src="headPic" alt="">
 		</div>
 		<!-- 表单 -->
 		<div class="form">
@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             imgUrl: [],
-            name: "",
+			name: "",
             sexStatus: -1,
             sexArr: ["男", "女"]
         };
@@ -69,6 +69,9 @@ export default {
 			completeUser({name:this.name,sex:this.sexArr[this.sexStatus],avatar:this.headPic[0]}).then(res=>{
 				if(res.code == 1){
 					showSucc('提交成功')
+					setTimeout(() => {
+						wx.navigateBack({delta:1})
+					}, 800);
 				}else{
 					msg('提交失败，请稍后再试')
 				}
@@ -99,6 +102,7 @@ export default {
 		border: 10rpx solid #efeff4;
 		border-radius: 50%;
 		margin: 70rpx auto 145rpx;
+		overflow hidden
 
 		.tip {
 			width: 100%;
@@ -183,5 +187,10 @@ export default {
 		}
 	}
 }
+.head
+	width 90px
+	height 90px
+	object-fit cover			
+
 </style>
 

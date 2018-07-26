@@ -20,7 +20,7 @@ export default {
     },
     tabBar: {
       "selectedColor": "#ff4b2b",
-      "borderStyle": 'black',
+      "borderStyle": 'withe',
       "list": [
         {
           "text": "任务",

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { upImgs,errBack,showModel,_loading, showSucc } from "../../utils";
+import { upImgs,errBack,showModel,_loading, showSucc,msg } from "../../utils";
 import taskCard from "../../components/taskCard.vue";
 import config from "../../config.js";
 import {getTaskDetail,completeApply, getApply} from '../../api'
@@ -72,7 +72,7 @@ export default {
     },
     computed: {
         curImg() {
-            return this.imgUrl.slice(-9);
+			return this.imgUrl.slice(-9);
         }
     },
     methods: {
@@ -108,7 +108,7 @@ export default {
 						this.statusText = '审核失败：'+res.data.reason
 					}
 				}else{
-					errBack()
+					// errBack()
 				}
 			})
 		},
@@ -122,12 +122,23 @@ export default {
 				_loading()
 				if(res.code == 1){
 					showSucc('提交成功')
+					setTimeout(() => {
+						wx.switchTab({url:'../taskProgress/main'})
+					}, 800);
 				}else{
 					msg('提交审核失败，请稍后再试')
 				}
 			})
 		}
-    }
+	},
+	watch:{
+		remark(val){
+			if(val.length > 120){
+				msg('最多输入120个字');
+				this.remark = val.slice(-119);
+			}
+		}
+	}
 };
 </script>
 
@@ -178,16 +189,18 @@ export default {
 
 	// 上传凭证
 	.upload-box {
+		margin-bottom 75px
 		.upload-area {
 			width: 590rpx;
 			min-height: 380rpx;
 			border: 2rpx solid #e6e6e6;
 			margin: 0 auto;
 			padding: 40rpx;
+			padding-bottom 0px;
 
 			textarea {
 				width: 100%;
-				height: 181rpx;
+				min-height: 181rpx;
 			}
 
 			.btn-upload, .img-item {
@@ -223,12 +236,15 @@ export default {
 		color: #fff;
 		background-color: #ff4b2b;
 		text-align: center;
-		margin: 150rpx auto 0;
+		margin: 0 auto 20px auto;
 	}
 }
 .img-box 
 	display flex
 	flex-wrap wrap
+	padding 10px 0
+	box-sizing border-box
+	min-height 100px
 .reason-title
 	font-size 14px
 	padding 10px 20px
