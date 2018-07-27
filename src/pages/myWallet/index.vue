@@ -47,7 +47,7 @@ export default {
     mounted() {
         getMyMoney().then(res => {
             if (res.code == 1) {
-                this.money = res.data.credit;
+                this.money = res.data.balance;
             } else {
                 errBack();
             }

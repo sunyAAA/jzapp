@@ -2,7 +2,7 @@ import {msg} from '../utils'
 import config from '../config'
 
 var Fly = require("flyio/dist/npm/wx")
-var qs = require('qs');           // 针对java后台进行序列化
+var qs = require('qs');           // 针对参数formData
 var fly = new Fly();
 const pageSize = 100;
 fly.config.baseURL = config.host
@@ -110,7 +110,7 @@ export function completeApply(userTaskId,userTaskDetailId,voucher,remark){
 }
 
 export function getMyDeposit(beginTime,endTime){
-	return fly.get('/api/userDeposit/getMyDeposit',{beginTime,endTime})
+	return fly.get('/api/userDeposit/getMyDeposit',qs.stringify({beginTime,endTime}))
 }
 
 // 放弃任务   taskId  taskDetailId

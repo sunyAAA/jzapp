@@ -4,24 +4,24 @@
 		<div class="card-item">
 			<!-- 类型标记 -->
 			<div class="type-flag">
-				<div class="flag" v-text="item.flag"></div>
+				<div class="flag" v-text="item.flag || ''"></div>
 			</div>
 
 			<!-- 任务内容 -->
 			<div class="task-content">
-				<div class="title" v-text="item.title"></div>
+				<div class="title" v-text="item.title||''"></div>
 				<div class="publisher">发布商家：
-					<span v-text="item.publisher"></span>
+					<span v-text="item.publisher||''"></span>
 				</div>
 				<div class="time-limit" v-if="item.beginTime && item.endTime">任务时间：
-					<span v-text="item.beginTime"></span> 至
-					<span v-text="item.endTime"></span>
+					<span v-text="item.beginTime||''"></span> 至
+					<span v-text="item.endTime||''"></span>
 				</div>
-				<div class="time-limit">预计耗时：{{item.preTime}}</div>
+				<div class="time-limit">预计耗时：{{item.preTime||''}}</div>
 			</div>
 			<!-- 任务赏金 -->
 			<div class="task-bounty">¥
-				<span v-text="item.taskBounty"></span>
+				<span v-text="item.taskBounty||''"></span>
 			</div>
 		</div>
 	</div>

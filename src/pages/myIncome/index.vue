@@ -27,6 +27,7 @@
 <script>
 import ColChart from "../../components/columnChart/columnChart";
 import { getMyDeposit } from '../../api';
+import { timestampToDate } from '../../utils';
 
 const TIME_OFFSET = 7*24*60*60*1000;
 export default {
@@ -34,15 +35,18 @@ export default {
     data() {
         return {
             sumBounty: 2345.0,
-            startDate: "2018-01-01",
-            endDate: "2018-01-08"
+            startDate: "",
+            endDate: ""
         };
     },
     mounted() {
+		let now =  new Date().getTime()
+		this.endDate = timestampToDate(now,'Y-m-d');
+		this.startDate = timestampToDate(now - TIME_OFFSET,'Y-m-d');
         setTimeout(() => {
             this.$refs["chart"].render();
 		}, 100);
-		console.log(new Date(this.startDate).getTime() - new Date(this.endDate).getTime() , TIME_OFFSET)
+		this.getData()
     },
     computed: {
         fixedSumBounty() {
