@@ -3,7 +3,7 @@
         <div class="task-wrap" v-if="loginStatus">
             <!-- 广告位轮播 -->
             <swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500">
-                <block v-for="(item,index) in bannerList" :key="index">
+                <block v-for="(item,index) in bannerList" :key="index" @click='bannerGoDetail(item.itemId)'>
                     <swiper-item>
                         <img :src="oss+item.face" class="slide-image">
                     </swiper-item>
@@ -12,11 +12,10 @@
             <!-- 排序方式tab -->
             <div class="nav">
                 <ul class="sort">
-                    <li class="sort-item" :class="{'current':isOrder}" @click='changeType'>智能排序</li>
 
                     <li class="sort-item" v-for="(item,index) in sortArr" v-text="item.title" :class="[ sortStatus == index ? 'current' : '' ]" @click="toggleTab(index)" :key="index"></li>
                 </ul>
-                <div class="type-kind">
+                <!-- <div class="type-kind">
                     <span @click="toggleType()">
                         {{ type }}
                         <i></i>
@@ -24,20 +23,17 @@
                     <ul v-show="typeShow">
                         <li v-for="(item, index) in taskType" v-text="item.dictName" :class="[ typeStatus == index ? 'selected' : '' ]" @click="chooseType(item,index)" :key="index"></li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
                 <!-- 新手任务 -->
                 <task-card v-if="newHands" :item="newHands[0]" @noLogin="goLogin"></task-card>
                 <!-- 任务列表 -->
                 <!-- 推荐任务· -->
-                <div v-show='isOrder'>
+                <div>
                     <task-card v-for="(item,index) in curRecommendList" :key="index" :item="item" @noLogin="goLogin"></task-card>
                 </div>
                 <!-- 分类任务 -->
-                <div v-show="!isOrder">
-                    <task-card v-for="(item,index) in curTaskList" :key="index" :item="item" @noLogin="goLogin"></task-card>
-                </div>
                 <div v-show='isNoMore' class="no-more">—— 我们是有底线的 ——</div>
             </scroll-view>
 
@@ -72,18 +68,18 @@ export default {
             taskType: [],
             recommendList: [],
             recommendNo: 4,
-            taskList: [],
-            taskListNo: 4,
             taskListFilter: 0,
             recommendPageNo: 1,
-            taskListPageNo: 1,
             isOrder: true,
             isNoMore:false,
             newHands: null,
             scrollHeight: "height:355px",
             sortArr: [
                 {
-                    title: "时间最优"
+                    title:'智能优选'
+                },
+                {
+                    title: "耗时最短"
                 },
                 {
                     title: "赏金最高"
@@ -110,8 +106,6 @@ export default {
             (await getNewHandsTask()),
             (await getRecommendTask(this.recommendPageNo))
         ]);
-        this.taskListData = (await getAllTask(this.taskListPageNo))
-        this.taskList = formTask(this.taskListData.data);
         this.newHands = formTask(this.newHandsData.data);
         this.recommendList = formTask(this.recommendListData.data);
         
@@ -129,20 +123,23 @@ export default {
         curRecommendList() {
             return this.recommendList.slice(0, this.recommendNo);
         },
-        curTaskList() {
-            return this.taskList
-                .filter(item => {
-                    return item.type == this.taskListFilter;
-                })
-                .slice(0, this.taskListNo);
-        },
+        // curTaskList() {
+        //     return this.taskList
+        //         .filter(item => {
+        //             return item.type == this.taskListFilter;
+        //         })
+        //         .slice(0, this.taskListNo);
+        // },
         curSortFun() {
-            return this.sortStatus == 0
+            return this.sortStatus ==1
                 ? (a, b) => {
                       return a.sortTime - b.sortTime;
                   }
-                : (a, b) => {
+                : this.sortStatus == 2 ?(a, b) => {
                       return b.taskBounty - a.taskBounty;
+                  }
+                  : (a,b)=>{
+                      return a.taskId - b.taskId
                   };
         }
     },
@@ -150,26 +147,12 @@ export default {
         toggleTab(index) {
             //  排序
             this.sortStatus = index;
-            this.taskList.sort(this.curSortFun);
             this.recommendList.sort(this.curSortFun);
-        },
-        toggleType() {
-            this.typeShow = !this.typeShow;
-        },
-        chooseType(item, index) {
-            //  类型
-            this.isOrder = false;
-            this.isNoMore = false;
-            this.taskListNo = 4;
-            this.typeStatus = index;
-            this.type = item.dictName;
-            this.typeShow = false;
-            this.taskListFilter = item.dictId;
         },
         setScrollViewHeight() {
             wx.getSystemInfo({
                 success: res => {
-                    this.scrollHeight = `height:${res.windowHeight - 210}px;`;
+                    this.scrollHeight = `height:${res.windowHeight - 246}px;`;
                 }
             });
         },
@@ -202,6 +185,11 @@ export default {
                 this.isNoMore = true;
             } else {
                 this.taskListNo += 4;
+                wx.getSystemInfo({
+                success: res => {
+                    this.scrollHeight = `height:${res.windowHeight - 225}px;`;
+                }
+            });
             }
         },
         goLogin(taskId) {
@@ -216,6 +204,11 @@ export default {
                     url: "../taskDetail/main?taskId=" + this.curTaskId
                 });
             }
+        },
+        bannerGoDetail(id){
+                        wx.navigateTo({
+                url: "../taskDetail/main?taskId=" + id
+            });
         }
     }
 };
@@ -228,10 +221,10 @@ export default {
     // 广告位轮播
     swiper {
         width: 750rpx;
-
+        height 350rpx
         image {
             width: 100%;
-            height: 375rpx;
+            height: 100%;
         }
     }
 
@@ -244,7 +237,7 @@ export default {
 
         ul.sort {
             display: flex;
-            width: 75%;
+            width: 100%;
             justify-content: space-around;
 
             li {
@@ -293,7 +286,7 @@ export default {
     }
 }
 .slide-image
-    object-fit cover
+    object-fit contain
 .no-more
     text-align center
     font-size 12px

@@ -16,7 +16,7 @@
 					</div>
 					<div class="duration-time">
 						任务时长：
-						<span v-text="curTaskDetail.durationTime"></span>
+						<span v-text="curTaskDetail.taskTime"></span>
 					</div>
 				</div>
 				<!-- 赏金和时间 -->
@@ -24,7 +24,7 @@
 					<div class="bounty">¥
 						<span v-text="curTaskDetail.bounty"></span>
 					</div>
-					<div class="countdown" v-text="curTaskDetail.countdown"></div>
+					<div class="countdown" v-text="'预计耗时'+curTaskDetail.preTime"></div>
 				</div>
 			</div>
 			<div class="operate" v-show='!complete'>
@@ -43,22 +43,28 @@
 			<div class="task-nav">
 				<div class="nav-item" :class="[ currentTab == 0 ? 'current' : '' ]" @click="toggleNav(0)">任务描述</div>
 				<div class="nav-item" :class="[ currentTab == 1 ? 'current' : '' ]" @click="toggleNav(1)">任务说明</div>
-				<div class="nav-item" :class="[ currentTab == 2 ? 'current' : '' ]" @click="toggleNav(2)">任务列表</div>
+				<!-- <div class="nav-item" :class="[ currentTab == 2 ? 'current' : '' ]" @click="toggleNav(2)">任务列表</div> -->
 			</div>
 			<!-- 任务内容 -->
 			<div class="task-content">
 				<div class="content-item task-desc" v-show="currentTab == 0">
-					<p>{{curTaskDetail.description}}</p>
+					<scroll-view scroll-x style="width:350px">
+						<rich-text class="text-box" :nodes='curTaskDetail.description'></rich-text>
+					</scroll-view>
 				</div>
 				<div class="content-item task-detail" v-show="currentTab == 1">
-					<p>{{curTaskDetail.illustrate}}</p>
+					<scroll-view scroll-x style="width:350px">
+
+					<rich-text class="text-box" :nodes='curTaskDetail.illustrate'></rich-text>
+					</scroll-view>
+
 				</div>
-				<div class="content-item task-list" v-show="currentTab == 2">
+				<!-- <div class="content-item task-list" v-show="currentTab == 2">
 					<task-card v-if="curTask" :item='curTask' :no-jump="true"></task-card>
 					<div v-else class="no-result">
 						没有更多内容了
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -67,7 +73,7 @@
 <script>
 import taskCard from "../../components/taskCard";
 import { getTaskDetail, takeTask, giveUpTask } from "../../api";
-import { formartTaskDetail, formTask } from "../../model";
+import { formartTaskDetail, formTask,fixImg } from "../../model";
 import { errBack, showSucc, msg, _loading, showModel } from "../../utils";
 export default {
     components: {
@@ -94,23 +100,33 @@ export default {
             let result = null;
             for (let item of this.taskList) {
                 if (
-                    item.userStatus == 0 ||
-                    item.userStatus == 1 ||
-                    item.userStatus == 2
+					item.userStatus<=3
                 ) {
                     result = item;
                     break;
                 }
             }
-            if (
-                (result && result.userStatus == 2) ||
-                (!result && this.taskData.userStatus == 2)
-            ) {
-                this.receiveFlag = true;
-            } else if (result && result.userStatus >= 6) {
-                this.complete = true;
-            }
-            return result ? formTask([result])[0] : null;
+            //     (result && (result.userStatus == 2||result.userStatus == 3)) ||
+            //     (!result && (this.taskData.userStatus == 2 || this.taskData.userStatus == 3))
+            // ) {
+            //     this.receiveFlag = true;
+            // } else if (result && result.userStatus >= 6) {
+            //     this.complete = true;
+            // }
+			result  =  result ?  formTask([result])[0] :  null;
+			if(result){
+				console.log(result)
+				if(result.userStatus == 2 || result.userStatus == 3){
+					this.receiveFlag = true;
+				}
+			}else{
+				if(this.taskData.userStatus == 2 || this.taskData.userStatus == 3){
+					this.receiveFlag = true;
+				}else if(this.taskData.userStatus > 6){
+					this.complete = true;
+				}
+			}
+			return result;
         },
         curTaskDetail() {
             return formartTaskDetail(this.taskData);
@@ -124,14 +140,16 @@ export default {
             ).then(res => {
                 if (res.code == 1) {
                     showSucc("领取成功");
-                    this.receiveFlag = true;
-                    if (this.taskData.isLocal == 1) {
-                        wx.navigateTo({
-                            url: `../${this.curTask.url}/main`
-                        });
-                    } else {
-                        this.getTaskData();
-                    }
+                    setTimeout(() => {
+                        this.receiveFlag = true;
+                        if (this.taskData.isLocal == 1) {
+                            wx.navigateTo({
+                                url: `../${this.curTask.url}/main`
+                            });
+                        } else {
+                            this.getTaskData();
+                        }
+                    }, 800);
                 } else {
                     msg(res.msg);
                 }
@@ -156,8 +174,7 @@ export default {
                     ).then(res => {
                         if (res.code == 1) {
                             msg("取消成功");
-                            this.receiveFlag = true;
-                            this.getTaskData();
+							wx.navigateBack({delta:1})
                         } else {
                             msg(res.msg);
                         }
@@ -178,7 +195,8 @@ export default {
                 let data = (await getTaskDetail({
                     taskId: this.taskId,
                     userId
-                })).data;
+				})).data;
+				console.log(data)
                 _loading();
                 this.taskData = data.missionTask;
                 this.isNew = this.taskData.type == 2 ? true : false;
@@ -293,6 +311,8 @@ export default {
 			margin-bottom: 20rpx;
 
 			.nav-item {
+				flex 1
+				text-align center
 				font-size: 30rpx;
 			}
 
@@ -327,4 +347,5 @@ export default {
 	text-align: center;
 	color: #999;
 }
+		
 </style>

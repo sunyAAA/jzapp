@@ -26,10 +26,11 @@
 			<div class="upload-area">
 				<textarea placeholder="内容描述..." v-model="remark"></textarea>
 				<div class="img-box">
-					<div class="img-item" v-for="(item,index) in curImg" :key="index" @click='remove(index)'>
+					<div class="img-item" v-for="(item,index) in imgUrl" :key="index" >
 						<img :src="oss + item" alt="">
+                        <div class="icon-remove" @click='remove(index)'><img src="../../../static/images/remove.jpg" alt=""></div>
 					</div>
-					<div class="btn-upload" @click.stop='upLoadImg'>
+					<div class="btn-upload" @click='upLoadImg' v-if="btnShow">
 						<img src="../../../static/images/addImg.png" alt="">
 					</div>
 				</div>
@@ -37,7 +38,7 @@
 			<span>上传凭证（最多可上传9张）</span>
 		</div>
 		<!-- 审核按钮 -->
-		<div class="btn-review" @click='send' v-if='isNew'>预计审核时间，将在七个工作日内</div>
+		<div class="btn-review" @click='send' v-if='isNew'>提交凭证</div>
 	</div>
 </template>
 
@@ -64,7 +65,8 @@ export default {
             remark: "",
             isNew: null,
             statusText: "",
-            taskList: []
+            taskList: [],
+            btnShow:true
         };
     },
     onLoad(options) {
@@ -80,16 +82,11 @@ export default {
         this.getTask();
     },
     computed: {
-        curImg() {
-            return this.imgUrl.slice(-9);
-        },
         curTask() {
             let result = null;
             for (let item of this.taskList) {
                 if (
-                    item.userStatus == 0 ||
-                    item.userStatus == 1 ||
-                    item.userStatus == 2
+					item.userStatus<=3
                 ) {
                     result = item;
                     break;
@@ -117,16 +114,16 @@ export default {
             this.getApplyData();
         },
         upLoadImg() {
-            upImgs(9, this.imgUrl);
+            let left = 9 - this.imgUrl.length;
+            if(left<0){
+                return
+            }
+            upImgs(left, this.imgUrl);
         },
         remove(index) {
             showModel("确定要删除该图片吗").then(res => {
                 if (res) {
-                    let offset =
-                        this.imgUrl.length > 9
-                            ? this.imgUrl.length - this.curImg.length
-                            : 0;
-                    this.imgUrl.splice(index + offset, 1);
+                    this.imgUrl.splice(index, 1);
                 }
             });
         },
@@ -177,12 +174,30 @@ export default {
                 msg("最多输入120个字");
                 this.remark = val.slice(-119);
             }
+        },
+        imgUrl(){
+            console.log(this.imgUrl.length)
+            if(this.imgUrl.length >=9){
+                this.btnShow = false
+            }else{
+                this.btnShow = true;
+            }
         }
     }
 };
 </script>
 
 <style lang="stylus" scoped>
+.icon-remove 
+    position absolute
+    right -10px
+    top -10px
+    width 20px
+    height 20px
+    img
+        width 100%
+        height 100%
+        object-fit cover
 .verified-wrap {
 	// 任务信息卡片
 	.card-item {
@@ -229,7 +244,7 @@ export default {
 
 	// 上传凭证
 	.upload-box {
-		margin-bottom: 75px;
+		margin-bottom: 15px;
 
 		.upload-area {
 			width: 590rpx;
@@ -250,6 +265,7 @@ export default {
 				display: inline-block;
 				margin-right: 10px;
 				margin-bottom: 20px;
+                position relative;
 
 				img {
 					width: 100%;
@@ -293,6 +309,7 @@ export default {
 	padding: 10px 20px;
 	color: #ff4b2b;
 }
+
 </style>
 
 

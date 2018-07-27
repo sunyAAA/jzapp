@@ -65,14 +65,16 @@ export function formartTaskDetail(task) {
         publisher: task.shopName || "平台发布",
         startTime: timestampToDate(task.beginTime),
         endTime: timestampToDate(task.endTime),
+        preTime:formartTaskTime(task.preTime),
         durationTime: task.taskTime,
         bounty: task.amount,
         countdown : getCalcDate(task.beginTime,task.endTime),
         durationTime:formartTaskTime(task.preTime),
-        description: task.description || '',
-        illustrate :task.illustrate || '',
+        description: fixImg(task.description) || '',
+        illustrate :task.illustrate|| '',
         userTaskDetailId:task.userTaskDetailId,
-        taskDetailId:task.taskDetailId
+        taskDetailId:task.taskDetailId,
+        taskTime :formartTaskTime(task.taskTime)
     }
 }
 
@@ -100,11 +102,9 @@ function getTaskType(type) {
     }
     return null;
 }
-// {
-//     flag: "试玩任务",
-//     title: "棋牌手游试玩",
-//     publisher: "米多游戏",
-//     beginTime: "2018-7-5",
-//     endTime: "2018-7-10",
-//     taskBounty: 380
-// },
+export function fixImg(str){
+    if(!str){return}
+    var reg = /.jpg|.png|.jepg|.gif|.bmp/g 
+    str = str.replace(reg,'$1/240')
+    return str
+}
