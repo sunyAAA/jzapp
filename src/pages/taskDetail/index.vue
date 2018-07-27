@@ -33,7 +33,7 @@
 				<!-- 提交凭证和放弃按钮 -->
 				<div class="btn-group" v-else>
 					<div class="btn-submit" @click="submit">提交凭证</div>
-					<div class="give-up" @click="giveUp"   v-show="!isNew">放弃</div>
+					<div class="give-up" @click="giveUp" v-show="!isNew">放弃</div>
 				</div>
 			</div>
 		</div>
@@ -66,9 +66,9 @@
 
 <script>
 import taskCard from "../../components/taskCard";
-import { getTaskDetail, takeTask, giveUpTask} from "../../api";
+import { getTaskDetail, takeTask, giveUpTask } from "../../api";
 import { formartTaskDetail, formTask } from "../../model";
-import { errBack,showSucc,msg, _loading } from "../../utils";
+import { errBack, showSucc, msg, _loading, showModel } from "../../utils";
 export default {
     components: {
         taskCard
@@ -79,35 +79,42 @@ export default {
             currentTab: 0,
             taskList: [],
             taskData: {},
-			complete: false,
-			isNew:false
+            complete: false,
+            isNew: false
         };
     },
     onLoad(options) {
-		this.taskId = options.taskId;
+        this.taskId = options.taskId;
     },
     onShow() {
-		this.getTaskData()
-	},
+        this.getTaskData();
+    },
     computed: {
         curTask() {
             let result = null;
             for (let item of this.taskList) {
-                if (item.userStatus == 0 || item.userStatus == 1 || item.userStatus == 2) {
-					result = item;
-					break;
+                if (
+                    item.userStatus == 0 ||
+                    item.userStatus == 1 ||
+                    item.userStatus == 2
+                ) {
+                    result = item;
+                    break;
                 }
-			}
-			if((result && result.userStatus == 2) ||  ( !result &&this.taskData.userStatus == 2)){
-				this.receiveFlag = true;
-			}else if( result&&result.userStatus >=6){
-				this.complete = true;
-			}
-            return result ? formTask([result])[0]:null;
-		},
-		curTaskDetail(){
-			return formartTaskDetail(this.taskData)
-		}
+            }
+            if (
+                (result && result.userStatus == 2) ||
+                (!result && this.taskData.userStatus == 2)
+            ) {
+                this.receiveFlag = true;
+            } else if (result && result.userStatus >= 6) {
+                this.complete = true;
+            }
+            return result ? formTask([result])[0] : null;
+        },
+        curTaskDetail() {
+            return formartTaskDetail(this.taskData);
+        }
     },
     methods: {
         receive() {
@@ -115,58 +122,68 @@ export default {
                 this.taskData.taskId,
                 this.curTask ? this.curTask.taskDetailId : ""
             ).then(res => {
-				if(res.code == 1){
-					showSucc('领取成功');
-            		this.receiveFlag = true;
-					if(this.taskData.isLocal == 1){
-						wx.navigateTo({
-							url: `../${this.curTask.url}/main`
-						});
-					}else{
-						this.getTaskData()
-					}
-				}else{
-					msg(res.msg)
-				}
-			});
+                if (res.code == 1) {
+                    showSucc("领取成功");
+                    this.receiveFlag = true;
+                    if (this.taskData.isLocal == 1) {
+                        wx.navigateTo({
+                            url: `../${this.curTask.url}/main`
+                        });
+                    } else {
+                        this.getTaskData();
+                    }
+                } else {
+                    msg(res.msg);
+                }
+            });
         },
         submit() {
-			//        this.receiveFlag = true;
-			wx.navigateTo({url:`../taskCertificate/main?taskId=${this.taskData.taskId}&taskDetailId=${this.curTask ? this.curTask.taskDetailId :" "}`})
+            //        this.receiveFlag = true;
+            wx.navigateTo({
+                url: `../taskCertificate/main?taskId=${
+                    this.taskData.taskId
+                }&userTaskDetailId=${
+                    this.curTask ? this.curTask.userTaskDetailId : " "
+                }`
+            });
         },
         giveUp() {
-			giveUpTask(
-				this.taskData.taskId,
-                this.curTask ? this.curTask.taskDetailId : ""
-			).then(res=>{
-				if(res.code == 1){
-					msg('取消成功')
-            		this.receiveFlag = true;
-					this.getTaskData()
-				}else{
-					msg(res.msg)
-				}
-			})
-            this.receiveFlag = false;
+            showModel("确定要放弃这个任务吗？").then(res => {
+                if (res) {
+                    giveUpTask(
+                        this.taskData.taskId,
+                        this.curTask ? this.curTask.userTaskDetailId : ""
+                    ).then(res => {
+                        if (res.code == 1) {
+                            msg("取消成功");
+                            this.receiveFlag = true;
+                            this.getTaskData();
+                        } else {
+                            msg(res.msg);
+                        }
+                    });
+                    this.receiveFlag = false;
+                }
+            });
         },
         toggleNav(n) {
             this.currentTab = n;
         },
         async getTaskData() {
-			_loading('加载中...')
-			this.receiveFlag = false;
-			this.complete = false;
+            _loading("加载中...");
+            this.receiveFlag = false;
+            this.complete = false;
             if (this.taskId) {
                 let userId = wx.getStorageSync("userId") || "";
                 let data = (await getTaskDetail({
                     taskId: this.taskId,
                     userId
-				})).data;
-				_loading()
-				this.taskData = data.missionTask;
-				this.isNew = this.taskData.type == 2 ? true:false;
+                })).data;
+                _loading();
+                this.taskData = data.missionTask;
+                this.isNew = this.taskData.type == 2 ? true : false;
                 this.taskList = data.detail;
-			 if (this.taskData.userStatus == 6) {
+                if (this.taskData.userStatus == 6) {
                     this.complete = true;
                 }
             } else {

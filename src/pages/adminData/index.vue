@@ -57,6 +57,9 @@ export default {
             index:0
         };
     },
+    mounted(){
+      
+    },
     methods: {
         changeSex(e) {
             this.index = e.mp.detail.value 

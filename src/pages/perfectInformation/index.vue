@@ -4,11 +4,11 @@
 		<h5>完善信息，领取红包哟！</h5>
 		<!-- 头像 -->
 		<div class="head-pic"  @click="upLoadImg">
-			<div class="tip" v-show="imgUrl.length == 0">
+			<!-- <div class="tip" v-show="imgUrl.length == 0">
 				<img class="icon" src="../../../static/images/icon-img.png" alt="">
 				<div class="text">添加头像</div>
-			</div>
-			<img class="head" :src="headPic" alt="">
+			</div> -->
+			<img class="head" :src="headPic?headPic:wxHead" alt="">
 		</div>
 		<!-- 表单 -->
 		<div class="form">
@@ -40,15 +40,19 @@ import { completeUser } from "../../api";
 export default {
     data() {
         return {
-            imgUrl: [],
+			imgUrl: [],
+			wxHead:'',
 			name: "",
             sexStatus: -1,
             sexArr: ["男", "女"]
         };
-    },
+	},
+	mounted(){
+		this.wxHead = wx.getStorageSync('userInfo').avatarUrl
+	},
     computed: {
         headPic() {
-            return config.ossroot + this.imgUrl.slice(-1,1);
+            return this.imgUrl.slice(-1,1).length>0?config.ossroot + this.imgUrl.slice(-1,1):'';
         }
     },
     methods: {
@@ -66,14 +70,14 @@ export default {
 				msg('请将表单填写完整');
 				return
 			}
-			completeUser({name:this.name,sex:this.sexArr[this.sexStatus],avatar:this.headPic[0]}).then(res=>{
+			completeUser({name:this.name,sex:this.sexStatus,avatar:this.headPic[0]|| "" }).then(res=>{
 				if(res.code == 1){
 					showSucc('提交成功')
 					setTimeout(() => {
 						wx.navigateBack({delta:1})
 					}, 800);
 				}else{
-					msg('提交失败，请稍后再试')
+					msg(res.msg)
 				}
 			})
 		}

@@ -21,7 +21,7 @@
 
 <script>
 import { bindPhone, getPhoneCode } from "../../api";
-import { msg } from "../../utils";
+import { msg, showSucc } from "../../utils";
 export default {
     data() {
         return {
@@ -72,10 +72,13 @@ export default {
                 }
                 bindPhone({ phone: this.phone, code: this.code }).then(res => {
                     if (res.code == 1) {
-                        wx.redirectTo("../../pages/adminData/main");
-                    }else{
-						msg(res.msg)
-					}
+                        showSucc("绑定成功");
+                        setTimeout(() => {
+                            wx.navigateBack({ delta: 1 });
+                        }, 800);
+                    } else {
+                        msg(res.msg);
+                    }
                 });
             } else {
                 msg("请输入正确的手机号");
@@ -115,9 +118,10 @@ export default {
 			height: 100rpx;
 			border-bottom: 2rpx solid #efeff4;
 			padding: 20rpx 40rpx;
+			display: flex;
 
 			.icon {
-				width: 39rpx;
+				flex: 0 0 39rpx;
 				height: 41rpx;
 				float: left;
 				margin-top: 28rpx;
@@ -125,6 +129,7 @@ export default {
 			}
 
 			input {
+				flex: 1;
 				height: 100%;
 				font-size: 30rpx;
 				color: #999;
@@ -132,8 +137,7 @@ export default {
 			}
 
 			.get {
-				float: right;
-				width: 205rpx;
+				flex: 0 0 205rpx;
 				height: 63rpx;
 				line-height: 63rpx;
 				background-color: #ff4b2b;

@@ -2,7 +2,7 @@
     <div>
         <div class="task-wrap" v-if="loginStatus">
             <!-- 广告位轮播 -->
-            <swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="true">
+            <swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500">
                 <block v-for="(item,index) in bannerList" :key="index">
                     <swiper-item>
                         <img :src="oss+item.face" class="slide-image">
@@ -38,6 +38,7 @@
                 <div v-show="!isOrder">
                     <task-card v-for="(item,index) in curTaskList" :key="index" :item="item" @noLogin="goLogin"></task-card>
                 </div>
+                <div v-show='isNoMore' class="no-more">—— 我们是有底线的 ——</div>
             </scroll-view>
 
         </div>
@@ -77,6 +78,7 @@ export default {
             recommendPageNo: 1,
             taskListPageNo: 1,
             isOrder: true,
+            isNoMore:false,
             newHands: null,
             scrollHeight: "height:355px",
             sortArr: [
@@ -100,15 +102,19 @@ export default {
         [
             this.taskType,
             this.bannerList,
-            this.newHands,
-            this.recommendList
+            this.newHandsData,
+            this.recommendListData,
         ] = await Promise.all([
             initDict(),
             (await getBannerList()).data,
-            formTask((await getNewHandsTask()).data),
-            formTask((await getRecommendTask(this.recommendPageNo)).data)
+            (await getNewHandsTask()),
+            (await getRecommendTask(this.recommendPageNo))
         ]);
-        this.taskList = formTask((await getAllTask(this.taskListPageNo)).data);
+        this.taskListData = (await getAllTask(this.taskListPageNo))
+        this.taskList = formTask(this.taskListData.data);
+        this.newHands = formTask(this.newHandsData.data);
+        this.recommendList = formTask(this.recommendListData.data);
+        
         _loading();
         _login(res => {
             if (res) {
@@ -153,6 +159,7 @@ export default {
         chooseType(item, index) {
             //  类型
             this.isOrder = false;
+            this.isNoMore = false;
             this.taskListNo = 4;
             this.typeStatus = index;
             this.type = item.dictName;
@@ -162,7 +169,7 @@ export default {
         setScrollViewHeight() {
             wx.getSystemInfo({
                 success: res => {
-                    this.scrollHeight = `height:${res.windowHeight - 200}px;`;
+                    this.scrollHeight = `height:${res.windowHeight - 210}px;`;
                 }
             });
         },
@@ -178,7 +185,21 @@ export default {
         },
         loadMore() {
             if (this.isOrder) {
-                this.recommendNo += 4;
+                if(this.curRecommendList.length < this.recommendList.length){
+                    this.recommendNo += 4;
+                    return
+                }
+                if (this.curRecommendList.length <this.recommendListData.totalCount ){
+                    this.recommendNo ++ ;
+                    _loading('加载中...')
+                    return getRecommendTask(this.recommendPageNo).then(res=>{
+                        _loading()
+                        if(res.code == 1){
+                            this.recommendList = this.recommendList.concat(formTask(res.data));
+                        }
+                    })
+                }
+                this.isNoMore = true;
             } else {
                 this.taskListNo += 4;
             }
@@ -273,4 +294,9 @@ export default {
 }
 .slide-image
     object-fit cover
+.no-more
+    text-align center
+    font-size 12px
+    color #aaa
+    padding 10px 0 
 </style>

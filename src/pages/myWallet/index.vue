@@ -15,14 +15,16 @@
 			<div class="ctrol"><input type="number" v-model="putMoney" placeholder="请输入提现金额（整数）" placeholder-style="color:#999;font-size:12px"></div>
 			<p class="desc">全部提现</p>
 		</div>
+		<div class="ye-box" @click='goBindPage'>
+			<span class="arrow">></span>
+			提现到:
+			<span :class="{'no-bind':!bindStatus}">{{bind}}</span>
+		</div>
 		<div class="ye-box" @click='goMoneyDetail'>
 			余额明细
 			<span class="arrow">></span>
 		</div>
-		<div class="ye-box" @click='goBindPage'>
-			<span class="arrow">></span>
-			提现到: <span :class="{'no-bind':!bindStatus}">{{bind}}</span>
-		</div>
+
 		<button class="btn" @click='take'>申请提现</button>
 		<confirm ref='conf' @send='catchSend'></confirm>
 	</div>
@@ -30,56 +32,53 @@
 
 <script>
 import confirm from "../../components/confirm";
-import {getMyMoney,getMyBind} from '../../api'
-import { errBack } from '../../utils';
+import { getMyMoney, getMyBind } from "../../api";
+import { errBack } from "../../utils";
 export default {
     components: { confirm },
     data() {
         return {
-			putMoney: null,
-			money:0,
-			bind:'',
-			bindStatus:false
+            putMoney: null,
+            money: 0,
+            bind: "",
+            bindStatus: false
         };
-	},
-	mounted(){
-		getMyMoney().then(res=>{
-			if(res.code == 1){
-				this.money = res.data.credit
-			}else{
-				errBack()
-			}
-		})
-		getMyBind().then(res=>{
-			if(res.code == 1){
-				if(res.data.length){
-
-				}else{
-					this.bind = '未绑定提现账号，请前往绑定'
-				}
-			}else{
-				errBack()
-			}
-		})
-	},
-	computed:{
-		fixedMoney(){
-			return this.money.toFixed(2)
-		}
-	},
+    },
+    mounted() {
+        getMyMoney().then(res => {
+            if (res.code == 1) {
+                this.money = res.data.credit;
+            } else {
+                errBack();
+            }
+        });
+        getMyBind().then(res => {
+            if (res.code == 1) {
+                if (res.data.length) {
+                } else {
+                    this.bind = "未绑定提现账号，请前往绑定";
+                }
+            } else {
+                errBack();
+            }
+        });
+    },
+    computed: {
+        fixedMoney() {
+            return this.money.toFixed(2);
+        }
+    },
     methods: {
         goMoneyDetail() {
             wx.navigateTo({ url: "../moneyDetailed/main" });
         },
-        catchSend(state) {
-
-		},
+        catchSend(state) {},
         take() {
             this.$refs.conf.show();
-		},
-		goBindPage(){
-			wx.navigateTo({url : '../bindPage/main'})
-		}
+        },
+        goBindPage() {
+            wx.navigateTo({ url: "../bindPage/main" });
+        }
     }
 };
 </script>
@@ -179,8 +178,10 @@ export default {
 	background: #ff4b2b;
 	margin-top: 30px;
 }
-.no-bind 
-	color #e4393c
-	float right 
-	margin-right 10px
+
+.no-bind {
+	color: #e4393c;
+	float: right;
+	margin-right: 10px;
+}
 </style>

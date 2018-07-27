@@ -21,13 +21,14 @@ export function formTask(arr) {
         obj.preTime = formartTaskTime(item.preTime);
         obj.flag = getTaskType(item.type) || '';
         obj.taskId = item.taskId;
-        obj.publisher = item.shopName || '无';
+        obj.publisher = item.shopName || '平台发布';
         obj.taskBounty = item.amount;
         obj.type = item.type;
         obj.sortTime = item.preTime;
         obj.userStatus = item.userStatus;
-        obj.taskDetailId = item.taskDetailId;
+        obj.userTaskDetailId = item.userTaskDetailId ;
         obj.url = item.url || '';
+        obj.taskDetailId =item.taskDetailId
         result.push(obj)
     }
     return result;
@@ -45,12 +46,13 @@ export function formMyTask(arr) {
         obj.preTime = formartTaskTime(item.task.preTime);
         obj.flag = getTaskType(item.type) || '';
         obj.taskId = item.taskId;
-        obj.publisher = item.shopName || '无';
+        obj.publisher = item.shopName || '平台发布';
         obj.taskBounty = item.task.amount;
         obj.type = item.type;
         obj.userStatus = item.task.userStatus;
-        obj.taskDetailId = item.taskDetailId;
+        obj.userTaskDetailId = item.userTaskDetailId;
         obj.url = item.url || '';
+        obj.taskDetailId = item.task.taskDetailId
         result.push(obj)
     }
     return result;
@@ -60,7 +62,7 @@ export function formartTaskDetail(task) {
     return {
         name:task.name,
         type: getTaskType(task.type),
-        publisher: task.shopName || "无",
+        publisher: task.shopName || "平台发布",
         startTime: timestampToDate(task.beginTime),
         endTime: timestampToDate(task.endTime),
         durationTime: task.taskTime,
@@ -69,7 +71,8 @@ export function formartTaskDetail(task) {
         durationTime:formartTaskTime(task.preTime),
         description: task.description || '',
         illustrate :task.illustrate || '',
-        userTaskId:task.userTaskId
+        userTaskDetailId:task.userTaskDetailId,
+        taskDetailId:task.taskDetailId
     }
 }
 
