@@ -8,7 +8,8 @@
 		</div>
 		<!-- 内容 -->
 		<scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
-			<task-card v-for="(item,index) in curData" :key="index" :item="item"></task-card>
+			<task-card v-for="(item,index) in curData" :key="index" :item="item" :goVoto="true"></task-card>
+			<div v-show='isNoMore' class="no-more">—— 我们是有底线的 ——</div>
 		</scroll-view>
 	</div>
 </template>
@@ -41,6 +42,8 @@ export default {
             ],
 			status: 0,
 			scrollHeight: "height:560px",
+			total:0,
+			isNoMore:false
         };
 	},
 	onShow(){
@@ -51,26 +54,26 @@ export default {
         toggleTab(index) {
             this.status = index;
             this.taskStatus = index == 0 ? 2 : index == 1 ? 3 : 6;
-            this.pageNum = 1;
+			this.pageNum = 1;
+			this.total = 0;
+			this.isNoMore = false
         },
         getMyData() {
 			_loading('加载中...')
             getMyTask(this.taskStatus, pageSize, this.pageNum).then(res => {
 				if(res.code == 1){
+					this.total = res.totalCount;
 					this.curData = this.pageNum > 1 ? this.curData.concat(formMyTask(res.data)):formMyTask(res.data)
 				}
 				_loading();
 			});
 		},
-		getApproveData(){
-			_loading('加载中...')
-			getApprove(pageSize,this.pageNum).then(res=>{
-				_loading()
-			})
-		},
 		loadMore(){
-			// this.pageNum ++ ;
-			
+			if(curData.length > this.total){
+				return this.isNoMore = true;
+			}
+			this.pageNum ++ ;
+			this.getMyTask()
 		},
 		setScrollViewHeight() {
             wx.getSystemInfo({
@@ -82,8 +85,7 @@ export default {
     },
     watch: {
         taskStatus(val) {
-			
-				this.getMyData()
+			this.getMyData()
 		}
     }
 };
@@ -117,4 +119,9 @@ export default {
 		}
 	}
 }
+.no-more
+	text-align center
+	font-size 12px
+	color #aaa
+	padding 10px 0 
 </style>

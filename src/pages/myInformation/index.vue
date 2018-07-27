@@ -17,7 +17,6 @@
     },
     methods: {
       getInfoList(index){
-        console.log('获取一次信息数据'+index)
       },
       toggleNav(index){
         this.tabStatus = index;

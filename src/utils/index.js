@@ -54,7 +54,6 @@ export function _login(cb) {
 							} else {
 							}
 						}).catch(err => {
-							console.log(err)
 							msg('用户信息获取失败,请稍后再试...')
 							return cb && cb(null)
 						})
@@ -95,7 +94,6 @@ export function loginByUser(userInfo, cb) {
 					_loading()
 				}
 			}).catch((err) => {
-				console.log(err)
 				msg('用户信息获取失败,请稍后再试...')
 				return cb && cb(null)
 			})

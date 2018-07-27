@@ -39,7 +39,11 @@ export default {
         noJump: {
             type: Boolean,
             default: false
-        }
+		},
+        goVoto: {
+            type: Boolean,
+            default: false
+		},
     },
     methods: {
         goDetail() {
@@ -47,7 +51,7 @@ export default {
                 return wx.navigateTo({
                     url: `../${this.item.url}/main`
                 });
-            } else if (this.item.userStatus == 3) {
+            } else if (this.item.userStatus == 3 && this.goVoto) {
                 wx.navigateTo({
                     url: `../taskCertificate/main?taskId=${
                         this.item.taskId

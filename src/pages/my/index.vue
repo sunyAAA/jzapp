@@ -55,7 +55,6 @@ export default {
     },
     mounted(){
       let info =  wx.getStorageSync('userInfo');
-      console.log(info)
       this.username = info.nickName;
       this.headPicUrl = info.avatarUrl;
     },

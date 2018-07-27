@@ -94,22 +94,6 @@ export default {
     async onReady() {
         wx.hideTabBar(); //  隐藏导航
         this.oss = config.ossroot;
-        _loading("载入中...");
-        [
-            this.taskType,
-            this.bannerList,
-            this.newHandsData,
-            this.recommendListData,
-        ] = await Promise.all([
-            initDict(),
-            (await getBannerList()).data,
-            (await getNewHandsTask()),
-            (await getRecommendTask(this.recommendPageNo))
-        ]);
-        this.newHands = formTask(this.newHandsData.data);
-        this.recommendList = formTask(this.recommendListData.data);
-        
-        _loading();
         _login(res => {
             if (res) {
                 wx.showTabBar();
@@ -117,7 +101,8 @@ export default {
         });
     },
     async onShow(){
-                _loading("载入中...");
+        _loading("载入中...");
+        this.recommendList = [];
         [
             this.taskType,
             this.bannerList,
@@ -131,7 +116,6 @@ export default {
         ]);
         this.newHands = formTask(this.newHandsData.data);
         this.recommendList = formTask(this.recommendListData.data);
-        
         _loading();
     },
     mounted() {
@@ -139,7 +123,7 @@ export default {
     },
     computed: {
         curRecommendList() {
-            return this.recommendList.slice(0, this.recommendNo);
+            return this.recommendList.length ?  this.recommendList.slice(0, this.recommendNo) : [];
         },
         // curTaskList() {
         //     return this.taskList

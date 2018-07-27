@@ -77,7 +77,7 @@
 <script>
 import taskCard from "../../components/taskCard";
 import { getTaskDetail, takeTask, giveUpTask } from "../../api";
-import { formartTaskDetail, formTask,fixImg,formartTaskTime } from "../../model";
+import { formartTaskDetail, formTask,fixImg,diffTime } from "../../model";
 import { errBack, showSucc, msg, _loading, showModel } from "../../utils";
 export default {
     components: {
@@ -98,9 +98,17 @@ export default {
     onLoad(options) {
         this.taskId = options.taskId;
     },
-    onShow() {
-        this.getTaskData();
-    },
+    mounted() {
+		this.getTaskData();
+		this.taskList = [];
+		
+	},
+	onUnLoad(){
+		console.log('--')
+		clearInterval(this.timer);
+		this.timer= null;
+		this.countDownText=''
+	},
     computed: {
         curTask() {
             let result = null;
@@ -125,7 +133,6 @@ export default {
 					this.showCountDown = true;
 					this.setCountDown(this.taskData.countDown,this.taskData.taskTime)
 				}else if(this.taskData.userStatus == 6){
-					console.log(this.taskData)
 					this.complete = true;
 				}
 			}
@@ -136,7 +143,7 @@ export default {
         }
     },
     methods: {
-        receive() {console.log(this.taskData)
+        receive() {
             takeTask(
                 this.taskData.taskId,
                 this.curTask ? this.curTask.taskDetailId : ""
@@ -190,13 +197,13 @@ export default {
 			if(this.timer){
 				return
 			}else{
-				let t = countDownTime/1000/60+taskTime - new Date().getTime()/1000/60
+				let t = countDownTime+(taskTime*60*1000) - (new Date().getTime())
 				if(t< 0 ){
 					this.countDownText = '已过期'
 					return
 				}
 				this.timer = setInterval(()=>{
-					this.countDownText = formartTaskTime(t);
+					this.countDownText = diffTime(t);
 					t-=1000;
 					if(t < 0){
 						clearInterval(this.timer);
@@ -213,7 +220,6 @@ export default {
 			this.receiveFlag = false;
 			this.showCountDown=false;
 			this.complete = false;
-			this.timer = null;
             if (this.taskId) {
                 let userId = wx.getStorageSync("userId") || "";
                 let data = (await getTaskDetail({

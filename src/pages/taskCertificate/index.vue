@@ -71,11 +71,6 @@ export default {
     },
     onLoad(options) {
         this.taskId = options.taskId;
-        if (!this.taskId) {
-            errBack();
-        }
-        this.taskDetailId = options.userTaskDetailId || " ";
-        console.log(options);
     },
     mounted() {
         this.oss = config.ossroot;
@@ -108,7 +103,6 @@ export default {
                 taskId: this.taskId,
                 userId
             })).data;
-            console.log(data);
             this.task = data.missionTask;
             this.taskList = data.detail;
             this.getApplyData();
@@ -176,7 +170,6 @@ export default {
             }
         },
         imgUrl(){
-            console.log(this.imgUrl.length)
             if(this.imgUrl.length >=9){
                 this.btnShow = false
             }else{
