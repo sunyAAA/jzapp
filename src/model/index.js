@@ -44,14 +44,15 @@ export function formMyTask(arr) {
         obj.beginTime = timestampToDate(item.beginTime);
         obj.endTime = timestampToDate(item.endTime);
         obj.preTime = formartTaskTime(item.task.preTime);
-        obj.flag = getTaskType(item.type) || '';
+        obj.flag = getTaskType(item.task.type) || '';
         obj.taskId = item.taskId;
         obj.publisher = item.shopName || '平台发布';
         obj.taskBounty = item.task.amount;
         obj.type = item.type;
-        obj.userStatus = item.task.userStatus;
+        obj.userStatus = item.status;
         obj.userTaskDetailId = item.userTaskDetailId;
-        obj.url = item.url || '';
+        obj.isLocal = item.task.isLocal
+        obj.url = item.task.url || '';
         obj.taskDetailId = item.task.taskDetailId
         result.push(obj)
     }
@@ -78,7 +79,7 @@ export function formartTaskDetail(task) {
     }
 }
 
-function formartTaskTime(time) {
+export function formartTaskTime(time) {
     let timespan = time * 60;
     let day = Math.floor(timespan / 86400);
     let hour = Math.floor(timespan % 86400 / 3600);

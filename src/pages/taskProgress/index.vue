@@ -50,7 +50,7 @@ export default {
     methods: {
         toggleTab(index) {
             this.status = index;
-            this.taskStatus = index == 0 ? 2 : index == 1 ? 3 : 4;
+            this.taskStatus = index == 0 ? 2 : index == 1 ? 3 : 6;
             this.pageNum = 1;
         },
         getMyData() {

@@ -1,5 +1,5 @@
 <template>
-	<div class="task-card" @click="goDetail" >
+	<div class="task-card" @click="goDetail">
 		<!--<li v-for="(item, index) in tasksArr" :key="index"  @click="goToDetail()">-->
 		<div class="card-item">
 			<!-- 类型标记 -->
@@ -43,13 +43,16 @@ export default {
     },
     methods: {
         goDetail() {
-            if (this.noJump) {
-				if(this.item.url && this.item.userStatus == 2){
-						wx.navigateTo({
-							url: `../${this.item.url}/main`
-						});
-				}
-                return;
+            if (this.item.isLocal && this.item.userStatus == 2) {
+                return wx.navigateTo({
+                    url: `../${this.item.url}/main`
+                });
+            } else if (this.item.userStatus == 3) {
+                wx.navigateTo({
+                    url: `../taskCertificate/main?taskId=${
+                        this.item.taskId
+                    }`
+                });
             }
             let _t = wx.getStorageSync("_token");
             if (!_t) {

@@ -14,9 +14,13 @@
 						<span v-text="curTaskDetail.startTime"></span> 至
 						<span v-text="curTaskDetail.endTime"></span>
 					</div>
-					<div class="duration-time">
+					<div class="duration-time" v-if="!showCountDown">
 						任务时长：
 						<span v-text="curTaskDetail.taskTime"></span>
+					</div>
+					<div class="count-down duration-time" v-else>
+						倒计时：
+						<span>{{countDownText}}</span>
 					</div>
 				</div>
 				<!-- 赏金和时间 -->
@@ -73,7 +77,7 @@
 <script>
 import taskCard from "../../components/taskCard";
 import { getTaskDetail, takeTask, giveUpTask } from "../../api";
-import { formartTaskDetail, formTask,fixImg } from "../../model";
+import { formartTaskDetail, formTask,fixImg,formartTaskTime } from "../../model";
 import { errBack, showSucc, msg, _loading, showModel } from "../../utils";
 export default {
     components: {
@@ -85,8 +89,10 @@ export default {
             currentTab: 0,
             taskList: [],
             taskData: {},
-            complete: false,
-            isNew: false
+            complete: null,
+			isNew: false,
+			showCountDown:false,
+			countDownText:''
         };
     },
     onLoad(options) {
@@ -100,29 +106,26 @@ export default {
             let result = null;
             for (let item of this.taskList) {
                 if (
-					item.userStatus<=3
+					item.userStatus<=3 || item.userStatus 
                 ) {
                     result = item;
                     break;
                 }
             }
-            //     (result && (result.userStatus == 2||result.userStatus == 3)) ||
-            //     (!result && (this.taskData.userStatus == 2 || this.taskData.userStatus == 3))
-            // ) {
-            //     this.receiveFlag = true;
-            // } else if (result && result.userStatus >= 6) {
-            //     this.complete = true;
-            // }
 			result  =  result ?  formTask([result])[0] :  null;
 			if(result){
-				console.log(result)
 				if(result.userStatus == 2 || result.userStatus == 3){
 					this.receiveFlag = true;
+					this.showCountDown = true;
+					this.setCountDown(this.taskData.countDown,this.taskData.taskTime)
 				}
 			}else{
 				if(this.taskData.userStatus == 2 || this.taskData.userStatus == 3){
 					this.receiveFlag = true;
-				}else if(this.taskData.userStatus > 6){
+					this.showCountDown = true;
+					this.setCountDown(this.taskData.countDown,this.taskData.taskTime)
+				}else if(this.taskData.userStatus == 6){
+					console.log(this.taskData)
 					this.complete = true;
 				}
 			}
@@ -133,7 +136,7 @@ export default {
         }
     },
     methods: {
-        receive() {
+        receive() {console.log(this.taskData)
             takeTask(
                 this.taskData.taskId,
                 this.curTask ? this.curTask.taskDetailId : ""
@@ -144,7 +147,7 @@ export default {
                         this.receiveFlag = true;
                         if (this.taskData.isLocal == 1) {
                             wx.navigateTo({
-                                url: `../${this.curTask.url}/main`
+                                url: `../${this.taskData.url}/main`
                             });
                         } else {
                             this.getTaskData();
@@ -182,28 +185,45 @@ export default {
                     this.receiveFlag = false;
                 }
             });
-        },
+		},
+		setCountDown(countDownTime,taskTime){
+			if(this.timer){
+				return
+			}else{
+				let t = countDownTime/1000/60+taskTime - new Date().getTime()/1000/60
+				if(t< 0 ){
+					this.countDownText = '已过期'
+					return
+				}
+				this.timer = setInterval(()=>{
+					this.countDownText = formartTaskTime(t);
+					t-=1000;
+					if(t < 0){
+						clearInterval(this.timer);
+						this.timer= null;
+					}
+				},1000)
+			}
+		},
         toggleNav(n) {
             this.currentTab = n;
         },
         async getTaskData() {
             _loading("加载中...");
-            this.receiveFlag = false;
-            this.complete = false;
+			this.receiveFlag = false;
+			this.showCountDown=false;
+			this.complete = false;
+			this.timer = null;
             if (this.taskId) {
                 let userId = wx.getStorageSync("userId") || "";
                 let data = (await getTaskDetail({
                     taskId: this.taskId,
                     userId
 				})).data;
-				console.log(data)
                 _loading();
-                this.taskData = data.missionTask;
+				this.taskData = data.missionTask;
                 this.isNew = this.taskData.type == 2 ? true : false;
-                this.taskList = data.detail;
-                if (this.taskData.userStatus == 6) {
-                    this.complete = true;
-                }
+				this.taskList = data.detail;
             } else {
                 errBack();
             }
@@ -347,5 +367,6 @@ export default {
 	text-align: center;
 	color: #999;
 }
-		
+.count-down
+	color #ff4b2b		
 </style>

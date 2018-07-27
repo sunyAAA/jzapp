@@ -116,6 +116,24 @@ export default {
             }
         });
     },
+    async onShow(){
+                _loading("载入中...");
+        [
+            this.taskType,
+            this.bannerList,
+            this.newHandsData,
+            this.recommendListData,
+        ] = await Promise.all([
+            initDict(),
+            (await getBannerList()).data,
+            (await getNewHandsTask()),
+            (await getRecommendTask(this.recommendPageNo))
+        ]);
+        this.newHands = formTask(this.newHandsData.data);
+        this.recommendList = formTask(this.recommendListData.data);
+        
+        _loading();
+    },
     mounted() {
         this.setScrollViewHeight();
     },

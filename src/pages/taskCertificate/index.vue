@@ -145,7 +145,7 @@ export default {
             });
         },
         send() {
-            if (!this.curImg.length) {
+            if (!this.imgUrl.length) {
                 msg("请上传凭证");
                 return;
             }
@@ -153,7 +153,7 @@ export default {
             completeApply(
                 this.task.userTaskId,
                 this.taskDetailId,
-                this.curImg.join(","),
+                this.imgUrl.join(","),
                 this.remark
             ).then(res => {
                 _loading();
