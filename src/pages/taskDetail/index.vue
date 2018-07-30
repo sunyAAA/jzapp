@@ -59,7 +59,7 @@
 				<div class="content-item task-detail" v-show="currentTab == 1">
 					<scroll-view scroll-x style="width:350px">
 
-					<rich-text class="text-box" :nodes='curTaskDetail.illustrate'></rich-text>
+						<rich-text class="text-box" :nodes='curTaskDetail.illustrate'></rich-text>
 					</scroll-view>
 
 				</div>
@@ -77,7 +77,7 @@
 <script>
 import taskCard from "../../components/taskCard";
 import { getTaskDetail, takeTask, giveUpTask } from "../../api";
-import { formartTaskDetail, formTask,fixImg,diffTime } from "../../model";
+import { formartTaskDetail, formTask, fixImg, diffTime } from "../../model";
 import { errBack, showSucc, msg, _loading, showModel } from "../../utils";
 export default {
     components: {
@@ -90,54 +90,21 @@ export default {
             taskList: [],
             taskData: {},
             complete: null,
-			isNew: false,
-			showCountDown:false,
-			countDownText:''
+            isNew: false,
+            showCountDown: false,
+            countDownText: "",
+            curTask: null
         };
     },
     onLoad(options) {
         this.taskId = options.taskId;
     },
     mounted() {
-		this.getTaskData();
-		this.taskList = [];
-		
-	},
-	onUnLoad(){
-		console.log('--')
-		clearInterval(this.timer);
-		this.timer= null;
-		this.countDownText=''
-	},
+        this.getTaskData();
+        this.taskList = [];
+    },
+    onUnLoad() {},
     computed: {
-        curTask() {
-            let result = null;
-            for (let item of this.taskList) {
-                if (
-					item.userStatus<=3 || item.userStatus 
-                ) {
-                    result = item;
-                    break;
-                }
-            }
-			result  =  result ?  formTask([result])[0] :  null;
-			if(result){
-				if(result.userStatus == 2 || result.userStatus == 3){
-					this.receiveFlag = true;
-					this.showCountDown = true;
-					this.setCountDown(this.taskData.countDown,this.taskData.taskTime)
-				}
-			}else{
-				if(this.taskData.userStatus == 2 || this.taskData.userStatus == 3){
-					this.receiveFlag = true;
-					this.showCountDown = true;
-					this.setCountDown(this.taskData.countDown,this.taskData.taskTime)
-				}else if(this.taskData.userStatus == 6){
-					this.complete = true;
-				}
-			}
-			return result;
-        },
         curTaskDetail() {
             return formartTaskDetail(this.taskData);
         }
@@ -167,7 +134,7 @@ export default {
         },
         submit() {
             //        this.receiveFlag = true;
-            wx.navigateTo({
+            return wx.navigateTo({
                 url: `../taskCertificate/main?taskId=${
                     this.taskData.taskId
                 }&userTaskDetailId=${
@@ -184,7 +151,7 @@ export default {
                     ).then(res => {
                         if (res.code == 1) {
                             msg("取消成功");
-							wx.navigateBack({delta:1})
+                            wx.navigateBack({ delta: 1 });
                         } else {
                             msg(res.msg);
                         }
@@ -192,47 +159,88 @@ export default {
                     this.receiveFlag = false;
                 }
             });
-		},
-		setCountDown(countDownTime,taskTime){
-			if(this.timer){
-				return
-			}else{
-				let t = countDownTime+(taskTime*60*1000) - (new Date().getTime())
-				if(t< 0 ){
-					this.countDownText = '已过期'
-					return
-				}
-				this.timer = setInterval(()=>{
-					this.countDownText = diffTime(t);
-					t-=1000;
-					if(t < 0){
-						clearInterval(this.timer);
-						this.timer= null;
-					}
-				},1000)
-			}
-		},
+        },
+        setCountDown(countDownTime, taskTime) {
+            if (this.timer) {
+                return;
+            } else {
+                let t =
+                    countDownTime + taskTime * 60 * 1000 - new Date().getTime();
+                if (t < 0) {
+                    this.countDownText = "已过期";
+                    return;
+                }
+                this.timer = setInterval(() => {
+                    this.countDownText = diffTime(t);
+                    t -= 1000;
+                    if (t < 0) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }, 1000);
+            }
+        },
         toggleNav(n) {
             this.currentTab = n;
         },
+        clear() {
+            clearInterval(this.timer);
+            this.timer = null;
+            this.countDownText = "";
+        },
         async getTaskData() {
-            _loading("加载中...");
-			this.receiveFlag = false;
-			this.showCountDown=false;
-			this.complete = false;
+			_loading("加载中...");
+			this.clear()
+            this.receiveFlag = false;
+            this.showCountDown = false;
+            this.complete = false;
             if (this.taskId) {
                 let userId = wx.getStorageSync("userId") || "";
                 let data = (await getTaskDetail({
                     taskId: this.taskId,
                     userId
-				})).data;
-                _loading();
-				this.taskData = data.missionTask;
+                })).data;
+                this.taskData = data.missionTask;
                 this.isNew = this.taskData.type == 2 ? true : false;
-				this.taskList = data.detail;
+                this.taskList = data.detail;
+                let result = null;
+                for (let item of this.taskList) {
+                    if (item.userStatus <= 3 || item.userStatus) {
+                        result = item;
+                        break;
+                    }
+                }
+                result = result ? formTask([result])[0] : null;
+                this.curTask = result;
+                if (result) {
+                    if (result.userStatus == 2 || result.userStatus == 3) {
+                        this.receiveFlag = true;
+                        this.showCountDown = true;
+                        this.setCountDown(
+                            this.taskData.countDown,
+                            this.taskData.taskTime
+                        );
+                    }
+                } else {
+                    if (
+                        this.taskData.userStatus == 2 ||
+                        this.taskData.userStatus == 3
+                    ) {
+                        this.receiveFlag = true;
+                        this.showCountDown = true;
+                        this.setCountDown(
+                            this.taskData.countDown,
+                            this.taskData.taskTime
+                        );
+                    } else if (this.taskData.userStatus == 6) {
+                        this.complete = true;
+                    }
+                }
             } else {
                 errBack();
-            }
+			}
+			_loading();
+			
         }
     }
 };
@@ -337,8 +345,8 @@ export default {
 			margin-bottom: 20rpx;
 
 			.nav-item {
-				flex 1
-				text-align center
+				flex: 1;
+				text-align: center;
 				font-size: 30rpx;
 			}
 
@@ -373,6 +381,8 @@ export default {
 	text-align: center;
 	color: #999;
 }
-.count-down
-	color #ff4b2b		
+
+.count-down {
+	color: #ff4b2b;
+}
 </style>

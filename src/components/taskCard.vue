@@ -52,7 +52,7 @@ export default {
                     url: `../${this.item.url}/main`
                 });
             } else if (this.item.userStatus == 3 && this.goVoto) {
-                wx.navigateTo({
+                return wx.navigateTo({
                     url: `../taskCertificate/main?taskId=${
                         this.item.taskId
                     }`
@@ -63,7 +63,7 @@ export default {
                 this.$emit("noLogin", this.item.taskId);
                 return;
             }
-            wx.navigateTo({
+            return wx.navigateTo({
                 url: "../taskDetail/main?taskId=" + this.item.taskId
             });
         }
