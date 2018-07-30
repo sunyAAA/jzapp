@@ -26,10 +26,10 @@
 
 <script>
 import ColChart from "../../components/columnChart/columnChart";
-import { getMyDeposit } from '../../api';
-import { timestampToDate } from '../../utils';
+import { getMyDeposit } from "../../api";
+import { timestampToDate } from "../../utils";
 
-const TIME_OFFSET = 7*24*60*60*1000;
+const TIME_OFFSET = 7 * 24 * 60 * 60 * 1000;
 export default {
     components: { ColChart },
     data() {
@@ -40,13 +40,13 @@ export default {
         };
     },
     mounted() {
-		let now =  new Date().getTime()
-		this.endDate = timestampToDate(now,'Y-m-d');
-		this.startDate = timestampToDate(now - TIME_OFFSET,'Y-m-d');
+        let now = new Date().getTime();
+        this.endDate = timestampToDate(now, "Y-m-d");
+        this.startDate = timestampToDate(now - TIME_OFFSET, "Y-m-d");
         setTimeout(() => {
             this.$refs["chart"].render();
-		}, 100);
-		this.getData()
+        }, 100);
+        this.getData();
     },
     computed: {
         fixedSumBounty() {
@@ -55,38 +55,38 @@ export default {
     },
     methods: {
         startDateChange(e) {
-			let end = new Date(this.endDate).getTime();
-			let start = new Date(e.mp.detail.value).getTime();
-			let min = end - TIME_OFFSET;
-			if(min <= start <= end){
-				this.startDate = e.mp.detail.value;
-				this.getData()
-			}else{
-				msg('起始日与结束日相隔不得超过7天')
-			}
+            let end = new Date(this.endDate).getTime();
+            let start = new Date(e.mp.detail.value).getTime();
+            let min = end - TIME_OFFSET;
+            if (min <= start <= end) {
+                this.startDate = e.mp.detail.value;
+                this.getData();
+            } else {
+                msg("起始日与结束日相隔不得超过7天");
+            }
         },
         endDateChange(e) {
-			let start = new Date(this.startDate).getTime();
-			let end = new Date(e.mp.detail.value).getTime();
-			let max = start + TIME_OFFSET;
-			if(start <= end <= max){
-				this.endDate = e.mp.detail.value;
-				this.getData()
-			}else{
-				msg('起始日与结束日相隔不得超过7天')
-			}
-		},
-		getData(){
-			let [beginTime,endTime] = [new Date(this.startDate).getTime(),new Date(this.endDate).getTime()]
-			getMyDeposit(beginTime,endTime).then(res=>{
-				
-			})
-		},
-		initTime(){
-			let now = new Date().getTime();
-			let start = now - TIME_OFFSET;
-
-		}
+            let start = new Date(this.startDate).getTime();
+            let end = new Date(e.mp.detail.value).getTime();
+            let max = start + TIME_OFFSET;
+            if (start <= end <= max) {
+                this.endDate = e.mp.detail.value;
+                this.getData();
+            } else {
+                msg("起始日与结束日相隔不得超过7天");
+            }
+        },
+        getData() {
+            let [beginTime, endTime] = [
+                new Date(this.startDate).getTime(),
+                new Date(this.endDate).getTime()
+            ];
+            getMyDeposit(beginTime, endTime).then(res => {});
+        },
+        initTime() {
+            let now = new Date().getTime();
+            let start = now - TIME_OFFSET;
+        }
     }
 };
 </script>
@@ -100,7 +100,6 @@ export default {
 		border-bottom: 10rpx solid #efeff4;
 		text-align: center;
 		padding-top: 70rpx;
-		
 
 		.bounty {
 			font-size: 60rpx;

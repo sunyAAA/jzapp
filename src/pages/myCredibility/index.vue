@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import progressArc from '../../components/progressArc'
+import progressArc from "../../components/progressArc";
 export default {
-	components:{progressArc},
+    components: { progressArc },
     data() {
         return {};
     },

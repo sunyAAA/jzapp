@@ -96,14 +96,9 @@ export default {
             curTask: null
         };
     },
-    onLoad(options) {
-        this.taskId = options.taskId;
-    },
     mounted() {
         this.getTaskData();
-        this.taskList = [];
     },
-    onUnLoad() {},
     computed: {
         curTaskDetail() {
             return formartTaskDetail(this.taskData);
@@ -168,6 +163,7 @@ export default {
                     countDownTime + taskTime * 60 * 1000 - new Date().getTime();
                 if (t < 0) {
                     this.countDownText = "已过期";
+                    this.receiveFlag = false;
                     return;
                 }
                 this.timer = setInterval(() => {
@@ -189,8 +185,9 @@ export default {
             this.countDownText = "";
         },
         async getTaskData() {
-			_loading("加载中...");
-			this.clear()
+            this.taskId = this.$root.$mp.query.taskId;
+            _loading("加载中...");
+            this.clear();
             this.receiveFlag = false;
             this.showCountDown = false;
             this.complete = false;
@@ -238,9 +235,8 @@ export default {
                 }
             } else {
                 errBack();
-			}
-			_loading();
-			
+            }
+            _loading();
         }
     }
 };

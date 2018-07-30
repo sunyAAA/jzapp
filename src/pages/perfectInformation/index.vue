@@ -3,7 +3,7 @@
 		<h3>Hi 请完善信息</h3>
 		<h5>完善信息，领取红包哟！</h5>
 		<!-- 头像 -->
-		<div class="head-pic"  @click="upLoadImg">
+		<div class="head-pic" @click="upLoadImg">
 			<!-- <div class="tip" v-show="imgUrl.length == 0">
 				<img class="icon" src="../../../static/images/icon-img.png" alt="">
 				<div class="text">添加头像</div>
@@ -34,25 +34,27 @@
 </template>
 
 <script>
-import { upImgs,msg,showSucc } from "../../utils";
+import { upImgs, msg, showSucc } from "../../utils";
 import config from "../../config.js";
 import { completeUser } from "../../api";
 export default {
     data() {
         return {
-			imgUrl: [],
-			wxHead:'',
-			name: "",
+            imgUrl: [],
+            wxHead: "",
+            name: "",
             sexStatus: -1,
             sexArr: ["男", "女"]
         };
-	},
-	mounted(){
-		this.wxHead = wx.getStorageSync('userInfo').avatarUrl
-	},
+    },
+    mounted() {
+        this.wxHead = wx.getStorageSync("userInfo").avatarUrl;
+    },
     computed: {
         headPic() {
-            return this.imgUrl.slice(-1,1).length>0?config.ossroot + this.imgUrl.slice(-1,1):'';
+            return this.imgUrl.slice(-1, 1).length > 0
+                ? config.ossroot + this.imgUrl.slice(-1, 1)
+                : "";
         }
     },
     methods: {
@@ -64,23 +66,27 @@ export default {
         },
         sexChange(index) {
             this.sexStatus = index;
-		},
-		save(){
-			if(!this.name || this.sexStatus < 0 ){
-				msg('请将表单填写完整');
-				return
-			}
-			completeUser({name:this.name,sex:this.sexStatus,avatar:this.headPic[0]|| "" }).then(res=>{
-				if(res.code == 1){
-					showSucc('提交成功')
-					setTimeout(() => {
-						wx.navigateBack({delta:1})
-					}, 800);
-				}else{
-					msg(res.msg)
-				}
-			})
-		}
+        },
+        save() {
+            if (!this.name || this.sexStatus < 0) {
+                msg("请将表单填写完整");
+                return;
+            }
+            completeUser({
+                name: this.name,
+                sex: this.sexStatus,
+                avatar: this.headPic[0] || ""
+            }).then(res => {
+                if (res.code == 1) {
+                    showSucc("提交成功");
+                    setTimeout(() => {
+                        wx.navigateBack({ delta: 1 });
+                    }, 800);
+                } else {
+                    msg(res.msg);
+                }
+            });
+        }
     }
 };
 </script>
@@ -106,7 +112,7 @@ export default {
 		border: 10rpx solid #efeff4;
 		border-radius: 50%;
 		margin: 70rpx auto 145rpx;
-		overflow hidden
+		overflow: hidden;
 
 		.tip {
 			width: 100%;
@@ -191,10 +197,11 @@ export default {
 		}
 	}
 }
-.head
-	width 90px
-	height 90px
-	object-fit cover			
 
+.head {
+	width: 90px;
+	height: 90px;
+	object-fit: cover;
+}
 </style>
 

@@ -16,7 +16,7 @@
       </div>
       <div class="list-item sex">
         <span>性别</span>
-        <picker :value="index" :range="sex"   @change='changeSex'>
+        <picker :value="index" :range="sex" @change='changeSex'>
           <div class="picker">
             当前选择：{{sex[index]}}
           </div>
@@ -53,16 +53,14 @@ export default {
             },
             sex: ["保密", "男", "女"],
             sexVal: "男",
-            array: ['美国', '中国', '巴西', '日本'],
-            index:0
+            array: ["美国", "中国", "巴西", "日本"],
+            index: 0
         };
     },
-    mounted(){
-      
-    },
+    mounted() {},
     methods: {
         changeSex(e) {
-            this.index = e.mp.detail.value 
+            this.index = e.mp.detail.value;
         }
     }
 };

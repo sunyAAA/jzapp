@@ -28,7 +28,7 @@ export default {
     data() {
         return {
             username: "",
-            headPicUrl:'',
+            headPicUrl: "",
             adminList: [
                 {
                     icon: require("../../../static/images/my-income.png"),
@@ -53,10 +53,10 @@ export default {
             ]
         };
     },
-    mounted(){
-      let info =  wx.getStorageSync('userInfo');
-      this.username = info.nickName;
-      this.headPicUrl = info.avatarUrl;
+    mounted() {
+        let info = wx.getStorageSync("userInfo");
+        this.username = info.nickName;
+        this.headPicUrl = info.avatarUrl;
     },
     methods: {
         jumpTo(path) {

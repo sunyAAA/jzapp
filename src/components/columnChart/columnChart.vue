@@ -1,8 +1,8 @@
 <template>
-	<div class="container">
-		<p class="text">单位：元</p>
-		<canvas canvas-id="columnCanvas" class="canvas"></canvas>
-	</div>
+    <div class="container">
+        <p class="text">单位：元</p>
+        <canvas canvas-id="columnCanvas" class="canvas"></canvas>
+    </div>
 </template>
 
 <script>
@@ -22,23 +22,27 @@ export default {
             type: Object,
             default: function() {
                 return {
-					title: "每日收益",
-					data: [15, 20, 45, 37,11],
-					categories: ["07-01", "07-02", "07-03", "07-04","07-05"]
-            	}
+                    title: "每日收益",
+                    data: [15, 20, 45, 37, 11],
+                    categories: ["07-01", "07-02", "07-03", "07-04", "07-05"]
+                };
             }
-		},
+        }
     },
     data() {
         return {
-            isMainChartDisplay: true,
+            isMainChartDisplay: true
         };
     },
     methods: {
         change(newData) {
             //  模拟赋值
-            newData =  { title:'新的数据表',data: [100, 120, 170, 160, 300], categories: ["07-06", "07-07", "07-08", "07-09","07-10"]}
-            this.chartData = newData
+            newData = {
+                title: "新的数据表",
+                data: [100, 120, 170, 160, 300],
+                categories: ["07-06", "07-07", "07-08", "07-09", "07-10"]
+            };
+            this.chartData = newData;
 
             this.render();
         },
@@ -84,7 +88,7 @@ export default {
                 },
                 extra: {
                     column: {
-                        width:25
+                        width: 25
                     },
                     legendTextColor: "#ff4b2b" //  文案颜色
                 },

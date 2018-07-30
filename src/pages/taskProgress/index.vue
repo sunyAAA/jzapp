@@ -16,9 +16,9 @@
 
 <script>
 import taskCard from "../../components/taskCard";
-import {getMyTask, getApprove} from '../../api'
-import {formMyTask} from '../../model'
-import {_loading} from '../../utils'
+import { getMyTask, getApprove } from "../../api";
+import { formMyTask } from "../../model";
+import { _loading } from "../../utils";
 const pageSize = 8;
 export default {
     components: {
@@ -27,8 +27,8 @@ export default {
     data() {
         return {
             taskStatus: 2,
-			pageNum: 1,
-			curData:[],
+            pageNum: 1,
+            curData: [],
             navArr: [
                 {
                     title: "进行中"
@@ -40,53 +40,56 @@ export default {
                     title: "已完成"
                 }
             ],
-			status: 0,
-			scrollHeight: "height:560px",
-			total:0,
-			isNoMore:false
+            status: 0,
+            scrollHeight: "height:560px",
+            total: 0,
+            isNoMore: false
         };
-	},
-	onShow(){
-		this.getMyData();
-		this.setScrollViewHeight()
-	},
+    },
+    onShow() {
+        this.getMyData();
+        this.setScrollViewHeight();
+    },
     methods: {
         toggleTab(index) {
             this.status = index;
             this.taskStatus = index == 0 ? 2 : index == 1 ? 3 : 6;
-			this.pageNum = 1;
-			this.total = 0;
-			this.isNoMore = false
+            this.pageNum = 1;
+            this.total = 0;
+            this.isNoMore = false;
         },
         getMyData() {
-			_loading('加载中...')
+            _loading("加载中...");
             getMyTask(this.taskStatus, pageSize, this.pageNum).then(res => {
-				if(res.code == 1){
-					this.total = res.totalCount;
-					this.curData = this.pageNum > 1 ? this.curData.concat(formMyTask(res.data)):formMyTask(res.data)
-				}
-				_loading();
-			});
-		},
-		loadMore(){
-			if(curData.length > this.total){
-				return this.isNoMore = true;
-			}
-			this.pageNum ++ ;
-			this.getMyTask()
-		},
-		setScrollViewHeight() {
+                if (res.code == 1) {
+                    this.total = res.totalCount;
+                    this.curData =
+                        this.pageNum > 1
+                            ? this.curData.concat(formMyTask(res.data))
+                            : formMyTask(res.data);
+                }
+                _loading();
+            });
+        },
+        loadMore() {
+            if (curData.length > this.total) {
+                return (this.isNoMore = true);
+            }
+            this.pageNum++;
+            this.getMyTask();
+        },
+        setScrollViewHeight() {
             wx.getSystemInfo({
                 success: res => {
                     this.scrollHeight = `height:${res.windowHeight - 55}px;`;
                 }
             });
-        },
+        }
     },
     watch: {
         taskStatus(val) {
-			this.getMyData()
-		}
+            this.getMyData();
+        }
     }
 };
 </script>
@@ -119,9 +122,11 @@ export default {
 		}
 	}
 }
-.no-more
-	text-align center
-	font-size 12px
-	color #aaa
-	padding 10px 0 
+
+.no-more {
+	text-align: center;
+	font-size: 12px;
+	color: #aaa;
+	padding: 10px 0;
+}
 </style>

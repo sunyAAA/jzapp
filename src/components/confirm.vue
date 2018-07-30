@@ -17,95 +17,110 @@
 </template>
 
 <script>
-import {msg} from '../utils'
+import { msg } from "../utils";
 export default {
-    data(){
-        return{
-            labelText:'获取验证码',
-            isShow:false
-        }
+    data() {
+        return {
+            labelText: "获取验证码",
+            isShow: false
+        };
     },
-    methods:{
-        getCode(){
-            if(this.timer){
-                return
+    methods: {
+        getCode() {
+            if (this.timer) {
+                return;
             }
-            msg('验证码已发送，请注意查收');
-            this.countDown = 60
-            this.timer = setInterval(()=>{
-                this.labelText = `${this.countDown} s`
-                this.countDown--
-                if(this.countDown < 0 ){
-                    clearInterval(this.timer)
-                    this.labelText = '重新获取'
+            msg("验证码已发送，请注意查收");
+            this.countDown = 60;
+            this.timer = setInterval(() => {
+                this.labelText = `${this.countDown} s`;
+                this.countDown--;
+                if (this.countDown < 0) {
+                    clearInterval(this.timer);
+                    this.labelText = "重新获取";
                 }
-            },1000)
+            }, 1000);
         },
-        send(){
-            this.$emit('send',true);
-            this.close()
+        send() {
+            this.$emit("send", true);
+            this.close();
         },
-        show(){
+        show() {
             this.isShow = true;
         },
-        close(){
-            this.isShow = false
+        close() {
+            this.isShow = false;
         }
     }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
-.mask
-    position fixed
-    top 0
-    left 0
-    right 0
-    bottom 0
-    background rgba(0,0,0,.2)
-    z-index 9999
-    .content
-        width 90%
-        margin 100px auto 300px auto
-        height 250px
-        background #fff
-        border 1px solid transparent
-        border-raduis 10px
-        .close-box
-            text-align right
-            font-size 34px
-            padding 0 18px
-            padding-top 10px
-        .contorol
-            height 50px
-            margin 0px 25px
-            border-bottom 1px solid #eee
-            padding 0 25px
-            position relative
-            input
-                height 50px
-                line-height 50px
-                font-size 14px
-                width 70%
-            .label
-                position absolute
-                height 50px
-                line-height 50px
-                padding-right 25px
-                right 0
-                top 0
-                font-size 14px
-                color  #479EF8
-    .btn-box
-        margin-top 30px
-        text-align center
-        button
-            display inline-block
-            width 100px
-            height 40px
-            border-radius 5px
-            font-size 16px
-            background  #479EF8
-            color #fff
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+
+    .content {
+        width: 90%;
+        margin: 100px auto 300px auto;
+        height: 250px;
+        background: #fff;
+        border: 1px solid transparent;
+        border-raduis: 10px;
+
+        .close-box {
+            text-align: right;
+            font-size: 34px;
+            padding: 0 18px;
+            padding-top: 10px;
+        }
+
+        .contorol {
+            height: 50px;
+            margin: 0px 25px;
+            border-bottom: 1px solid #eee;
+            padding: 0 25px;
+            position: relative;
+
+            input {
+                height: 50px;
+                line-height: 50px;
+                font-size: 14px;
+                width: 70%;
+            }
+
+            .label {
+                position: absolute;
+                height: 50px;
+                line-height: 50px;
+                padding-right: 25px;
+                right: 0;
+                top: 0;
+                font-size: 14px;
+                color: #479EF8;
+            }
+        }
+    }
+
+    .btn-box {
+        margin-top: 30px;
+        text-align: center;
+
+        button {
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #479EF8;
+            color: #fff;
+        }
+    }
+}
 </style>
 

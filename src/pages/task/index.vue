@@ -71,12 +71,12 @@ export default {
             taskListFilter: 0,
             recommendPageNo: 1,
             isOrder: true,
-            isNoMore:false,
+            isNoMore: false,
             newHands: null,
             scrollHeight: "height:355px",
             sortArr: [
                 {
-                    title:'智能优选'
+                    title: "智能优选"
                 },
                 {
                     title: "耗时最短"
@@ -100,19 +100,19 @@ export default {
             }
         });
     },
-    async onShow(){
+    async onShow() {
         _loading("载入中...");
         this.recommendList = [];
         [
             this.taskType,
             this.bannerList,
             this.newHandsData,
-            this.recommendListData,
+            this.recommendListData
         ] = await Promise.all([
             initDict(),
             (await getBannerList()).data,
-            (await getNewHandsTask()),
-            (await getRecommendTask(this.recommendPageNo))
+            await getNewHandsTask(),
+            await getRecommendTask(this.recommendPageNo)
         ]);
         this.newHands = formTask(this.newHandsData.data);
         this.recommendList = formTask(this.recommendListData.data);
@@ -123,7 +123,9 @@ export default {
     },
     computed: {
         curRecommendList() {
-            return this.recommendList.length ?  this.recommendList.slice(0, this.recommendNo) : [];
+            return this.recommendList.length
+                ? this.recommendList.slice(0, this.recommendNo)
+                : [];
         },
         // curTaskList() {
         //     return this.taskList
@@ -133,16 +135,17 @@ export default {
         //         .slice(0, this.taskListNo);
         // },
         curSortFun() {
-            return this.sortStatus ==1
+            return this.sortStatus == 1
                 ? (a, b) => {
                       return a.sortTime - b.sortTime;
                   }
-                : this.sortStatus == 2 ?(a, b) => {
-                      return b.taskBounty - a.taskBounty;
-                  }
-                  : (a,b)=>{
-                      return a.taskId - b.taskId
-                  };
+                : this.sortStatus == 2
+                    ? (a, b) => {
+                          return b.taskBounty - a.taskBounty;
+                      }
+                    : (a, b) => {
+                          return a.taskId - b.taskId;
+                      };
         }
     },
     methods: {
@@ -170,28 +173,34 @@ export default {
         },
         loadMore() {
             if (this.isOrder) {
-                if(this.curRecommendList.length < this.recommendList.length){
+                if (this.curRecommendList.length < this.recommendList.length) {
                     this.recommendNo += 4;
-                    return
+                    return;
                 }
-                if (this.curRecommendList.length <this.recommendListData.totalCount ){
-                    this.recommendNo ++ ;
-                    _loading('加载中...')
-                    return getRecommendTask(this.recommendPageNo).then(res=>{
-                        _loading()
-                        if(res.code == 1){
-                            this.recommendList = this.recommendList.concat(formTask(res.data));
+                if (
+                    this.curRecommendList.length <
+                    this.recommendListData.totalCount
+                ) {
+                    this.recommendNo++;
+                    _loading("加载中...");
+                    return getRecommendTask(this.recommendPageNo).then(res => {
+                        _loading();
+                        if (res.code == 1) {
+                            this.recommendList = this.recommendList.concat(
+                                formTask(res.data)
+                            );
                         }
-                    })
+                    });
                 }
                 this.isNoMore = true;
             } else {
                 this.taskListNo += 4;
                 wx.getSystemInfo({
-                success: res => {
-                    this.scrollHeight = `height:${res.windowHeight - 225}px;`;
-                }
-            });
+                    success: res => {
+                        this.scrollHeight = `height:${res.windowHeight -
+                            225}px;`;
+                    }
+                });
             }
         },
         goLogin(taskId) {
@@ -200,15 +209,15 @@ export default {
         },
         loginSucc() {
             this.loginStatus = true;
-            wx.showTabBar()
+            wx.showTabBar();
             if (this.curTaskId) {
                 wx.navigateTo({
                     url: "../taskDetail/main?taskId=" + this.curTaskId
                 });
             }
         },
-        bannerGoDetail(id){
-                        wx.navigateTo({
+        bannerGoDetail(id) {
+            wx.navigateTo({
                 url: "../taskDetail/main?taskId=" + id
             });
         }
@@ -223,7 +232,8 @@ export default {
     // 广告位轮播
     swiper {
         width: 750rpx;
-        height 350rpx
+        height: 350rpx;
+
         image {
             width: 100%;
             height: 100%;
@@ -287,11 +297,15 @@ export default {
         }
     }
 }
-.slide-image
-    object-fit contain
-.no-more
-    text-align center
-    font-size 12px
-    color #aaa
-    padding 10px 0 
+
+.slide-image {
+    object-fit: contain;
+}
+
+.no-more {
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+    padding: 10px 0;
+}
 </style>

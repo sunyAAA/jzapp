@@ -19,16 +19,16 @@ export default {
                 if (res) {
                     this.userInfo = res;
                     wx.setStorageSync("userInfo", res);
-                    this.$emit('succ')
-                }else{
-                    msg('登录失败，请稍后再试')
+                    this.$emit("succ");
+                } else {
+                    msg("登录失败，请稍后再试");
                 }
             });
         },
         goBindPhone() {
             wx.redirectTo({ url: "../../pages/telRegister/main" });
         },
-        checkNewHands(){
+        checkNewHands() {
             if (res) {
                 if (!res.phone) {
                     // 如果没有绑定手机号  走手机绑定流程

@@ -54,12 +54,12 @@ export function _login(cb) {
 							} else {
 							}
 						}).catch(err => {
-							msg('用户信息获取失败,请稍后再试...')
+							msg('网络连接失败,请稍后再试...')
 							return cb && cb(null)
 						})
 					},
 					fail: () => {
-						msg('请登录以完成后续操作', function () {
+						msg('欢迎光临', function () {
 							cb && cb(null)
 						})
 					}

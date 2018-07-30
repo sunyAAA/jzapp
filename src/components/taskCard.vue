@@ -39,11 +39,11 @@ export default {
         noJump: {
             type: Boolean,
             default: false
-		},
+        },
         goVoto: {
             type: Boolean,
             default: false
-		},
+        }
     },
     methods: {
         goDetail() {
@@ -53,9 +53,7 @@ export default {
                 });
             } else if (this.item.userStatus == 3 && this.goVoto) {
                 return wx.navigateTo({
-                    url: `../taskCertificate/main?taskId=${
-                        this.item.taskId
-                    }`
+                    url: `../taskCertificate/main?taskId=${this.item.taskId}`
                 });
             }
             let _t = wx.getStorageSync("_token");

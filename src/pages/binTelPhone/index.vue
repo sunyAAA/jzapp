@@ -96,10 +96,10 @@ export default {
 			height: 100rpx;
 			border-bottom: 2rpx solid #efeff4;
 			padding: 20rpx 40rpx;
-			display flex
+			display: flex;
 
 			.icon {
-				flex 0 0  33rpx;
+				flex: 0 0 33rpx;
 				height: 48rpx;
 				margin-right: 40rpx;
 				float: left;
@@ -107,7 +107,7 @@ export default {
 			}
 
 			input {
-				flex 1
+				flex: 1;
 				height: 100%;
 				font-size: 30rpx;
 				color: #999;

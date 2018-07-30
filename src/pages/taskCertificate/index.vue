@@ -69,9 +69,6 @@ export default {
             btnShow:true
         };
     },
-    onLoad(options) {
-        this.taskId = options.taskId;
-    },
     mounted() {
         this.oss = config.ossroot;
         this.getTask();
@@ -93,6 +90,7 @@ export default {
     },
     methods: {
         async getTask() {
+			this.taskId = this.$root.$mp.query.taskId
             this.imgUrl = [];
             this.task = {};
             this.remark = "";
@@ -115,6 +113,9 @@ export default {
             upImgs(left, this.imgUrl);
         },
         remove(index) {
+            if(!this.isNew){
+                return
+            }
             showModel("确定要删除该图片吗").then(res => {
                 if (res) {
                     this.imgUrl.splice(index, 1);
