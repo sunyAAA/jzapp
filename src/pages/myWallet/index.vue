@@ -72,7 +72,9 @@ export default {
         goMoneyDetail() {
             wx.navigateTo({ url: "../moneyDetailed/main" });
         },
-        catchSend(state) {},
+        catchSend(state) {
+			
+		},
         take() {
             this.$refs.conf.show();
         },

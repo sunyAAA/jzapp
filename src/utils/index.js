@@ -54,12 +54,12 @@ export function _login(cb) {
 							} else {
 							}
 						}).catch(err => {
-							msg('网络连接失败,请稍后再试...')
+							msg('网络错误,请稍后再试...')
 							return cb && cb(null)
 						})
 					},
 					fail: () => {
-						msg('欢迎光临', function () {
+						msg('欢迎登陆', function () {
 							cb && cb(null)
 						})
 					}
@@ -249,4 +249,13 @@ export function errBack() {
 	wx.navigateBack({
 		delta: 1
 	})
+}
+
+export function back(text) {
+	if (text) { msg(text) }
+	setTimeout(() => {
+		wx.navigateBack({
+			delta: 1
+		})
+	}, 800);
 }

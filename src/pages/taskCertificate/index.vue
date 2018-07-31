@@ -28,7 +28,7 @@
 				<div class="img-box">
 					<div class="img-item" v-for="(item,index) in imgUrl" :key="index" >
 						<img :src="oss + item" alt="">
-                        <div class="icon-remove" @click='remove(index)'><img src="../../../static/images/remove.jpg" alt=""></div>
+                        <div v-show="isNew" class="icon-remove" @click='remove(index)'><img src="../../../static/images/remove.jpg" alt=""></div>
 					</div>
 					<div class="btn-upload" @click='upLoadImg' v-if="btnShow">
 						<img src="../../../static/images/addImg.png" alt="">
@@ -36,6 +36,7 @@
 				</div>
 			</div>
 			<span>上传凭证（最多可上传9张）</span>
+            <p v-show='isNew' class="tips">预计审核时间为七个工作日</p>
 		</div>
 		<!-- 审核按钮 -->
 		<div class="btn-review" @click='send' v-if='isNew'>提交凭证</div>
@@ -135,7 +136,7 @@ export default {
                         }
                     }
                 } else {
-                    // errBack()
+                    errBack()
                 }
             });
         },
@@ -270,7 +271,7 @@ export default {
 		}
 
 		span {
-			font-size: 30rpx;
+			font-size: 24rpx;
 			color: #999;
 			padding-left: 40rpx;
 		}
@@ -303,7 +304,11 @@ export default {
 	padding: 10px 20px;
 	color: #ff4b2b;
 }
-
+.tips 
+    font-size 12px
+    padding-left 20px
+    margin-top 20px
+    color #e4393c
 </style>
 
 

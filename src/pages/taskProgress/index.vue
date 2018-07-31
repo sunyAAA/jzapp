@@ -8,7 +8,7 @@
 		</div>
 		<!-- 内容 -->
 		<scroll-view scroll-y :style='scrollHeight' @scrolltolower='loadMore'>
-			<task-card v-for="(item,index) in curData" :key="index" :item="item" :goVoto="true"></task-card>
+			<task-card v-for="(item,index) in curData" :key="index" :item="item" :current="status"></task-card>
 			<div v-show='isNoMore' class="no-more">—— 我们是有底线的 ——</div>
 		</scroll-view>
 	</div>

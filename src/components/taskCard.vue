@@ -40,10 +40,7 @@ export default {
             type: Boolean,
             default: false
         },
-        goVoto: {
-            type: Boolean,
-            default: false
-        }
+        current:{type:Number,default:0}
     },
     methods: {
         goDetail() {
@@ -51,11 +48,13 @@ export default {
                 return wx.navigateTo({
                     url: `../${this.item.url}/main`
                 });
-            } else if (this.item.userStatus == 3 && this.goVoto) {
+            } else if (this.item.userStatus == 3 && this.current == 1) {
                 return wx.navigateTo({
                     url: `../taskCertificate/main?taskId=${this.item.taskId}`
                 });
-            }
+            }else if (this.current == 2){
+				return
+			}
             let _t = wx.getStorageSync("_token");
             if (!_t) {
                 this.$emit("noLogin", this.item.taskId);

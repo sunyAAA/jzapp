@@ -78,7 +78,7 @@
 import taskCard from "../../components/taskCard";
 import { getTaskDetail, takeTask, giveUpTask } from "../../api";
 import { formartTaskDetail, formTask, fixImg, diffTime } from "../../model";
-import { errBack, showSucc, msg, _loading, showModel } from "../../utils";
+import { errBack, showSucc, msg, _loading, showModel, back } from "../../utils";
 export default {
     components: {
         taskCard
@@ -158,23 +158,27 @@ export default {
         setCountDown(countDownTime, taskTime) {
             if (this.timer) {
                 return;
-            } else {
-                let t =
-                    countDownTime + taskTime * 60 * 1000 - new Date().getTime();
-                if (t < 0) {
-                    this.countDownText = "已过期";
-                    this.receiveFlag = false;
-                    return;
-                }
-                this.timer = setInterval(() => {
-                    this.countDownText = diffTime(t);
-                    t -= 1000;
-                    if (t < 0) {
-                        clearInterval(this.timer);
-                        this.timer = null;
-                    }
-                }, 1000);
+			}
+			let now = new Date().getTime()
+			let t = (countDownTime + taskTime * 60 * 1000) - now;
+			console.log(countDownTime,taskTime,now,t)
+            if (t <= 0) {
+                this.countDownText = "已过期";
+				this.receiveFlag = false;
+				back('该任务已过期,请重新领取')
+                return;
             }
+            this.timer = setInterval(() => {
+                this.countDownText = diffTime(t) || 0;
+                if (t <= 0) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                    this.countDownText = "已过期";
+					this.receiveFlag = false;
+					back('该任务已过期,请重新领取')
+				}
+                t -= 1000;
+            }, 1000);
         },
         toggleNav(n) {
             this.currentTab = n;
@@ -210,27 +214,26 @@ export default {
                 result = result ? formTask([result])[0] : null;
                 this.curTask = result;
                 if (result) {
-                    if (result.userStatus == 2 || result.userStatus == 3) {
+                    if (result.userStatus == 2) {
                         this.receiveFlag = true;
                         this.showCountDown = true;
                         this.setCountDown(
                             this.taskData.countDown,
                             this.taskData.taskTime
                         );
+                    } else if (result.userStatus == 3) {
+                        this.receiveFlag = true;
                     }
                 } else {
-                    if (
-                        this.taskData.userStatus == 2 ||
-                        this.taskData.userStatus == 3
-                    ) {
+                    if (this.taskData.userStatus == 2) {
                         this.receiveFlag = true;
                         this.showCountDown = true;
                         this.setCountDown(
                             this.taskData.countDown,
                             this.taskData.taskTime
                         );
-                    } else if (this.taskData.userStatus == 6) {
-                        this.complete = true;
+                    } else if (this.taskData.userStatus == 3) {
+                        this.receiveFlag = true;
                     }
                 }
             } else {

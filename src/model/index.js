@@ -22,7 +22,7 @@ export function formTask(arr) {
         obj.flag = getTaskType(item.type) || '';
         obj.taskId = item.taskId;
         obj.publisher = item.shopName || '平台发布';
-        obj.taskBounty = item.amount;
+        obj.taskBounty = item.singleAmount;
         obj.type = item.type;
         obj.sortTime = item.preTime;
         obj.userStatus = item.userStatus;
@@ -47,7 +47,7 @@ export function formMyTask(arr) {
         obj.flag = getTaskType(item.task.type) || '';
         obj.taskId = item.taskId;
         obj.publisher = item.shopName || '平台发布';
-        obj.taskBounty = item.task.amount;
+        obj.taskBounty = item.task.singleAmount;
         obj.type = item.type;
         obj.userStatus = item.status;
         obj.userTaskDetailId = item.userTaskDetailId;
@@ -68,7 +68,7 @@ export function formartTaskDetail(task) {
         endTime: timestampToDate(task.endTime),
         preTime: formartTaskTime(task.preTime),
         durationTime: task.taskTime,
-        bounty: task.amount,
+        bounty: task.singleAmount,
         countdown: getCalcDate(task.beginTime, task.endTime),
         durationTime: formartTaskTime(task.preTime),
         description: fixImg(task.description) || '',
@@ -113,6 +113,8 @@ export function diffTime(diff) {
     var returnStr = seconds < 10 ? '0' + seconds : seconds;
     if (minutes > 0) {
         returnStr = (minutes < 10 ? '0' + minutes + ":" : minutes + ':') + returnStr;
+    }else if (minutes <=0){
+        returnStr = '00:'+returnStr
     }
     if (hours > 0) {
         returnStr = (hours < 10 ? '0' + hours + ":" : hours + ':') + returnStr;

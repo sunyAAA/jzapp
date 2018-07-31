@@ -299,7 +299,7 @@ export default {
 }
 
 .slide-image {
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .no-more {

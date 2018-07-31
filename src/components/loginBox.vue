@@ -1,6 +1,9 @@
 <template>
     <div class="box">
-        <h2>赏金多想要获得您的部分信息，请点击授权按钮</h2>
+        <div class="logo-box">
+            <img src="../../static/images/logo.png" alt="">
+        </div>
+        <h2>夺金想要获得您的部分信息，请点击授权按钮</h2>
         <button open-type="getUserInfo" @getuserinfo="getUserInfo">授权</button>
     </div>
 </template>
@@ -54,6 +57,7 @@ export default {
         font-size: 14px;
         text-align: center;
         margin-bottom: 35px;
+        color #333
     }
 
     button {
@@ -64,6 +68,14 @@ export default {
         color: #fff;
     }
 }
+.logo-box
+    width 200px
+    margin 0 auto 20px auto 
+    height 200px
+    img 
+        width 100%
+        height 100%
+        object-fit cover
 </style>
 
 
