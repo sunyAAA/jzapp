@@ -9,7 +9,7 @@
 			<span>请上传身份证（正面）</span>
 		</div>
 		<!-- 确认按钮 -->
-		<div class="btn-sure">确认</div>
+		<div class="btn-sure" @click='send'>确认</div>
 	</div>
 </template>
 
