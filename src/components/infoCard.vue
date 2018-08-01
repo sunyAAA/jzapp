@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { timestampToDate } from '../utils';
+import { timestampToDate } from "../utils";
 export default {
     data() {
         return {};
@@ -33,13 +33,13 @@ export default {
             type: Boolean,
             default: false
         },
-        current:{type:Number,default:0}
+        current: { type: Number, default: 0 }
     },
-    computed:{
-      curItem(){
-          this.item.time = timestampToDate(this.item.sendTime,'Y-m-d');
-          return this.item
-      }
+    computed: {
+        curItem() {
+            this.item.time = timestampToDate(this.item.sendTime, "Y-m-d");
+            return this.item;
+        }
     }
 };
 </script>
@@ -57,11 +57,11 @@ export default {
 		margin: 0 auto;
 		border-radius: 12rpx;
 		margin-bottom: 16rpx;
-    display: flex;
+		display: flex;
 
 		// 类型标记
 		.type-flag {
-			flex:0 0 90rpx;
+			flex: 0 0 90rpx;
 
 			.flag {
 				width: 38rpx;
@@ -91,8 +91,8 @@ export default {
 
 		// 任务内容
 		.task-content {
-      padding-top:30px;
-			flex:1;
+			padding-top: 30px;
+			flex: 1;
 
 			.title {
 				font-size: 30rpx;
@@ -108,10 +108,10 @@ export default {
 			.time-limit {
 				font-size: 20rpx;
 				margin-bottom: 10rpx;
-        display:-webkit-box;
-        -webkit-line-clamp:3;
-        -webkit-box-orient:vertical;
-        overflow:hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
 			}
 		}
 
