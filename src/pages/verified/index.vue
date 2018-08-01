@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { upImgs, msg, showSucc } from "../../utils";
+import { upImgs, msg, showSucc, goTop } from "../../utils";
 import config from "../../config.js";
 import { sendCard } from "../../api";
 const icon = require("../../../static/images/uploadImg.png");
@@ -41,7 +41,7 @@ export default {
                 showSucc("上传成功");
                 back();
             } else {
-                msg("上传失败，请稍后再试");
+                goTop(res.msg);
             }
         });
     }

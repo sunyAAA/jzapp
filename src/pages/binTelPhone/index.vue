@@ -77,7 +77,7 @@ export default {
                             wx.navigateBack({ delta: 1 });
                         }, 800);
                     } else {
-                        msg(res.msg);
+                        goTop(res.msg)
                     }
                 });
             } else {

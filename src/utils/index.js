@@ -259,3 +259,11 @@ export function back(text) {
 		})
 	}, 800);
 }
+export function goTop(text) {
+	if (text) { msg(text) }
+	setTimeout(() => {
+		wx.navigateBack({
+			delta: 5
+		})
+	}, 800);
+}

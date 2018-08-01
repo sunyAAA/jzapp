@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { upImgs, msg, showSucc } from "../../utils";
+import { upImgs, msg, showSucc, goTop } from "../../utils";
 import config from "../../config.js";
 import { completeUser } from "../../api";
 export default {
@@ -83,7 +83,7 @@ export default {
                         wx.navigateBack({ delta: 1 });
                     }, 800);
                 } else {
-                    msg(res.msg);
+                    goTop(res.msg);
                 }
             });
         }
