@@ -20,23 +20,25 @@
 				</div>
 			</div>
 		</div>
-		<ColChart ref="chart"></ColChart>
+		<ColChart ref="chart" :chart-data='chartData'></ColChart>
 	</div>
 </template>
 
 <script>
 import ColChart from "../../components/columnChart/columnChart";
 import { getMyDeposit } from "../../api";
-import { timestampToDate } from "../../utils";
+import { timestampToDate ,msg} from "../../utils";
+import { formartChartData } from '../../model';
 
-const TIME_OFFSET = 7 * 24 * 60 * 60 * 1000;
+const TIME_OFFSET = 5 * 24 * 60 * 60 * 1000;
 export default {
     components: { ColChart },
     data() {
         return {
-            sumBounty: 2345.0,
+            sumBounty: 0,
             startDate: "",
-            endDate: ""
+			endDate: "",
+			chartData:{}
         };
     },
     mounted() {
@@ -56,32 +58,39 @@ export default {
     methods: {
         startDateChange(e) {
             let end = new Date(this.endDate).getTime();
-            let start = new Date(e.mp.detail.value).getTime();
-            let min = end - TIME_OFFSET;
-            if (min <= start <= end) {
+            let start = new Date(e.mp.detail.value).getTime();	
+			let min = end - TIME_OFFSET;
+            if (min <= start && start <= end) {
                 this.startDate = e.mp.detail.value;
                 this.getData();
             } else {
-                msg("起始日与结束日相隔不得超过7天");
+                msg('起始日与结束日相隔不得超过5天');
             }
         },
         endDateChange(e) {
             let start = new Date(this.startDate).getTime();
             let end = new Date(e.mp.detail.value).getTime();
             let max = start + TIME_OFFSET;
-            if (start <= end <= max) {
+            if (start <= end && end <= max) {
                 this.endDate = e.mp.detail.value;
                 this.getData();
             } else {
-                msg("起始日与结束日相隔不得超过7天");
+                msg("起始日与结束日相隔不得超过5天");
             }
         },
         getData() {
             let [beginTime, endTime] = [
-                new Date(this.startDate).getTime(),
-                new Date(this.endDate).getTime()
-            ];
-            getMyDeposit(beginTime, endTime).then(res => {});
+                new Date(this.startDate).getTime() - 7 * 60 * 60 *1000 - 59*60*1000,
+                new Date(this.endDate).getTime() + 16 *3600 * 1000 - 1000
+            ]; 
+            getMyDeposit(beginTime, endTime).then(res => {
+				if(res.code == 1){
+					this.sumBounty = res.data.total || 0
+					this.chartData = formartChartData(beginTime,endTime,res.data.detail)
+				}
+			});
+				
+
         },
         initTime() {
             let now = new Date().getTime();

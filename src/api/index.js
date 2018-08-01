@@ -142,3 +142,13 @@ export function getApply(userTaskId,userTaskDetailId=""){
 export function getApprove(pageSize,pageNum){
 	return fly.get('/api/taskUser/getApprove',qs.stringify({pageSize,pageNum}))
 }
+
+// 查询消息
+export function getMsgList(pageNum=1,pageSize=50){
+	return fly.get('/api/message/getMessage',qs.stringify({pageNum,pageSize}))
+}
+
+//实名认证
+export function sendCard(cardPositive){
+	return fly.post('/api/user/completeCardNo',qs.stringify({cardPositive}))
+}

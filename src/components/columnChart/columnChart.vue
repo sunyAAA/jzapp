@@ -23,8 +23,8 @@ export default {
             default: function() {
                 return {
                     title: "每日收益",
-                    data: [15, 20, 45, 37, 11],
-                    categories: ["07-01", "07-02", "07-03", "07-04", "07-05"]
+                    data: [15, 20, 45, 37, 11,10,2],
+                    categories: ["07-01", "07-02", "07-03", "07-04", "07-05","07-06","07-07"]
                 };
             }
         }
@@ -35,17 +35,6 @@ export default {
         };
     },
     methods: {
-        change(newData) {
-            //  模拟赋值
-            newData = {
-                title: "新的数据表",
-                data: [100, 120, 170, 160, 300],
-                categories: ["07-06", "07-07", "07-08", "07-09", "07-10"]
-            };
-            this.chartData = newData;
-
-            this.render();
-        },
         render(e) {
             var windowWidth = 320;
             try {
@@ -71,30 +60,33 @@ export default {
                     }
                 ],
                 yAxis: {
-                    format: function(val) {
-                        // Y轴刻度
-                        return val + "元";
-                    },
                     min: 0,
                     gridColor: "#eee", //Y轴网格颜色
                     fontColor: "#000", // Y轴字体颜色
-                    titleFontColor: "yellow"
+                    titleFontColor: "yellow",
+                    max : Math.max.apply(Math,this.chartData.data) == 0 ? 10 : Math.max.apply(Math,this.chartData.data)
                 },
                 xAxis: {
                     disableGrid: false,
                     type: "calibration",
                     gridColor: "#fff", //X轴网格颜色
-                    fontColor: "#333" // X轴字体颜色
+                    fontColor: "#333", // X轴字体颜色
+                    fontSize:10
                 },
                 extra: {
                     column: {
-                        width: 25
+                        width: this.chartData.categories.length? 91/this.chartData.categories.length :10
                     },
                     legendTextColor: "#ff4b2b" //  文案颜色
                 },
                 width: windowWidth,
                 height: 300
             });
+        }
+    },
+    watch:{
+        chartData(){
+            this.render()
         }
     }
 };
@@ -103,7 +95,7 @@ export default {
 <style scoped>
 .container {
     margin-top: 40rpx;
-    padding: 30rpx;
+    padding: 5rpx;
 }
 .canvas {
     width: 100%;

@@ -93,7 +93,7 @@ export function loginByUser(userInfo, cb) {
 				} else {
 					_loading()
 				}
-			}).catch((err) => {
+			},(err) => {
 				msg('用户信息获取失败,请稍后再试...')
 				return cb && cb(null)
 			})

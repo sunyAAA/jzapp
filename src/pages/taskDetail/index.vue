@@ -96,9 +96,12 @@ export default {
             curTask: null
         };
     },
-    mounted() {
+    onShow() {
         this.getTaskData();
-    },
+	},
+	onHide(){
+		this.clear()
+	},
     computed: {
         curTaskDetail() {
             return formartTaskDetail(this.taskData);
@@ -159,9 +162,8 @@ export default {
             if (this.timer) {
                 return;
 			}
-			let now = new Date().getTime()
-			let t = (countDownTime + taskTime * 60 * 1000) - now;
-			console.log(countDownTime,taskTime,now,t)
+			
+			let t = (countDownTime + taskTime * 60 * 1000) - this.now;
             if (t <= 0) {
                 this.countDownText = "已过期";
 				this.receiveFlag = false;
@@ -201,7 +203,8 @@ export default {
                     taskId: this.taskId,
                     userId
                 })).data;
-                this.taskData = data.missionTask;
+				this.taskData = data.missionTask;
+				this.now = data.now
                 this.isNew = this.taskData.type == 2 ? true : false;
                 this.taskList = data.detail;
                 let result = null;

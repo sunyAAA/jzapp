@@ -3,7 +3,8 @@
     <!-- 上传身份证（正面） -->
     <div class="upload-IDCard">
       <div class="ID-area" @click.stop='upLoadImg'>
-        <img src='../../../static/images/uploadImg.png' alt="">
+        <img v-if="card" :src='oss+card' alt="">
+        <img v-else src='../../../static/images/uploadImg.png' alt="">
       </div>
       <span>请上传身份证（正面）</span>
     </div>
@@ -13,17 +14,36 @@
 </template>
 
 <script>
-  import {upImgs} from '../../utils'
+  import {upImgs, msg, showSucc} from '../../utils'
+  import config from '../../config.js'
+import { sendCard } from '../../api';
+  const icon = require('../../../static/images/uploadImg.png')
   export default {
     data(){
       return {
-        imgUrl: []
+        imgUrl: [],
+        oss:config.ossroot
       }
     },
     methods: {
       upLoadImg(){
-        upImgs(2,this.imgUrl)
+        upImgs(1,this.imgUrl)
       },
+    },
+    computed:{
+      card(){
+        return this.imgUrl[this.imgUrl.length - 1] || null;
+      }
+    },
+    send(){
+      sendCard(card).then(res=>{
+        if(res.code == 1){
+          showSucc('上传成功');
+          back();
+        }else{
+          msg('上传失败，请稍后再试')
+        }
+      })
     }
   }
 </script>

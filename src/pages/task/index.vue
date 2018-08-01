@@ -207,13 +207,17 @@ export default {
             this.curTaskId = taskId;
             this.loginStatus = false;
         },
-        loginSucc() {
-            this.loginStatus = true;
-            wx.showTabBar();
-            if (this.curTaskId) {
-                wx.navigateTo({
-                    url: "../taskDetail/main?taskId=" + this.curTaskId
-                });
+        loginSucc(status) {
+            if (status) {
+                this.loginStatus = true;
+                wx.showTabBar();
+                if (this.curTaskId) {
+                    wx.navigateTo({
+                        url: "../taskDetail/main?taskId=" + this.curTaskId
+                    });
+                }
+            } else {
+                this.loginStatus = true;
             }
         },
         bannerGoDetail(id) {

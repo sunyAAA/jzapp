@@ -113,8 +113,8 @@ export function diffTime(diff) {
     var returnStr = seconds < 10 ? '0' + seconds : seconds;
     if (minutes > 0) {
         returnStr = (minutes < 10 ? '0' + minutes + ":" : minutes + ':') + returnStr;
-    }else if (minutes <=0){
-        returnStr = '00:'+returnStr
+    } else if (minutes <= 0) {
+        returnStr = '00:' + returnStr
     }
     if (hours > 0) {
         returnStr = (hours < 10 ? '0' + hours + ":" : hours + ':') + returnStr;
@@ -138,3 +138,39 @@ export function fixImg(str) {
     str = str.replace(reg, '$1/240')
     return str
 }
+
+
+export function formartChartData(begin, end, data) {
+    let dayOffset = 24 * 60 * 60 * 1000;
+    let count = Math.floor((end - begin) / dayOffset) + 1;
+    let i = 0;
+    let result = {
+        title: '每日收益',
+        data: [],
+        categories: [],
+    };
+    while (i < count) {
+        result.categories.push(timestampToDate(begin + dayOffset * i, 'm-d'))
+        i++
+    }
+    for (let n of result.categories) {
+        var has = false;
+        if (data) {
+            for (let m of data) {
+                if(timestampToDate(m.createTime,'m-d') == n){
+                    has = true;
+                    result.data.push(m.amount)
+                }
+            }
+        }
+        if(!has){result.data.push(0)}
+    }
+    return result
+
+}
+
+// // {
+//     title: "每日收益",
+//     data: [15, 20, 45, 37, 11,10,2],
+//     categories: ["07-01", "07-02", "07-03", "07-04", "07-05","07-06","07-07"]
+// }

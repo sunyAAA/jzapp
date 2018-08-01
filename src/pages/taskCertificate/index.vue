@@ -70,7 +70,7 @@ export default {
             btnShow:true
         };
     },
-    mounted() {
+    onReady() {
         this.oss = config.ossroot;
         this.getTask();
     },

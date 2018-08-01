@@ -2,12 +2,10 @@
   <div class="my-wrap">
     <!-- 个人信息（头像和昵称） -->
     <div class="admin-info">
-      <navigator open-type="navigate" url="../adminData/main">
         <div class="head-pic">
           <img :src="headPicUrl" alt="用户头像">
         </div>
         <div class="username" v-text="username"></div>
-      </navigator>
     </div>
 
     <!-- 功能列表 -->
